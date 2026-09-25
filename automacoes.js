@@ -208,3 +208,25 @@ window.renderAutomacoes=async function(box,ctx){
     }
   }catch(e){}
 })();
+
+/* === Wiz patch: oculta a aba "Google Ads" para clientes sem conta Google configurada === */
+(function(){
+  try{
+    if(typeof buildCliNav==='function' && !buildCliNav.__wizGoogleGate){
+      var _bcn=buildCliNav;
+      var _bcnGate=function(){
+        var r=_bcn.apply(this,arguments);
+        try{
+          var gid=String((typeof CLIENT!=='undefined'&&CLIENT&&CLIENT.google_customer)||'').replace(/\D/g,'');
+          if(!gid){
+            var nav=document.getElementById('cliNav');
+            if(nav){var g=nav.querySelector('.cnav[data-k="google"]');if(g)g.remove();}
+          }
+        }catch(e){}
+        return r;
+      };
+      _bcnGate.__wizGoogleGate=true;
+      buildCliNav=_bcnGate;
+    }
+  }catch(e){}
+})();
