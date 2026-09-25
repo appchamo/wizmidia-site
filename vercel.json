@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/admin.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/central", "destination": "/index.html" },
+    { "source": "/cardapio", "destination": "/cardapio.html" },
+    { "source": "/cardapio/:slug", "destination": "/cardapio.html" },
+    { "source": "/:slug", "destination": "/index.html" }
+  ]
+}

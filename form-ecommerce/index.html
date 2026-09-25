@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wiz Mídia — Diagnóstico</title>
+<meta name="description" content="Responda 4 perguntas rápidas e agende uma conversa com a Wiz Mídia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#5ec24d; --green-btn:#4fa23c; --green-btn2:#458f33;
+    --ink:#ffffff; --mut:#aab2bd; --mut2:#7f8794;
+    --bg:#000000; --card:#101216; --card2:#15181d; --line:#23272e; --line2:#2c313a;
+    --glow:rgba(94,194,77,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--ink); min-height:100dvh;
+    display:flex; flex-direction:column; align-items:center;
+    padding:22px 16px 48px; position:relative; overflow-x:hidden;
+  }
+  /* efeitos de fundo */
+  .fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .fx .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55}
+  .fx .b1{width:540px;height:540px;background:radial-gradient(circle,rgba(94,194,77,.40),transparent 65%);top:-170px;left:-130px;animation:float1 14s ease-in-out infinite}
+  .fx .b2{width:480px;height:480px;background:radial-gradient(circle,rgba(94,194,77,.24),transparent 65%);bottom:-170px;right:-130px;animation:float2 18s ease-in-out infinite}
+  .fx .b3{width:400px;height:400px;background:radial-gradient(circle,rgba(70,220,150,.18),transparent 65%);top:42%;left:52%;animation:float3 22s ease-in-out infinite}
+  .fx .aurora{position:absolute;inset:-40%;background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(94,194,77,.12) 60deg,transparent 140deg,transparent 240deg,rgba(70,220,150,.10) 300deg,transparent 360deg);filter:blur(60px);animation:spin 42s linear infinite}
+  .fx .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(circle at 50% 18%,#000,transparent 78%);animation:gridpan 26s linear infinite}
+  .fx .vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 28%,transparent 42%,rgba(0,0,0,.55) 100%)}
+  @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(44px,32px)}}
+  @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-44px,-32px)}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,26px) scale(1.08)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes gridpan{to{background-position:46px 46px}}
+  .top,.card,.foot{position:relative;z-index:1}
+  .top{width:100%;max-width:560px;display:flex;align-items:center;gap:10px;margin:4px 2px 18px}
+  .logo{font-weight:800;font-size:22px;letter-spacing:-.02em}
+  .logo span{color:var(--green)}
+  .top small{color:var(--mut2);font-weight:600;font-size:12.5px;margin-left:auto}
+  .card{
+    width:100%;max-width:560px;background:linear-gradient(180deg,var(--card),#0c0e12);
+    border:1px solid var(--line);border-radius:22px;padding:24px 22px 26px;
+    box-shadow:0 30px 70px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.03);
+    position:relative;isolation:isolate;
+  }
+  /* halo verde pulsando em volta do card */
+  .card::after{content:"";position:absolute;inset:-26px;z-index:-2;border-radius:40px;
+    background:radial-gradient(ellipse at 50% 0%,rgba(94,194,77,.40),transparent 70%),radial-gradient(ellipse at 50% 100%,rgba(70,220,150,.22),transparent 72%);
+    filter:blur(34px);animation:halo 5s ease-in-out infinite}
+  /* borda com brilho */
+  .card::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:22px;padding:1.5px;
+    background:linear-gradient(140deg,rgba(94,194,77,.85),rgba(94,194,77,.05) 38%,rgba(94,194,77,.05) 62%,rgba(70,220,150,.6));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+    animation:borderglow 6s ease-in-out infinite}
+  @keyframes halo{0%,100%{opacity:.55;transform:scale(.99)}50%{opacity:1;transform:scale(1.01)}}
+  @keyframes borderglow{0%,100%{opacity:.65}50%{opacity:1}}
+  .prog{height:7px;background:#1b1e24;border-radius:99px;overflow:hidden;margin-bottom:8px}
+  .prog>i{display:block;height:100%;width:25%;background:linear-gradient(90deg,var(--green-btn),var(--green));border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px var(--glow)}
+  .step-lbl{font-size:12px;color:var(--green);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:0 0 14px}
+  section[data-step]{animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  h1{font-size:24px;line-height:1.2;margin:2px 0 5px;letter-spacing:-.01em;font-weight:700}
+  .sub{color:var(--mut);font-size:14px;margin:0 0 18px;font-weight:400}
+  .opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--card2);
+    border:1.5px solid var(--line2);border-radius:14px;padding:15px 15px;margin-bottom:11px;cursor:pointer;
+    font-size:15px;color:var(--ink);transition:.18s;font-weight:500;font-family:inherit}
+  .opt:hover{border-color:rgba(94,194,77,.6);background:#191d22;transform:translateY(-1px)}
+  .opt .dot{width:21px;height:21px;border-radius:50%;border:2px solid #3a414c;flex:none;position:relative;transition:.18s}
+  .opt.sel{border-color:var(--green);background:rgba(94,194,77,.12);box-shadow:0 0 0 1px var(--green), 0 8px 24px rgba(94,194,77,.14)}
+  .opt.sel .dot{border-color:var(--green);background:var(--green)}
+  .opt.sel .dot::after{content:"";position:absolute;inset:5px;background:#0c0e12;border-radius:50%}
+  .fields label{display:block;font-size:13px;font-weight:600;color:#dfe4ea;margin:15px 0 6px}
+  .fields input{width:100%;border:1.5px solid var(--line2);border-radius:12px;padding:14px 14px;font-size:15px;
+    color:var(--ink);font-family:inherit;background:var(--card2);outline:none;transition:.18s}
+  .fields input::placeholder{color:#5c636e}
+  .fields input:focus{border-color:var(--green);background:#12161a;box-shadow:0 0 0 3px rgba(94,194,77,.18)}
+  .fields input.err{border-color:#e0567a;background:#1c1417}
+  .hint{font-size:12px;color:var(--mut2);margin-top:5px}
+  .row{display:flex;gap:11px;margin-top:22px}
+  .btn{flex:1;border:0;border-radius:13px;padding:16px;font-size:15.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.18s}
+  .btn.pri{background:var(--green-btn);color:#fff;box-shadow:0 10px 26px rgba(79,162,60,.4)}
+  .btn.pri:hover{background:var(--green-btn2);transform:translateY(-1px)}
+  .btn.pri:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none}
+  .btn.gho{flex:0 0 auto;background:#1b1f25;color:#c4ccd6;padding:16px 20px;border:1px solid var(--line2)}
+  .btn.gho:hover{background:#232830}
+  .btn.wa{background:var(--green-btn);box-shadow:0 10px 30px rgba(79,162,60,.5)}
+  .btn.wa:hover{background:var(--green-btn2)}
+  .wa-ic{width:18px;height:18px;vertical-align:-3px;margin-right:6px}
+  .done{text-align:center;padding:16px 4px}
+  .done .ck{width:70px;height:70px;border-radius:50%;background:rgba(94,194,77,.14);display:flex;align-items:center;justify-content:center;margin:6px auto 16px;box-shadow:0 0 0 1px rgba(94,194,77,.4),0 0 30px rgba(94,194,77,.25)}
+  .foot{max-width:560px;width:100%;text-align:center;color:#5c636e;font-size:12px;margin-top:18px}
+  [hidden]{display:none!important}
+</style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1032230385794001');
+fbq('track','PageView');
+fbq('trackCustom','Etapa1');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1032230385794001&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+</head>
+<body>
+  <div class="fx"><div class="aurora"></div><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grid"></div><div class="vig"></div></div>
+
+  <div class="top">
+    <div class="logo">Wiz<span> Mídia</span></div>
+    <small>Diagnóstico rápido · 1 min</small>
+  </div>
+
+  <div class="card">
+    <div class="prog"><i id="bar"></i></div>
+    <div class="step-lbl" id="steplbl">Etapa 1 de 4</div>
+
+    <section data-step="1">
+      <h1>Quanto você fatura por mês?</h1>
+      <p class="sub">Escolha a faixa que mais se aproxima.</p>
+      <div class="opts" data-q="faturamento">
+        <button type="button" class="opt" data-v="Não faturo ainda"><span class="dot"></span>Não faturo ainda</button>
+        <button type="button" class="opt" data-v="Menos de R$30.000/mês"><span class="dot"></span>Menos de R$30.000/mês</button>
+        <button type="button" class="opt" data-v="Entre R$25.000 e R$50.000/mês"><span class="dot"></span>Entre R$25.000 e R$50.000/mês</button>
+        <button type="button" class="opt" data-v="Entre R$50.000 e R$100.000/mês"><span class="dot"></span>Entre R$50.000 e R$100.000/mês</button>
+        <button type="button" class="opt" data-v="Mais de R$100.000/mês"><span class="dot"></span>Mais de R$100.000/mês</button>
+      </div>
+      <div class="row"><button class="btn pri" data-next disabled>Continuar</button></div>
+    </section>
+
+    <section data-step="2" hidden>
+      <h1>Quanto você investe em tráfego pago por mês?</h1>
+      <p class="sub">Anúncios no Meta, Google, etc.</p>
+      <div class="opts" data-q="trafego">
+        <button type="button" class="opt" data-v="Não invisto em tráfego"><span class="dot"></span>Não invisto em tráfego</button>
+        <button type="button" class="opt" data-v="Entre R$500 e R$2.000/mês"><span class="dot"></span>Entre R$500 e R$2.000/mês</button>
+        <button type="button" class="opt" data-v="Entre R$2.000 e R$10.000/mês"><span class="dot"></span>Entre R$2.000 e R$10.000/mês</button>
+        <button type="button" class="opt" data-v="Entre R$10.000 e R$20.000/mês"><span class="dot"></span>Entre R$10.000 e R$20.000/mês</button>
+        <button type="button" class="opt" data-v="Mais de R$20.000/mês"><span class="dot"></span>Mais de R$20.000/mês</button>
+      </div>
+      <div class="row"><button class="btn gho" data-back>Voltar</button><button class="btn pri" data-next disabled>Continuar</button></div>
+    </section>
+
+    <section data-step="3" hidden>
+      <h1>Qual seu objetivo com a Wiz?</h1>
+      <p class="sub">Pra gente entender o seu momento.</p>
+      <div class="opts" data-q="objetivo">
+        <button type="button" class="opt" data-v="Iniciar o quanto antes a gestão"><span class="dot"></span>Iniciar o quanto antes a gestão</button>
+        <button type="button" class="opt" data-v="Pretendo começar ainda esse mês"><span class="dot"></span>Pretendo começar ainda esse mês</button>
+        <button type="button" class="opt" data-v="Quero resolver em até 45 dias"><span class="dot"></span>Quero resolver em até 45 dias</button>
+        <button type="button" class="opt" data-v="Quero conhecer mais"><span class="dot"></span>Quero conhecer mais</button>
+      </div>
+      <div class="row"><button class="btn gho" data-back>Voltar</button><button class="btn pri" data-next disabled>Continuar</button></div>
+    </section>
+
+    <section data-step="4" hidden>
+      <h1>Seus dados de contato</h1>
+      <p class="sub">Pra gente te chamar e agendar a conversa.</p>
+      <div class="fields">
+        <label for="nome">Nome</label>
+        <input id="nome" type="text" autocomplete="name" placeholder="Seu nome">
+        <label for="email">E-mail</label>
+        <input id="email" type="email" autocomplete="email" placeholder="voce@email.com">
+        <label for="wpp">WhatsApp</label>
+        <input id="wpp" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(34) 99999-9999">
+        <label for="loja">Endereço da sua loja (link)</label>
+        <input id="loja" type="url" inputmode="url" placeholder="site, Instagram ou Google Maps">
+        <div class="hint">Pode ser o link do seu site, Instagram ou localização no Google.</div>
+      </div>
+      <div class="row">
+        <button class="btn gho" data-back>Voltar</button>
+        <button class="btn pri wa" id="enviar">
+          <svg class="wa-ic" viewBox="0 0 24 24" fill="#fff"><path d="M17.5 14.4c-.3-.15-1.7-.84-2-.94-.26-.1-.45-.15-.64.15-.19.29-.73.94-.9 1.13-.16.19-.33.21-.62.07-1.7-.85-2.82-1.52-3.94-3.44-.3-.51.3-.47.85-1.57.09-.19.05-.35-.02-.5-.08-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.06 4.87 4.29 2.86 1.23 2.86.82 3.38.77.52-.05 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34zM12 22a10 10 0 0 1-5.1-1.39L3 22l1.42-3.79A10 10 0 1 1 12 22z"/></svg>
+          AGENDAR CONVERSA
+        </button>
+      </div>
+    </section>
+
+    <section data-step="5" hidden>
+      <div class="done">
+        <div class="ck"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5ec24d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h1>Tudo certo!</h1>
+        <p class="sub" style="margin-bottom:20px">Abrimos o WhatsApp com suas respostas. Se não abrir sozinho, toca no botão abaixo.</p>
+        <a id="waLink" class="btn pri wa" style="display:block;text-decoration:none;text-align:center" href="#">Abrir o WhatsApp</a>
+      </div>
+    </section>
+  </div>
+
+  <div class="foot">Wiz Mídia · Patrocínio-MG</div>
+
+<script>
+  // >>> TROCAR pelo WhatsApp comercial da Wiz (só números, com 55 + DDD): ex. 5534999999999
+  var WHATS = '5534997235274';
+
+  var answers = {faturamento:'', trafego:'', objetivo:''};
+  var step = 1, TOTAL = 4;
+
+  function show(n){
+    document.querySelectorAll('section[data-step]').forEach(function(s){ s.hidden = (+s.dataset.step !== n); });
+    var shown = Math.min(n, TOTAL);
+    document.getElementById('bar').style.width = (shown/TOTAL*100) + '%';
+    var lbl = document.getElementById('steplbl');
+    lbl.style.display = (n<=TOTAL) ? '' : 'none';
+    if(n<=TOTAL) lbl.textContent = 'Etapa ' + n + ' de ' + TOTAL;
+    window.scrollTo({top:0, behavior:'smooth'});
+    try{ if(window.fbq && n>=2 && n<=TOTAL) fbq('trackCustom','Etapa'+n); }catch(e){}
+  }
+
+  document.querySelectorAll('.opts').forEach(function(group){
+    var q = group.dataset.q;
+    group.querySelectorAll('.opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        group.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('sel'); });
+        btn.classList.add('sel');
+        answers[q] = btn.dataset.v;
+        var sec = group.closest('section');
+        var next = sec.querySelector('[data-next]');
+        if(next) next.disabled = false;
+      });
+    });
+  });
+
+  document.querySelectorAll('[data-next]').forEach(function(b){ b.addEventListener('click', function(){ if(step<TOTAL){ step++; show(step); } }); });
+  document.querySelectorAll('[data-back]').forEach(function(b){ b.addEventListener('click', function(){ if(step>1){ step--; show(step); } }); });
+
+  function valida(){
+    var ok = true;
+    var nome = document.getElementById('nome');
+    var email = document.getElementById('email');
+    var wpp = document.getElementById('wpp');
+    [nome,email,wpp].forEach(function(el){ el.classList.remove('err'); });
+    if(!nome.value.trim()){ nome.classList.add('err'); ok=false; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value.trim())){ email.classList.add('err'); ok=false; }
+    if(wpp.value.replace(/\D/g,'').length < 10){ wpp.classList.add('err'); ok=false; }
+    return ok;
+  }
+
+  function montarLink(){
+    var nome = document.getElementById('nome').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var wpp = document.getElementById('wpp').value.trim();
+    var loja = document.getElementById('loja').value.trim();
+    var msg =
+      'Olá! Quero agendar uma conversa com a Wiz Mídia.\n\n' +
+      '📊 Faturamento/mês: ' + answers.faturamento + '\n' +
+      '🚀 Investimento em tráfego/mês: ' + answers.trafego + '\n' +
+      '🎯 Objetivo com a Wiz: ' + answers.objetivo + '\n\n' +
+      '👤 Nome: ' + nome + '\n' +
+      '📧 E-mail: ' + email + '\n' +
+      '📱 WhatsApp: ' + wpp + '\n' +
+      '🏬 Loja: ' + (loja || '—');
+    return 'https://wa.me/' + WHATS.replace(/\D/g,'') + '?text=' + encodeURIComponent(msg);
+  }
+
+  var LEAD_URL = 'https://gwvabuxqufpqxdtqhmmy.supabase.co/functions/v1/form-lead';
+  var LEAD_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3dmFidXhxdWZwcXhkdHFobW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NjA1NzMsImV4cCI6MjA5NjQzNjU3M30.iLOTlJz4CcW0m-dMLQ2dY-RKZy32kxa5WhmOgxZ5Kas';
+  function getCookie(n){ try{ var m=document.cookie.match('(?:^|; )'+n+'=([^;]*)'); return m?decodeURIComponent(m[1]):''; }catch(e){ return ''; } }
+  function gravarLead(evid){
+    try{
+      var payload = {
+        nome: document.getElementById('nome').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        whats: document.getElementById('wpp').value.trim(),
+        loja: document.getElementById('loja').value.trim(),
+        faturamento: answers.faturamento || '',
+        trafego: answers.trafego || '',
+        objetivo: answers.objetivo || '',
+        event_id: evid,
+        fbp: getCookie('_fbp'),
+        fbc: getCookie('_fbc'),
+        event_source_url: location.href
+      };
+      fetch(LEAD_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': LEAD_KEY, 'Authorization': 'Bearer ' + LEAD_KEY },
+        body: JSON.stringify(payload),
+        keepalive: true
+      }).catch(function(){});
+    }catch(e){}
+  }
+
+  document.getElementById('enviar').addEventListener('click', function(){
+    if(!valida()) return;
+    var evid = 'lead-' + Date.now() + '-' + Math.random().toString(36).slice(2,10);
+    try{ if(window.fbq) fbq('track','Lead',{},{eventID:evid}); }catch(e){}
+    gravarLead(evid);
+    var link = montarLink();
+    document.getElementById('waLink').href = link;
+    step = 5; show(5);
+    window.open(link, '_blank');
+  });
+
+  document.getElementById('wpp').addEventListener('input', function(e){
+    var d = e.target.value.replace(/\D/g,'').slice(0,11);
+    var out = d;
+    if(d.length>2) out = '(' + d.slice(0,2) + ') ' + d.slice(2);
+    if(d.length>7) out = '(' + d.slice(0,2) + ') ' + d.slice(2,7) + '-' + d.slice(7);
+    e.target.value = out;
+  });
+
+  show(1);
+</script>
+</body>
+</html>

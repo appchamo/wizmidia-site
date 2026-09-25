@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sobre Nós · Wiz Mídia</title>
+<meta name="description" content="Wiz Mídia — conteúdo, tráfego e estratégia para marcas que querem vender mais. Patrocínio-MG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#000000; --ink:#FFFFFF; --muted:#FFFFFF; --muted2:#FFFFFF;
+    --green:#3EDC71; --green-deep:#25B457; --green-text:#63E894;
+    --line:rgba(255,255,255,.12); --card:rgba(255,255,255,.035); --glow:rgba(62,220,113,.20);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Poppins',system-ui,-apple-system,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;}
+  .wrap{position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:0 22px;}
+  h1,h2,h3,.eyebrow{font-family:'Poppins',sans-serif;}
+  .eyebrow{text-transform:uppercase; letter-spacing:.26em; font-size:12px; font-weight:600; color:var(--green-text);}
+  a{color:inherit}
+  img{max-width:100%; display:block}
+
+  section{padding-block:78px;}
+  .divider{height:1px; background:var(--line); border:0; margin:0;}
+
+  /* HERO */
+  .hero{min-height:88vh; display:flex; flex-direction:column; justify-content:center; gap:22px; padding-block:60px;}
+  .hero .brand{font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(56px,12vw,120px); line-height:.94; letter-spacing:-.02em;}
+  .hero .brand span{color:var(--green);}
+  .hero .htag{font-family:'Poppins',sans-serif; font-weight:600; font-size:clamp(24px,4vw,38px); line-height:1.15; max-width:16ch;}
+  .hero .sub{color:var(--muted2); font-size:clamp(15px,2.2vw,18px); line-height:1.7; max-width:52ch;}
+  .btn{display:inline-block; text-decoration:none; font-family:'Poppins',sans-serif; font-weight:700; font-size:15px;
+    padding:15px 30px; border-radius:12px; background:linear-gradient(90deg,var(--green),var(--green-deep)); color:#06210F;
+    box-shadow:none; transition:filter .2s, transform .15s; margin-top:8px;}
+  .btn:hover{filter:brightness(1.06)} .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent; color:var(--ink); border:1px solid var(--line); box-shadow:none;}
+  .btn.ghost:hover{border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.04)}
+  .hero .foot{margin-top:20px; font-size:13px; color:var(--muted); letter-spacing:.04em;}
+  .hero .headline{font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(38px,7.2vw,66px); line-height:1.03; letter-spacing:-.02em; margin:0;}
+  .checks{list-style:none; margin:6px 0 0; padding:0; display:flex; flex-direction:column; gap:16px;}
+  .checks li{display:flex; gap:13px; align-items:flex-start; font-family:'Poppins',sans-serif; font-weight:600; font-size:clamp(15px,2.3vw,18px); color:var(--ink);}
+  .checks .ck{width:22px; height:22px; color:var(--green); flex:0 0 auto; margin-top:2px;}
+
+  .head{margin-bottom:36px}
+  .head h2{font-weight:700; font-size:clamp(30px,5vw,46px); line-height:1.05; margin:14px 0 0; text-transform:uppercase;}
+  .head p{margin:14px 0 0; color:var(--muted2); font-size:15px; max-width:60ch;}
+
+  /* SERVIÇOS */
+  .svc{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  .svc .item{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:28px; display:flex; flex-direction:column; gap:14px;
+    transition:border-color .25s, transform .25s, background .25s;}
+  .svc .item:hover{border-color:rgba(62,220,113,.45); transform:translateY(-4px); background:rgba(62,220,113,.05);}
+  .svc .ic{width:48px; height:48px; color:#fff;}
+  .svc h3{font-weight:700; font-size:17px; text-transform:uppercase; letter-spacing:.05em; margin:0;}
+  .svc p{margin:0; font-size:13.5px; line-height:1.65; color:var(--muted2);}
+
+  /* NICHOS */
+  .tags{display:flex; flex-wrap:wrap; gap:12px; margin-top:6px;}
+  .tag{border:1px solid var(--line); border-radius:999px; padding:9px 18px; font-size:13px; color:var(--muted2);}
+
+  /* PLANOS */
+  .pl-card{position:relative; display:flex; flex-direction:column; gap:18px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:28px 24px; transition:border-color .25s, transform .25s;}
+  .pl-card:hover{border-color:rgba(255,255,255,.28);}
+  .pl-card.hi{border-color:rgba(62,220,113,.55);}
+  .pl-badge{position:absolute; top:-12px; left:24px; font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#06210F; background:var(--green); padding:6px 14px; border-radius:999px;}
+  .pl-name{font-family:'Poppins',sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted);}
+  .pl-card.hi .pl-name{color:var(--green-text);}
+  .pl-priceline{display:flex; align-items:baseline; gap:8px; margin-top:-4px;}
+  .pl-price{font-family:'Poppins',sans-serif; font-weight:700; font-size:38px; line-height:1; letter-spacing:-.01em; color:#fff;}
+  .pl-card.hi .pl-price{color:var(--green-text);}
+  .pl-per{font-size:14px; color:var(--muted);}
+  .pl-planlabel{font-family:'Poppins',sans-serif; font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:.04em; color:#fff; margin-top:-2px;}
+  .pl-card.hi .pl-planlabel{color:var(--green-text);}
+  .pl-cta{display:block; text-align:center; text-decoration:none; font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; padding:13px 16px; border-radius:11px; background:rgba(255,255,255,.06); color:#fff; border:1px solid var(--line); transition:background .2s, border-color .2s, transform .15s;}
+  .pl-cta:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.28);}
+  .pl-cta:active{transform:translateY(1px);}
+  .pl-cta.solid{background:linear-gradient(90deg,var(--green),var(--green-deep)); color:#06210F; border-color:transparent;}
+  .pl-cta.solid:hover{filter:brightness(1.06);}
+  .pl-line{height:1px; background:var(--line); border:0; margin:2px 0;}
+  .pl-incl{font-size:12.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:0; opacity:.7;}
+  .pl-feats{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px;}
+  .pl-feats li{display:flex; align-items:flex-start; gap:11px; font-size:14.5px; color:var(--ink);}
+  .pl-tick{flex:0 0 auto; width:20px; height:20px; border-radius:50%; margin-top:1px; background:rgba(62,220,113,.16); display:flex; align-items:center; justify-content:center;}
+  .pl-card.hi .pl-tick{background:rgba(62,220,113,.24);}
+  .pl-about{margin-top:56px; border-top:1px solid var(--line); padding-top:44px; display:grid; grid-template-columns:1.1fr 1fr; gap:44px; align-items:start;}
+  .pl-about h3{font-family:'Poppins',sans-serif; font-weight:700; font-size:24px; margin:0 0 18px;}
+  .pl-about p{margin:0 0 14px; color:var(--muted2); font-size:16px; line-height:1.65;}
+  .pl-quote{background:var(--card); border:1px solid var(--line); border-left:3px solid var(--green); border-radius:16px; padding:26px;}
+  .pl-quote p{color:#fff; font-size:16.5px; line-height:1.6; margin:0 0 12px; font-style:italic;}
+  .pl-quote .pl-who{font-style:normal; font-family:'Poppins',sans-serif; font-weight:700; color:var(--green-text); font-size:14px;}
+  .pl-endcta{margin-top:48px; text-align:center; background:transparent; border:1px solid rgba(62,220,113,.28); border-radius:20px; padding:38px 24px;}
+  .pl-endcta h3{font-family:'Poppins',sans-serif; font-weight:700; font-size:23px; margin:0 0 8px;}
+  .pl-endcta p{color:var(--muted2); margin:0 0 20px; font-size:15px;}
+  /* PLANOS - evolucao + carrossel */
+  .pl-evo{max-width:460px; margin:0 auto 20px;}
+  .pl-evo-top{display:flex; align-items:baseline; justify-content:space-between; gap:12px;}
+  .pl-step{font-family:'Poppins',sans-serif; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); opacity:.7;}
+  .pl-step b{color:var(--green-text); font-weight:700;}
+  .pl-level{font-family:'Poppins',sans-serif; font-weight:700; font-size:22px; color:var(--green-text); line-height:1;}
+  .pl-tagline{font-size:13.5px; color:var(--muted2); margin-top:8px; min-height:20px;}
+  .pl-bar{height:6px; border-radius:999px; background:rgba(255,255,255,.10); overflow:hidden; margin-top:12px;}
+  .pl-bar span{display:block; height:100%; width:25%; border-radius:999px; background:linear-gradient(90deg,var(--green),var(--green-deep)); transition:width .55s cubic-bezier(.2,.7,.25,1);}
+  .pl-fade{animation:plfade .45s ease both;}
+  @keyframes plfade{from{opacity:0; transform:translateY(7px)} to{opacity:1; transform:none}}
+  .pl-car{position:relative; max-width:460px; margin:0 auto;}
+  .pl-viewport{overflow:hidden; padding:14px 4px 4px;}
+  .pl-track{display:flex; transition:transform .5s cubic-bezier(.2,.7,.25,1);}
+  .pl-slide{min-width:100%; padding:0 3px;}
+  .pl-slide .pl-card{opacity:.45; transform:scale(.95); transition:opacity .5s ease, transform .5s ease;}
+  .pl-slide.active .pl-card{opacity:1; transform:scale(1);}
+  .pl-nav{display:flex; align-items:center; justify-content:center; gap:18px; margin-top:22px;}
+  .pl-arrow{width:44px; height:44px; border-radius:50%; border:1px solid var(--line); background:rgba(255,255,255,.04); color:#fff; font-size:22px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s, border-color .2s;}
+  .pl-arrow:hover{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.3);}
+  .pl-arrow:active{transform:scale(.94);}
+  .pl-dots{display:flex; gap:9px; align-items:center;}
+  .pl-dots button{width:9px; height:9px; border-radius:50%; border:0; background:var(--line); cursor:pointer; padding:0; transition:width .25s, background .25s;}
+  .pl-dots button.active{background:var(--green); width:26px; border-radius:5px;}
+  @media (max-width:1040px){ .pl-about{grid-template-columns:1fr; gap:26px;} }
+
+  /* CONTATO */
+  .contact-sec{background:transparent; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .contact-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:40px; align-items:center;}
+  .contact-grid h2{font-family:'Poppins',sans-serif; font-weight:700; font-size:clamp(30px,5vw,48px); line-height:1.03; text-transform:uppercase; margin:0 0 14px;}
+  .contact-grid .l{color:var(--muted2); font-size:15px; line-height:1.7; max-width:46ch;}
+  .clist{display:flex; flex-direction:column; gap:14px;}
+  .clist .row{display:flex; gap:14px; align-items:baseline; font-size:15px;}
+  .clist .k{color:var(--green-text); font-family:'Poppins',sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:.14em; width:96px; flex:0 0 auto;}
+
+  /* DEPOIMENTOS */
+  .dep .carousel{position:relative; max-width:320px; margin:0 auto;}
+  .dep .viewport{overflow:hidden; border-radius:20px;}
+  .dep .track{display:flex; transition:transform .5s ease;}
+  .dep .slide{min-width:100%;}
+  .dep .media{position:relative; aspect-ratio:3/4; border-radius:20px; overflow:hidden; border:1px solid var(--line); background:#0b0b0b; display:flex; align-items:flex-end;}
+  .dep .media img,.dep .media video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .dep .badge{position:relative; z-index:2; margin:14px; padding:11px 15px; border-radius:13px; background:rgba(0,0,0,.55); backdrop-filter:blur(6px); border:1px solid var(--line);}
+  .dep .badge b{display:block; font-weight:700; font-size:14px;}
+  .dep .badge span{font-size:12px; color:var(--muted2);}
+  .dep .playbtn{position:absolute; inset:0; z-index:4; margin:auto; width:74px; height:74px; border-radius:50%; border:0; cursor:pointer; background:#fff; color:#000; display:flex; align-items:center; justify-content:center; box-shadow:none; transition:transform .15s, opacity .2s;}
+  .dep .playbtn:hover{transform:scale(1.06)} .dep .playbtn svg{margin-left:4px}
+  .dep .media.playing .playbtn{opacity:0; pointer-events:none;}
+  .dep .media.playing .badge{opacity:0;}
+  .dep .cap{margin-top:20px; text-align:center;}
+  .dep .cap .q{font-size:clamp(17px,3vw,22px); line-height:1.45; font-weight:500;}
+  .dep .cap .who{margin-top:12px; color:var(--green-text); font-weight:700; font-size:14px;}
+  .dep .dots{display:flex; gap:10px; justify-content:center; margin-top:22px;}
+  .dep .dots button{width:9px; height:9px; border-radius:50%; border:0; background:var(--line); cursor:pointer; padding:0; transition:width .25s, background .25s;}
+  .dep .dots button.active{background:var(--green); width:26px; border-radius:5px;}
+  .dep .cta{text-align:center;}
+
+  footer{padding:34px 0; text-align:center; color:var(--muted); font-size:12.5px;}
+
+  @media (prefers-reduced-motion:reduce){ .svc .item:hover,.btn:hover{transform:none} }
+  @media (max-width:900px){ .svc{grid-template-columns:1fr 1fr} .contact-grid{grid-template-columns:1fr; gap:26px} }
+  @media (max-width:560px){ .svc{grid-template-columns:1fr} section{padding-block:58px} .clist .k{width:84px} }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap" style="display:flex;flex-direction:column;gap:22px">
+    <span class="eyebrow">Wiz Mídia · Assessoria de Marketing</span>
+    <h1 class="headline">Faça de 2027 o ano mais lucrativo da sua empresa</h1>
+    <div class="sub">Pare de atirar no escuro e descubra como podemos transformar o seu marketing em uma máquina de receita.</div>
+    <ul class="checks">
+      <li><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Marketing e comercial focados no ROI</span></li>
+      <li><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Tech e A.I na sua operação</span></li>
+      <li><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Especialistas em Growth</span></li>
+    </ul>
+    <a class="btn" href="https://wa.me/5534997235274?text=Vim%20pelo%20site%20da%20Wiz" target="_blank" rel="noopener">Falar com a Wiz</a>
+    <div class="foot">Patrocínio · MG — wizmidia.com.br</div>
+  </div>
+</header>
+
+<hr class="divider">
+
+<!-- DEPOIMENTOS -->
+<section id="depoimentos" class="dep">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Depoimentos</span>
+      <h2>O que dizem sobre a Wiz</h2>
+    </div>
+    <div class="carousel" data-carousel>
+      <div class="viewport">
+        <div class="track">
+          <div class="slide" data-video>
+            <div class="media">
+              <video src="https://gwvabuxqufpqxdtqhmmy.supabase.co/storage/v1/object/public/wa-media/sobrenos/depoimento-mell.mp4#t=0.1" playsinline preload="metadata" muted></video>
+              <button class="playbtn" data-play aria-label="Tocar vídeo"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+              <div class="badge"><b>Mell</b><span>Inside English</span></div>
+            </div>
+            <div class="cap"><div class="who">Inside English · Escola de Inglês</div></div>
+          </div>
+          <div class="slide">
+            <div class="media">
+              <img src="https://gwvabuxqufpqxdtqhmmy.supabase.co/storage/v1/object/public/wa-media/sobrenos/sydra.jpg" alt="Sydra Cafés" loading="lazy">
+              <div class="badge"><b>Sydra Cafés</b><span>Cafés especiais</span></div>
+            </div>
+            <div class="cap"><div class="q">"É tanto pedido que não tá cabendo mais aqui. Esse marketing tá sensacional mesmo, muito obrigadoo!"</div><div class="who">Sydra Cafés</div></div>
+          </div>
+          <div class="slide" data-video>
+            <div class="media">
+              <video src="https://gwvabuxqufpqxdtqhmmy.supabase.co/storage/v1/object/public/wa-media/sobrenos/depoimento-seiko.mp4#t=0.1" playsinline preload="metadata" muted></video>
+              <button class="playbtn" data-play aria-label="Tocar vídeo"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+              <div class="badge"><b>Restaurante Seiko</b><span>Culinária</span></div>
+            </div>
+            <div class="cap"><div class="q">"Cada conteúdo tem levado nossa identidade, mostrado a qualidade da nossa culinária. Amei!"</div><div class="who">Restaurante Seiko</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="dots">
+        <button class="active" aria-label="1"></button>
+        <button aria-label="2"></button>
+        <button aria-label="3"></button>
+      </div>
+    </div>
+    <div class="cta"><a class="btn" href="https://wa.me/5534997235274?text=Vim%20pelo%20site%20da%20Wiz" target="_blank" rel="noopener" style="margin-top:30px">Solicite seu diagnóstico</a></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Serviços</span>
+      <h2>Conheça cada serviço</h2>
+    </div>
+    <div class="svc">
+      <div class="item">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h32a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H20l-8 7v-7H8a2 2 0 0 1-2-2V14a2 2 0 0 1 2-2Z"/><path d="M24 20.5c-1.4-2.4-5.2-1.8-5.2 1.2 0 2.4 3.4 4.3 5.2 5.6 1.8-1.3 5.2-3.2 5.2-5.6 0-3-3.8-3.6-5.2-1.2Z" fill="currentColor" stroke="none"/></svg>
+        <h3>Social Media</h3>
+        <p>A gente pensa, estuda e cria pra sua marca. Um social media que trabalha a favor do seu negócio, não só enche o feed.</p>
+      </div>
+      <div class="item">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6c-7 0-12 5-12 11 0 4 2 6 3.5 8 1 1.3 1.5 2.5 1.5 4v2h14v-2c0-1.5.5-2.7 1.5-4C34 28 36 26 36 21c0-6-5-11-12-11Z"/><path d="M19 39h10M21 43h6"/></svg>
+        <h3>Criação de Conteúdo</h3>
+        <p>Planejamos o conteúdo das suas redes com base em estudo e aplicamos estratégias que já funcionam de verdade.</p>
+      </div>
+      <div class="item">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="9" width="36" height="24" rx="2"/><path d="M18 39h12M24 33v6"/><path d="M15 26l7-9 5 6 3-3 4 6"/></svg>
+        <h3>Designer Gráfico</h3>
+        <p>A primeira impressão é a que fica. Por isso criamos designs impactantes e marcantes pra sua marca se destacar.</p>
+      </div>
+      <div class="item">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40V26M18 40V18M28 40V28M38 40V12"/><path d="M8 40h32"/><path d="M31 8h9v9"/><path d="M40 8 24 22"/></svg>
+        <h3>Gestão de Tráfego</h3>
+        <p>Mais de R$300 mil já gerenciados, com ROAS alto e várias empresas vendendo mais com a nossa gestão de anúncios.</p>
+      </div>
+      <div class="item">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="14" width="26" height="20" rx="3"/><path d="M32 21l10-5v16l-10-5z"/><path d="M15 24l6 4-6 4z" fill="currentColor" stroke="none"/></svg>
+        <h3>Criação de Vídeos</h3>
+        <p>Roteiro, gravação e edição é a nossa paixão. Equipamento bom e um time que sabe contar história pra sua marca.</p>
+      </div>
+      <div class="item">
+        <svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="17" r="7"/><path d="M11 40c0-7 6-11 13-11s13 4 13 11"/><path d="M35 6l1.6 3.3L40 10l-2.4 2.3.6 3.7-3.2-1.8-3.2 1.8.6-3.7L30 10l3.4-.7Z" fill="currentColor" stroke="none"/></svg>
+        <h3>Influenciadores</h3>
+        <p>Parceria com mais de 6 influenciadores de nichos diferentes, pra colocar sua marca na frente da audiência certa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NICHOS -->
+<section id="nichos">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Portfólio</span>
+      <h2>Marcas que confiam na Wiz</h2>
+      <p>Já atendemos negócios de vários segmentos em Patrocínio e região:</p>
+    </div>
+    <div class="tags">
+      <span class="tag">Café especial</span><span class="tag">Ecommerce</span><span class="tag">Odontologia</span>
+      <span class="tag">Moda masculina</span><span class="tag">Alimentação</span><span class="tag">Baterias automotivas</span>
+      <span class="tag">Metalúrgica</span><span class="tag">Materiais elétricos</span><span class="tag">Assistência técnica</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PLANOS -->
+<section id="planos" class="pln">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Planos</span>
+      <h2>O plano certo pra vender mais</h2>
+      <p>Do essencial ao completo. Escolha por onde começar — a Wiz cresce junto com o seu negócio.</p>
+    </div>
+    <div class="pl-evo">
+      <div class="pl-evo-top">
+        <span class="pl-step">Passo <b id="plStep">1</b> de 4</span>
+        <span class="pl-level pl-fade" id="plLevel">Comece</span>
+      </div>
+      <div class="pl-tagline pl-fade" id="plTag">O primeiro passo da sua presença digital</div>
+      <div class="pl-bar"><span id="plBarFill"></span></div>
+    </div>
+    <div class="pl-car" data-plcar>
+      <div class="pl-viewport">
+        <div class="pl-track">
+          <div class="pl-slide active">
+      <div class="pl-card">
+        <div class="pl-name">Starter</div>
+        <div class="pl-planlabel">Plano mensal</div>
+        <a class="pl-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Starter" target="_blank" rel="noopener">Contratar</a>
+        <hr class="pl-line">
+        <ul class="pl-feats">
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Design</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Social Media</li>
+        </ul>
+      </div>
+          </div>
+          <div class="pl-slide">
+      <div class="pl-card">
+        <div class="pl-name">Brand</div>
+        <div class="pl-planlabel">Plano mensal</div>
+        <a class="pl-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Brand" target="_blank" rel="noopener">Contratar</a>
+        <hr class="pl-line">
+        <p class="pl-incl">Tudo do Starter, e mais</p>
+        <ul class="pl-feats">
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Copywriting</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Vídeos</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Planejamento de Conteúdos</li>
+        </ul>
+      </div>
+          </div>
+          <div class="pl-slide">
+      <div class="pl-card">
+        <div class="pl-name">Growth</div>
+        <div class="pl-planlabel">Plano mensal</div>
+        <a class="pl-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Growth" target="_blank" rel="noopener">Contratar</a>
+        <hr class="pl-line">
+        <p class="pl-incl">Tudo do Brand, e mais</p>
+        <ul class="pl-feats">
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tráfego Meta Ads</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatório Semanal</li>
+        </ul>
+      </div>
+          </div>
+          <div class="pl-slide">
+      <div class="pl-card hi">
+        <span class="pl-badge">Recomendado</span>
+        <div class="pl-name">Assessoria Oficial</div>
+        <div class="pl-planlabel">Plano mensal</div>
+        <a class="pl-cta solid" href="https://wa.me/5534997235274?text=Quero%20a%20Assessoria%20Oficial" target="_blank" rel="noopener">Quero esse</a>
+        <hr class="pl-line">
+        <p class="pl-incl">Tudo do Growth, e mais</p>
+        <ul class="pl-feats">
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tráfego Google Ads e Meta Ads</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Assessoria de Marketing</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Alinhamento Comercial</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Relatórios + Portal Wiz Mídia</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>E-mail Marketing + API Oficial Meta</li>
+        <li><span class="pl-tick"><svg viewBox="0 0 24 24" width="12" height="12" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#3EDC71" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Suporte Prioritário</li>
+        </ul>
+      </div>
+          </div>
+        </div>
+      </div>
+      <div class="pl-nav">
+        <button class="pl-arrow" data-plprev aria-label="Anterior">‹</button>
+        <div class="pl-dots">
+          <button class="active" aria-label="1"></button>
+          <button aria-label="2"></button>
+          <button aria-label="3"></button>
+          <button aria-label="4"></button>
+        </div>
+        <button class="pl-arrow" data-plnext aria-label="Próximo">›</button>
+      </div>
+    </div>
+    <div class="pl-about">
+      <div>
+        <h3>O que é a Assessoria Oficial?</h3>
+        <p>É o acompanhamento completo de marketing. Analisamos o nicho, criamos um planejamento e uma estrutura de marketing para 12 meses.</p>
+        <p>Instruímos como a equipe interna vai trabalhar em parceria com a Wiz, construindo uma base sólida de geração de leads.</p>
+        <p>Gerenciamos as campanhas (Meta e Google) com base no plano, com relatórios semanais e reuniões presenciais para análise.</p>
+      </div>
+      <div class="pl-quote">
+        <p>"O marketing é o coração do negócio, e as vendas são o sangue. Se ele não funciona, o outro não percorre o corpo."</p>
+        <span class="pl-who">Rafael, CEO Wiz</span>
+      </div>
+    </div>
+    <div class="pl-endcta">
+      <h3>Não sabe por qual começar?</h3>
+      <p>A gente analisa seu perfil e te indica o plano certo, sem compromisso.</p>
+      <a class="btn" href="https://wa.me/5534997235274?text=Quero%20ajuda%20pra%20escolher%20um%20plano" target="_blank" rel="noopener">Falar com a Wiz</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contact-sec" id="contato">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <h2>Bora crescer<br>a sua marca?</h2>
+        <div class="l">A gente analisa o seu perfil e monta um plano do jeito que o seu negócio precisa. Sem compromisso, é só chamar.</div>
+        <a class="btn" href="https://wa.me/553499055264?text=Vim%20pelo%20site%20da%20Wiz" target="_blank" rel="noopener" style="margin-top:22px">Falar com a Wiz</a>
+      </div>
+      <div class="clist">
+        <div class="row"><span class="k">WhatsApp</span><span>(34) 99723-5274</span></div>
+        <div class="row"><span class="k">Instagram</span><span>@wizmidia</span></div>
+        <div class="row"><span class="k">Site</span><span>wizmidia.com.br</span></div>
+        <div class="row"><span class="k">Onde</span><span>Patrocínio · MG</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© Wiz Mídia · Patrocínio-MG · Marketing que vira resultado.</footer>
+
+<script>
+(function(){
+  var c=document.querySelector('[data-carousel]'); if(!c) return;
+  var track=c.querySelector('.track');
+  var slides=[].slice.call(c.querySelectorAll('.slide'));
+  var dots=[].slice.call(c.querySelectorAll('.dots button'));
+  var i=0, timer;
+  function resetVideos(){
+    slides.forEach(function(s){
+      var m=s.querySelector('.media'); var v=s.querySelector('video');
+      if(v){ try{ v.pause(); v.currentTime=0; }catch(e){} }
+      if(m){ m.classList.remove('playing'); }
+    });
+  }
+  function go(n){
+    resetVideos();
+    i=(n+slides.length)%slides.length;
+    track.style.transform='translateX('+(-i*100)+'%)';
+    dots.forEach(function(d,k){ d.classList.toggle('active',k===i); });
+    startAuto();
+  }
+  function next(){ go(i+1); }
+  function startAuto(){ clearInterval(timer); timer=setInterval(next,6000); }
+  function stopAuto(){ clearInterval(timer); }
+  [].slice.call(c.querySelectorAll('[data-play]')).forEach(function(playBtn){
+    playBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      stopAuto();
+      var media=playBtn.closest('.media');
+      var v=media.querySelector('video');
+      media.classList.add('playing');
+      if(v){
+        v.muted=false; v.controls=true;
+        try{ v.play(); }catch(err){}
+        v.onended=function(){ media.classList.remove('playing'); v.controls=false; v.currentTime=0; startAuto(); };
+      }
+    });
+  });
+  dots.forEach(function(d,k){ d.addEventListener('click',function(){ go(k); }); });
+  var sx=null;
+  c.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; },{passive:true});
+  c.addEventListener('touchend',function(e){ if(sx===null) return; var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40){ go(dx<0? i+1 : i-1); } sx=null; },{passive:true});
+  startAuto();
+})();
+
+(function(){
+  var c=document.querySelector('[data-plcar]'); if(!c) return;
+  var track=c.querySelector('.pl-track');
+  var slides=[].slice.call(c.querySelectorAll('.pl-slide'));
+  var dots=[].slice.call(c.querySelectorAll('.pl-dots button'));
+  var levelEl=document.getElementById('plLevel');
+  var stepEl=document.getElementById('plStep');
+  var tagEl=document.getElementById('plTag');
+  var fill=document.getElementById('plBarFill');
+  var LV=[
+    ['Comece','O primeiro passo da sua presença digital'],
+    ['Cresça','Sua marca ganha voz e identidade'],
+    ['Escale','Anúncios rodando, suas vendas subindo'],
+    ['Domine','A operação de marketing completa']
+  ];
+  var i=0;
+  function fadeIn(el){ if(!el) return; el.classList.remove('pl-fade'); void el.offsetWidth; el.classList.add('pl-fade'); }
+  function upd(){
+    track.style.transform='translateX('+(-i*100)+'%)';
+    slides.forEach(function(s,k){ s.classList.toggle('active',k===i); });
+    dots.forEach(function(d,k){ d.classList.toggle('active',k===i); });
+    if(fill) fill.style.width=((i+1)/slides.length*100)+'%';
+    if(stepEl) stepEl.textContent=(i+1);
+    if(levelEl){ levelEl.textContent=LV[i][0]; fadeIn(levelEl); }
+    if(tagEl){ tagEl.textContent=LV[i][1]; fadeIn(tagEl); }
+  }
+  function go(n){ i=(n+slides.length)%slides.length; upd(); }
+  var nx=c.querySelector('[data-plnext]'), pv=c.querySelector('[data-plprev]');
+  if(nx) nx.addEventListener('click',function(){ go(i+1); });
+  if(pv) pv.addEventListener('click',function(){ go(i-1); });
+  dots.forEach(function(d,k){ d.addEventListener('click',function(){ go(k); }); });
+  var sx=null;
+  c.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; },{passive:true});
+  c.addEventListener('touchend',function(e){ if(sx===null) return; var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40){ go(dx<0? i+1 : i-1); } sx=null; },{passive:true});
+  upd();
+})();
+</script>
+
+</body>
+</html>
