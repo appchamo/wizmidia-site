@@ -204,6 +204,52 @@
   @media (prefers-reduced-motion:reduce){ .svc .item:hover,.btn:hover{transform:none} }
   @media (max-width:900px){ .svc{grid-template-columns:1fr 1fr} .contact-grid{grid-template-columns:1fr; gap:26px} }
   @media (max-width:560px){ .svc{grid-template-columns:1fr} section{padding-block:58px} .clist .k{width:84px} }
+
+  /* ===== TEMA CLARO — da seção de depoimentos pra baixo ===== */
+  .light{ background:#FFFFFF;
+    --ink:#0F1713; --muted:#5B655F; --muted2:#39433D;
+    --line:rgba(15,23,19,.12); --card:#F5F7F5; --glow:rgba(62,220,113,.14);
+    --green-text:#12833B;
+  }
+  .light section{ background:#FFFFFF; color:var(--ink); }
+  .light .divider{ background:var(--line); }
+  .light .eyebrow{ color:#12833B; }
+  .light .head h2{ color:var(--ink); }
+  .light .head p{ color:var(--muted2); }
+  /* depoimentos */
+  .light .depo-card{ background:var(--card); border-color:var(--line); }
+  .light .depo-media{ border-color:rgba(15,23,19,.20); }
+  .light .depo-media::after{ color:var(--muted); opacity:.6; }
+  .light .depo-q{ color:var(--muted2); }
+  .light .depo-name{ color:var(--ink); }
+  .light .depo-role{ color:var(--muted); }
+  .light .dots button{ background:var(--line); }
+  .light .dots button.active{ background:var(--green-deep); }
+  /* soluções */
+  .light #servicos .head h2 .hl{ color:#12833B; }
+  .light .sol-tab{ color:var(--muted2); background:#F1F3F1; border-color:var(--line); }
+  .light .sol-tab:hover{ border-color:rgba(15,23,19,.28); }
+  .light .sol-tab.active{ color:#0F1713; border-color:var(--green-deep); background:rgba(62,220,113,.14); }
+  .light .sol-panel{ background:var(--card); border-color:var(--line); }
+  .light .sol-panel h3{ color:var(--ink); }
+  .light .sol-list li{ color:var(--muted2); }
+  /* nichos */
+  .light .tag{ border-color:var(--line); color:var(--muted2); }
+  /* faq */
+  .light #faq .faq-intro h2{ color:#12833B; }
+  .light #faq .faq-intro p{ color:var(--muted2); }
+  .light .faq-q{ color:#0F1713; background:#F5F7F5; border-color:var(--line); }
+  .light .faq-q:hover{ border-color:rgba(15,23,19,.25); }
+  .light .faq-item.open .faq-q{ border-color:var(--green-deep); background:rgba(62,220,113,.10); }
+  .light .faq-item.open .faq-a{ border-color:var(--line); }
+  .light .faq-a-inner{ color:var(--muted2); }
+  /* contato */
+  .light .contact-sec{ border-color:var(--line); }
+  .light .contact-grid h2, .light .contact-center h2{ color:var(--ink); }
+  .light .contact-grid .l, .light .contact-center .l{ color:var(--muted2); }
+  .light .clist .k{ color:#12833B; }
+  /* footer */
+  .light footer{ color:var(--muted); }
 </style>
 </head>
 <body>
@@ -227,6 +273,8 @@
 
 
 <hr class="divider">
+
+<div class="light">
 
 <!-- DEPOIMENTOS -->
 <section id="depoimentos">
@@ -358,6 +406,8 @@
 </section>
 
 <footer>© Wiz Mídia · Patrocínio-MG · Captação de leads que enche a agenda do seu negócio.</footer>
+
+</div><!-- /.light -->
 
 <script>
 (function(){
