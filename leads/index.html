@@ -65,6 +65,8 @@
   .depo-card{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px; display:flex; flex-direction:column; gap:16px;}
   .depo-media{aspect-ratio:4/3; border-radius:14px; border:1px dashed rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center;}
   .depo-media::after{content:'foto / vídeo'; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); opacity:.4;}
+  .depo-media.filled{border-style:solid; padding:0; overflow:hidden; background-size:cover; background-position:center;}
+  .depo-media.filled::after{content:none;}
   .depo-q{font-size:14.5px; line-height:1.6; color:var(--muted2); font-style:italic; margin:0;}
   .depo-who{display:flex; flex-direction:column; gap:2px;}
   .depo-name{font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; color:#fff;}
@@ -287,7 +289,7 @@
     <div class="depo-car" data-carousel>
       <div class="depo-viewport">
         <div class="track">
-          <div class="slide"><div class="depo-card"><div class="depo-media"></div><p class="depo-q">"Espaço reservado para o depoimento do cliente."</p><div class="depo-who"><span class="depo-name">Cliente Wiz</span><span class="depo-role">Empresa · segmento</span></div></div></div>
+          <div class="slide"><div class="depo-card"><div class="depo-media filled" style="background-image:url('/leads/depoimento-sydra.jpg')"></div><p class="depo-q">"Tá até difícil entregar, é pedido demais! Bora pra cima Wiz 🚀"</p><div class="depo-who"><span class="depo-name">Sydra Cafés</span><span class="depo-role">Cafés especiais</span></div></div></div>
           <div class="slide"><div class="depo-card"><div class="depo-media"></div><p class="depo-q">"Espaço reservado para o depoimento do cliente."</p><div class="depo-who"><span class="depo-name">Cliente Wiz</span><span class="depo-role">Empresa · segmento</span></div></div></div>
           <div class="slide"><div class="depo-card"><div class="depo-media"></div><p class="depo-q">"Espaço reservado para o depoimento do cliente."</p><div class="depo-who"><span class="depo-name">Cliente Wiz</span><span class="depo-role">Empresa · segmento</span></div></div></div>
         </div>
