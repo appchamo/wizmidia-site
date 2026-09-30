@@ -300,7 +300,13 @@
   .plan-cta.solid{background:linear-gradient(90deg,var(--green),var(--green-deep)); color:#06210F; border-color:transparent;}
   .plan-cta.solid:hover{filter:brightness(1.05);}
   .plan-line{height:1px; background:rgba(15,23,19,.1); border:0; margin:2px 0;}
-  .plan-incl{font-size:12px; color:#5B655F; text-transform:uppercase; letter-spacing:.06em; margin:0; opacity:.8;}
+  .plan-incl{display:inline-block; align-self:flex-start; font-size:11.5px; font-weight:600; color:#12833B; text-transform:uppercase; letter-spacing:.08em; margin:0; background:rgba(62,220,113,.14); border:1px solid rgba(37,180,87,.35); padding:6px 12px; border-radius:999px; animation:inclFloat 3s ease-in-out infinite; will-change:transform;}
+  .plan-incl .mais{font-weight:800; color:#0B6E31;}
+  @keyframes inclFloat{0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)}}
+  .plan-feats li.feat-hi{font-weight:700; color:#0F1713;}
+  .plan-feats li.feat-hi .plan-tick{background:var(--green);}
+  .plan-feats li.feat-hi .plan-tick svg{color:#06210F;}
+  @media (prefers-reduced-motion:reduce){ .plan-incl{animation:none;} }
   .plan-feats{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; flex:1;}
   .plan-feats li{display:flex; align-items:flex-start; gap:11px; font-size:14px; color:#39433D; line-height:1.45;}
   .plan-tick{flex:0 0 auto; width:20px; height:20px; border-radius:50%; margin-top:1px; background:rgba(62,220,113,.18); display:flex; align-items:center; justify-content:center;}
@@ -571,8 +577,9 @@
         <a class="plan-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Starter" target="_blank" rel="noopener">Contratar</a>
         <hr class="plan-line">
         <ul class="plan-feats">
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Design de produto</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Gestão de redes</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Pacote de design semanal</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Feed + Story</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Bônus data sazonal</li>
         </ul>
       </div>
 
@@ -582,11 +589,11 @@
         <div class="plan-per">por mês</div>
         <a class="plan-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Brand" target="_blank" rel="noopener">Contratar</a>
         <hr class="plan-line">
-        <p class="plan-incl">Tudo do Starter, e mais</p>
+        <p class="plan-incl">Tudo do Starter <span class="mais">e mais</span></p>
         <ul class="plan-feats">
           <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Copywriting</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Vídeo de produto</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Planejamento de conteúdos</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Captação e Edição de Vídeos</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Planejamento de Conteúdos</li>
         </ul>
       </div>
 
@@ -596,11 +603,11 @@
         <div class="plan-per">por mês</div>
         <a class="plan-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Growth" target="_blank" rel="noopener">Contratar</a>
         <hr class="plan-line">
-        <p class="plan-incl">Tudo do Brand, e mais</p>
+        <p class="plan-incl">Tudo do Brand <span class="mais">e mais</span></p>
         <ul class="plan-feats">
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Tráfego Meta Ads</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Catálogo de produtos + anúncios automáticos (Advantage+)</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Relatório semanal</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Gestão de Tráfego Meta</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Relatório Semanal</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Landing Page</li>
         </ul>
       </div>
 
@@ -611,14 +618,14 @@
         <div class="plan-per">por mês</div>
         <a class="plan-cta solid" href="https://wa.me/5534997235274?text=Quero%20a%20Assessoria%20Oficial" target="_blank" rel="noopener">Quero esse</a>
         <hr class="plan-line">
-        <p class="plan-incl">Tudo do Growth, e mais</p>
+        <p class="plan-incl">Tudo do Growth <span class="mais">e mais</span></p>
         <ul class="plan-feats">
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Tráfego Google + Meta Ads</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Recuperação de carrinho</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>E-mail marketing + CRM</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Catálogo integrado (Nuvemshop/Tray/Shopify)</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Relatórios + Portal Wiz Mídia</li>
-          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Suporte prioritário</li>
+          <li class="feat-hi"><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Portal Wiz Mídia</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Dados em tempo real do marketing</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Automações &amp; I.A</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Assessoria com o Comercial</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Criativos exclusivos e LPs</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Tráfego Google Ads e Meta Ads</li>
         </ul>
       </div>
 
