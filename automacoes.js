@@ -230,3 +230,45 @@ window.renderAutomacoes=async function(box,ctx){
     }
   }catch(e){}
 })();
+
+/* === Wiz patch: cards "Iniciar rota" e "Mensagem no WhatsApp" na Visao Geral (dados GADS do Google, 30d) === */
+(function(){
+  try{
+    function injectGadsCards(){
+      try{
+        var rng=(typeof REP!=='undefined'&&REP&&REP.range)||30;
+        if(String(rng)!=='30') return; // GADS so tem 30 dias
+        var wrap=document.getElementById('repKpis'); if(!wrap) return;
+        if(wrap.getAttribute('data-gads-cards')==='1') return;
+        var G=(typeof REP!=='undefined'&&REP&&REP.D&&REP.D.GADS)||null; if(!G) return;
+        var acoes=G.acoes||[];
+        var find=function(ic){for(var i=0;i<acoes.length;i++){if(acoes[i].ic===ic)return acoes[i].v;}return null;};
+        var add=[];
+        var rota=find('rota'); if(rota!=null&&rota>0) add.push(['Iniciar rota',rota]);
+        var wa=find('whats'); if(wa!=null&&wa>0) add.push(['Mensagem no WhatsApp',wa]);
+        if(!add.length) return;
+        var have={}; wrap.querySelectorAll('.rep-kpi .l').forEach(function(el){have[(el.textContent||'').trim().toLowerCase()]=1;});
+        var n=wrap.querySelectorAll('.rep-kpi').length;
+        add.forEach(function(c){
+          if(have[c[0].toLowerCase()]) return;
+          var d=document.createElement('div');
+          d.className='rep-kpi';
+          d.style.animationDelay=(n*40)+'ms'; n++;
+          d.innerHTML='<div class="l">'+c[0]+'</div><div class="v">'+Number(c[1]).toLocaleString('pt-BR')+'</div>';
+          wrap.appendChild(d);
+        });
+        wrap.setAttribute('data-gads-cards','1');
+      }catch(e){}
+    }
+    if(typeof injectFunnel==='function' && !injectFunnel.__wizGadsCards){
+      var _prev=injectFunnel;
+      var _wrap=async function(){
+        var r; try{ r=await _prev.apply(this,arguments); }catch(e){}
+        injectGadsCards();
+        return r;
+      };
+      _wrap.__wizGadsCards=true;
+      injectFunnel=_wrap;
+    }
+  }catch(e){}
+})();
