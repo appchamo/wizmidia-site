@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Planos — Wiz Mídia</title>
+<meta name="description" content="Planos da Wiz Mídia pra sua loja vender mais: do essencial ao completo. Design, conteúdo, tráfego e assessoria oficial. Patrocínio-MG.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+<style>
+  :root{
+    --bg:#000000; --ink:#FFFFFF;
+    --green:#3EDC71; --green-deep:#25B457; --green-text:#63E894;
+    --line:rgba(255,255,255,.12); --card:rgba(255,255,255,.035);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:#FFFFFF; color:#0F1713;
+    font-family:'Poppins',system-ui,-apple-system,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+  .wrap{position:relative; max-width:1180px; margin:0 auto; padding:0 22px;}
+  a{color:inherit}
+  h1,h2,h3{font-family:'Poppins',sans-serif; margin:0;}
+
+  /* HERO (escuro) */
+  .hero{background:#000; color:#fff; padding:64px 0 72px; text-align:center;}
+  .hero .eyebrow{text-transform:uppercase; letter-spacing:.26em; font-size:12px; font-weight:600; color:var(--green-text);}
+  .hero h1{font-weight:700; font-size:clamp(30px,6vw,52px); line-height:1.05; letter-spacing:-.02em; margin:16px 0 0;}
+  .hero p{color:rgba(255,255,255,.72); font-size:clamp(15px,2.2vw,18px); max-width:56ch; margin:16px auto 0;}
+
+  /* PLANOS */
+  .plans{padding:64px 0 40px;}
+  .plans .head{text-align:center; margin-bottom:40px;}
+  .plans .head .eyebrow{text-transform:uppercase; letter-spacing:.24em; font-size:12px; font-weight:600; color:#12833B;}
+  .plans .head h2{font-weight:700; font-size:clamp(26px,4.6vw,40px); margin:12px 0 0;}
+  .plans .head p{color:#5B655F; font-size:15px; max-width:60ch; margin:12px auto 0;}
+
+  .plan-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; align-items:stretch;}
+  .plan{position:relative; display:flex; flex-direction:column; gap:16px; background:#F6F8F6; border:1px solid rgba(15,23,19,.12); border-radius:20px; padding:26px 22px; transition:transform .25s, box-shadow .25s, border-color .25s;}
+  .plan:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(15,23,19,.10); border-color:rgba(15,23,19,.2);}
+  .plan.hi{border:1.5px solid var(--green-deep); background:#F0FBF4; box-shadow:0 18px 44px rgba(37,180,87,.16);}
+  .plan-badge{position:absolute; top:-13px; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#06210F; background:var(--green); padding:6px 16px; border-radius:999px;}
+  .plan-name{font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.14em; color:#5B655F;}
+  .plan.hi .plan-name{color:#12833B;}
+  .plan-price{display:flex; align-items:flex-start; gap:3px; line-height:1;}
+  .plan-price .cur{font-size:17px; font-weight:600; color:#0F1713; margin-top:7px;}
+  .plan-price .val{font-family:'Poppins',sans-serif; font-weight:700; font-size:42px; letter-spacing:-.02em; color:#0F1713;}
+  .plan.hi .plan-price .val, .plan.hi .plan-price .cur{color:#12833B;}
+  .plan-per{font-size:13px; color:#5B655F; margin-top:-6px;}
+  .plan-cta{display:block; text-align:center; text-decoration:none; font-weight:700; font-size:14px; padding:13px 16px; border-radius:12px; background:#fff; color:#0F1713; border:1px solid rgba(15,23,19,.16); transition:background .2s, border-color .2s, transform .15s;}
+  .plan-cta:hover{border-color:rgba(15,23,19,.32); background:#fafbfa;}
+  .plan-cta:active{transform:translateY(1px);}
+  .plan-cta.solid{background:linear-gradient(90deg,var(--green),var(--green-deep)); color:#06210F; border-color:transparent;}
+  .plan-cta.solid:hover{filter:brightness(1.05);}
+  .plan-line{height:1px; background:rgba(15,23,19,.1); border:0; margin:2px 0;}
+  .plan-incl{font-size:12px; color:#5B655F; text-transform:uppercase; letter-spacing:.06em; margin:0; opacity:.8;}
+  .plan-feats{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; flex:1;}
+  .plan-feats li{display:flex; align-items:flex-start; gap:11px; font-size:14px; color:#39433D; line-height:1.45;}
+  .plan-tick{flex:0 0 auto; width:20px; height:20px; border-radius:50%; margin-top:1px; background:rgba(62,220,113,.18); display:flex; align-items:center; justify-content:center;}
+  .plan-tick svg{width:12px; height:12px; color:#12833B;}
+
+  /* dots (só no mobile) */
+  .plan-dots{display:none; gap:9px; align-items:center; justify-content:center; margin-top:22px;}
+  .plan-dots button{width:9px; height:9px; border-radius:50%; border:0; background:rgba(15,23,19,.15); cursor:pointer; padding:0; transition:width .25s, background .25s;}
+  .plan-dots button.active{background:var(--green-deep); width:26px; border-radius:5px;}
+
+  /* SOBRE A ASSESSORIA */
+  .about{max-width:1180px; margin:56px auto 0; padding:44px 22px 0; border-top:1px solid rgba(15,23,19,.1); display:grid; grid-template-columns:1.1fr 1fr; gap:44px; align-items:start;}
+  .about h3{font-weight:700; font-size:24px; margin:0 0 16px;}
+  .about p{margin:0 0 14px; color:#39433D; font-size:16px; line-height:1.65;}
+  .quote{background:#F6F8F6; border:1px solid rgba(15,23,19,.1); border-left:3px solid var(--green); border-radius:16px; padding:26px;}
+  .quote p{color:#0F1713; font-size:16.5px; line-height:1.6; margin:0 0 12px; font-style:italic;}
+  .quote .who{font-style:normal; font-weight:700; color:#12833B; font-size:14px;}
+
+  /* END CTA */
+  .endcta{max-width:1180px; margin:52px auto 0; padding:0 22px;}
+  .endcta-inner{text-align:center; border:1px solid rgba(37,180,87,.3); border-radius:22px; padding:40px 24px; background:#F0FBF4;}
+  .endcta h3{font-weight:700; font-size:23px; margin:0 0 8px;}
+  .endcta p{color:#39433D; margin:0 0 20px; font-size:15px;}
+  .btn{display:inline-block; text-decoration:none; font-weight:700; font-size:15px; padding:15px 32px; border-radius:12px; background:linear-gradient(90deg,var(--green),var(--green-deep)); color:#06210F; transition:filter .2s, transform .15s;}
+  .btn:hover{filter:brightness(1.05);} .btn:active{transform:translateY(1px);}
+
+  footer{padding:44px 0 34px; text-align:center; color:#5B655F; font-size:12.5px;}
+
+  @media (max-width:980px){ .about{grid-template-columns:1fr; gap:26px;} }
+  @media (max-width:880px){
+    .plan-grid{display:flex; align-items:flex-start; overflow-x:auto; scroll-snap-type:x mandatory; gap:14px; padding:6px 2px 4px; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+    .plan-grid::-webkit-scrollbar{display:none;}
+    .plan{min-width:80%; scroll-snap-align:center;}
+    .plan-dots{display:flex;}
+  }
+  @media (max-width:520px){ .plan{min-width:86%;} }
+  @media (prefers-reduced-motion:reduce){ .plan:hover{transform:none;} }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Wiz Mídia</span>
+    <h1>O plano certo pra sua loja vender mais</h1>
+    <p>Do essencial ao completo. Escolha por onde começar — a Wiz escala a sua loja junto com você.</p>
+  </div>
+</header>
+
+<!-- PLANOS -->
+<section class="plans">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Planos</span>
+      <h2>Escolha o seu</h2>
+      <p>Cada plano inclui tudo do anterior e mais um passo pra você crescer.</p>
+    </div>
+
+    <div class="plan-grid" id="planGrid">
+
+      <!-- STARTER -->
+      <div class="plan">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><span class="cur">R$</span><span class="val">700</span></div>
+        <div class="plan-per">por mês</div>
+        <a class="plan-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Starter" target="_blank" rel="noopener">Contratar</a>
+        <hr class="plan-line">
+        <ul class="plan-feats">
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Design de produto</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Gestão de redes</li>
+        </ul>
+      </div>
+
+      <!-- BRAND -->
+      <div class="plan">
+        <div class="plan-name">Brand</div>
+        <div class="plan-price"><span class="cur">R$</span><span class="val">1.500</span></div>
+        <div class="plan-per">por mês</div>
+        <a class="plan-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Brand" target="_blank" rel="noopener">Contratar</a>
+        <hr class="plan-line">
+        <p class="plan-incl">Tudo do Starter, e mais</p>
+        <ul class="plan-feats">
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Copywriting</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Vídeo de produto</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Planejamento de conteúdos</li>
+        </ul>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="plan">
+        <div class="plan-name">Growth</div>
+        <div class="plan-price"><span class="cur">R$</span><span class="val">2.500</span></div>
+        <div class="plan-per">por mês</div>
+        <a class="plan-cta" href="https://wa.me/5534997235274?text=Quero%20o%20plano%20Growth" target="_blank" rel="noopener">Contratar</a>
+        <hr class="plan-line">
+        <p class="plan-incl">Tudo do Brand, e mais</p>
+        <ul class="plan-feats">
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Tráfego Meta Ads</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Catálogo de produtos + anúncios automáticos (Advantage+)</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Relatório semanal</li>
+        </ul>
+      </div>
+
+      <!-- ASSESSORIA OFICIAL -->
+      <div class="plan hi">
+        <span class="plan-badge">Recomendado</span>
+        <div class="plan-name">Assessoria Oficial</div>
+        <div class="plan-price"><span class="cur">R$</span><span class="val">3.500</span></div>
+        <div class="plan-per">por mês</div>
+        <a class="plan-cta solid" href="https://wa.me/5534997235274?text=Quero%20a%20Assessoria%20Oficial" target="_blank" rel="noopener">Quero esse</a>
+        <hr class="plan-line">
+        <p class="plan-incl">Tudo do Growth, e mais</p>
+        <ul class="plan-feats">
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Tráfego Google + Meta Ads</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Recuperação de carrinho</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>E-mail marketing + CRM</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Catálogo integrado (Nuvemshop/Tray/Shopify)</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Relatórios + Portal Wiz Mídia</li>
+          <li><span class="plan-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Suporte prioritário</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="plan-dots" id="planDots" aria-hidden="true"></div>
+  </div>
+
+  <!-- SOBRE A ASSESSORIA -->
+  <div class="about">
+    <div>
+      <h3>O que é a Assessoria Oficial?</h3>
+      <p>É o acompanhamento completo do marketing da sua loja. Analisamos seu nicho e seus produtos, criamos um plano e uma estrutura pra vender nos próximos 12 meses.</p>
+      <p>Montamos tráfego, catálogo, recuperação de carrinho e fluxos de recompra — e deixamos a sua operação girando sozinha.</p>
+      <p>Gerenciamos as campanhas (Meta e Google) com base no plano, com relatórios semanais e reuniões pra escalar o que mais vende.</p>
+    </div>
+    <div class="quote">
+      <p>"O marketing é o coração do negócio, e as vendas são o sangue. Se ele não funciona, o outro não percorre o corpo."</p>
+      <span class="who">Rafael, CEO Wiz</span>
+    </div>
+  </div>
+
+  <!-- END CTA -->
+  <div class="endcta">
+    <div class="endcta-inner">
+      <h3>Não sabe por qual começar?</h3>
+      <p>A gente analisa seu perfil e te indica o plano certo, sem compromisso.</p>
+      <a class="btn" href="https://wa.me/5534997235274?text=Quero%20ajuda%20pra%20escolher%20um%20plano" target="_blank" rel="noopener">Falar com a Wiz</a>
+    </div>
+  </div>
+</section>
+
+<footer>© Wiz Mídia · Patrocínio-MG · Marketing e vendas pra sua loja crescer.</footer>
+
+<script>
+(function(){
+  var grid=document.getElementById('planGrid');
+  var dotsWrap=document.getElementById('planDots');
+  if(!grid||!dotsWrap) return;
+  var cards=[].slice.call(grid.children);
+  cards.forEach(function(_,k){
+    var b=document.createElement('button');
+    b.setAttribute('aria-label','Plano '+(k+1));
+    if(k===0) b.className='active';
+    b.addEventListener('click',function(){ cards[k].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}); });
+    dotsWrap.appendChild(b);
+  });
+  var dots=[].slice.call(dotsWrap.children);
+  var raf=null;
+  grid.addEventListener('scroll',function(){
+    if(raf) return;
+    raf=requestAnimationFrame(function(){
+      raf=null;
+      var mid=grid.scrollLeft+grid.clientWidth/2, best=0, bd=Infinity;
+      cards.forEach(function(c,k){
+        var cc=c.offsetLeft+c.offsetWidth/2, d=Math.abs(cc-mid);
+        if(d<bd){ bd=d; best=k; }
+      });
+      dots.forEach(function(d,k){ d.classList.toggle('active',k===best); });
+    });
+  },{passive:true});
+})();
+</script>
+
+</body>
+</html>
