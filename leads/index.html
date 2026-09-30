@@ -72,6 +72,29 @@
   .depo-name{font-family:'Poppins',sans-serif; font-weight:700; font-size:14px; color:#fff;}
   .depo-role{font-size:12.5px; color:var(--muted); opacity:.75;}
 
+  /* REELS / VIDEOS DE CLIENTES */
+  .reels-car{position:relative; max-width:340px; margin:0 auto;}
+  .reels-viewport{overflow:hidden; padding:4px;}
+  .reels-track{display:flex; transition:transform .5s cubic-bezier(.2,.7,.25,1);}
+  .reel-slide{min-width:100%; padding:0 6px;}
+  .reel-frame{position:relative; aspect-ratio:9/16; border-radius:20px; overflow:hidden; background:#000; border:1px solid var(--line); box-shadow:0 18px 40px rgba(0,0,0,.28);}
+  .reel-frame video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; background:#000;}
+  .reel-toggle{position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; border:0; padding:0; margin:0; cursor:pointer; background:transparent; -webkit-tap-highlight-color:transparent;}
+  .reel-toggle::before{content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.30)); opacity:1; transition:opacity .3s;}
+  .reel-frame.playing .reel-toggle::before{opacity:0;}
+  .reel-ic{position:relative; width:66px; height:66px; border-radius:50%; background:rgba(62,220,113,.94); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 26px rgba(0,0,0,.4); transition:transform .18s, opacity .3s;}
+  .reel-toggle:hover .reel-ic{transform:scale(1.07);}
+  .reel-ic svg{width:26px; height:26px; color:#06210F;}
+  .reel-ic .ic-pause{display:none;}
+  .reel-frame.playing .reel-ic{opacity:0;}
+  .reel-frame.playing .reel-toggle:hover .reel-ic{opacity:1;}
+  .reel-frame.playing .reel-ic .ic-play{display:none;}
+  .reel-frame.playing .reel-ic .ic-pause{display:block;}
+  .reel-cap{margin-top:16px; text-align:center; display:flex; flex-direction:column; gap:2px;}
+  .reel-name{font-family:'Poppins',sans-serif; font-weight:700; font-size:15px; color:var(--ink);}
+  .reel-seg{font-size:12.5px; color:var(--muted); opacity:.85;}
+  @media (max-width:420px){ .reels-car{max-width:300px;} }
+
   .head{margin-bottom:36px}
   .head h2{font-weight:700; font-size:clamp(30px,5vw,46px); line-height:1.05; margin:14px 0 0; text-transform:uppercase;}
   .head p{margin:14px 0 0; color:var(--muted2); font-size:15px; max-width:60ch;}
@@ -278,26 +301,111 @@
 
 <div class="light">
 
-<!-- DEPOIMENTOS -->
+<!-- CLIENTES / VIDEOS -->
 <section id="depoimentos">
   <div class="wrap">
-    <div class="head">
-      <span class="eyebrow">Depoimentos</span>
+    <div class="head" style="text-align:center">
+      <span class="eyebrow">Clientes</span>
       <h2>Quem já cresce com a Wiz</h2>
-      <p>Resultados reais de quem confiou na gente.</p>
+      <p style="margin-left:auto;margin-right:auto">Conteúdo que a gente produz e que faz o cliente vender. Toca no play pra assistir.</p>
     </div>
-    <div class="depo-car" data-carousel>
-      <div class="depo-viewport">
-        <div class="track">
-          <div class="slide"><div class="depo-card"><div class="depo-media filled" style="background-image:url('/leads/WhatsApp%20Image%202026-09-20%20at%2018.14.10.jpeg')"></div><p class="depo-q">"Tá até difícil entregar, é pedido demais! Bora pra cima Wiz 🚀"</p><div class="depo-who"><span class="depo-name">Sydra Cafés</span><span class="depo-role">Cafés especiais</span></div></div></div>
-          <div class="slide"><div class="depo-card"><div class="depo-media"></div><p class="depo-q">"Espaço reservado para o depoimento do cliente."</p><div class="depo-who"><span class="depo-name">Cliente Wiz</span><span class="depo-role">Empresa · segmento</span></div></div></div>
-          <div class="slide"><div class="depo-card"><div class="depo-media"></div><p class="depo-q">"Espaço reservado para o depoimento do cliente."</p><div class="depo-who"><span class="depo-name">Cliente Wiz</span><span class="depo-role">Empresa · segmento</span></div></div></div>
+    <div class="reels-car" data-reels>
+      <div class="reels-viewport">
+        <div class="reels-track">
+          <div class="reel-slide">
+            <div class="reel-frame">
+              <video src="/leads/dbarbosa-coffee.mp4" poster="/leads/dbarbosa-coffee.jpg" preload="none" playsinline webkit-playsinline></video>
+              <button class="reel-toggle" type="button" aria-label="Play">
+                <span class="reel-ic">
+                  <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                </span>
+              </button>
+            </div>
+            <div class="reel-cap"><span class="reel-name">D'Barbosa Coffee</span><span class="reel-seg">Café especial</span></div>
+          </div>
+          <div class="reel-slide">
+            <div class="reel-frame">
+              <video src="/leads/camila.mp4" poster="/leads/camila.jpg" preload="none" playsinline webkit-playsinline></video>
+              <button class="reel-toggle" type="button" aria-label="Play">
+                <span class="reel-ic">
+                  <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                </span>
+              </button>
+            </div>
+            <div class="reel-cap"><span class="reel-name">Dra. Camila Reis</span><span class="reel-seg">Estética &amp; saúde</span></div>
+          </div>
+          <div class="reel-slide">
+            <div class="reel-frame">
+              <video src="/leads/seiko.mp4" poster="/leads/seiko.jpg" preload="none" playsinline webkit-playsinline></video>
+              <button class="reel-toggle" type="button" aria-label="Play">
+                <span class="reel-ic">
+                  <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                </span>
+              </button>
+            </div>
+            <div class="reel-cap"><span class="reel-name">Seiko Restaurante</span><span class="reel-seg">Gastronomia</span></div>
+          </div>
+          <div class="reel-slide">
+            <div class="reel-frame">
+              <video src="/leads/rivelini.mp4" poster="/leads/rivelini.jpg" preload="none" playsinline webkit-playsinline></video>
+              <button class="reel-toggle" type="button" aria-label="Play">
+                <span class="reel-ic">
+                  <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                </span>
+              </button>
+            </div>
+            <div class="reel-cap"><span class="reel-name">Café Rivelini</span><span class="reel-seg">Cafeteria</span></div>
+          </div>
+          <div class="reel-slide">
+            <div class="reel-frame">
+              <video src="/leads/conceito.mp4" poster="/leads/conceito.jpg" preload="none" playsinline webkit-playsinline></video>
+              <button class="reel-toggle" type="button" aria-label="Play">
+                <span class="reel-ic">
+                  <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                </span>
+              </button>
+            </div>
+            <div class="reel-cap"><span class="reel-name">Conceito Z For Men</span><span class="reel-seg">Moda masculina</span></div>
+          </div>
+          <div class="reel-slide">
+            <div class="reel-frame">
+              <video src="/leads/inside.mp4" poster="/leads/inside.jpg" preload="none" playsinline webkit-playsinline></video>
+              <button class="reel-toggle" type="button" aria-label="Play">
+                <span class="reel-ic">
+                  <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                </span>
+              </button>
+            </div>
+            <div class="reel-cap"><span class="reel-name">Inside English</span><span class="reel-seg">Escola de inglês</span></div>
+          </div>
+          <div class="reel-slide">
+            <div class="reel-frame">
+              <video src="/leads/dbarbosa.mp4" poster="/leads/dbarbosa.jpg" preload="none" playsinline webkit-playsinline></video>
+              <button class="reel-toggle" type="button" aria-label="Play">
+                <span class="reel-ic">
+                  <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                </span>
+              </button>
+            </div>
+            <div class="reel-cap"><span class="reel-name">D'Barbosa Coffee</span><span class="reel-seg">Bastidores da torra</span></div>
+          </div>
         </div>
       </div>
       <div class="dots">
         <button class="active" aria-label="1"></button>
         <button aria-label="2"></button>
         <button aria-label="3"></button>
+        <button aria-label="4"></button>
+        <button aria-label="5"></button>
+        <button aria-label="6"></button>
+        <button aria-label="7"></button>
       </div>
     </div>
   </div>
@@ -413,41 +521,48 @@
 
 <script>
 (function(){
-  var c=document.querySelector('[data-carousel]'); if(!c) return;
-  var track=c.querySelector('.track');
-  var slides=[].slice.call(c.querySelectorAll('.slide'));
+  var c=document.querySelector('[data-reels]'); if(!c) return;
+  var track=c.querySelector('.reels-track');
+  var slides=[].slice.call(c.querySelectorAll('.reel-slide'));
   var dots=[].slice.call(c.querySelectorAll('.dots button'));
   var i=0, timer;
-  function resetVideos(){
+  function pauseAll(){
     slides.forEach(function(s){
-      var m=s.querySelector('.media'); var v=s.querySelector('video');
+      var f=s.querySelector('.reel-frame'); var v=s.querySelector('video');
       if(v){ try{ v.pause(); v.currentTime=0; }catch(e){} }
-      if(m){ m.classList.remove('playing'); }
+      if(f) f.classList.remove('playing');
     });
   }
   function go(n){
-    resetVideos();
+    pauseAll();
     i=(n+slides.length)%slides.length;
     track.style.transform='translateX('+(-i*100)+'%)';
     dots.forEach(function(d,k){ d.classList.toggle('active',k===i); });
     startAuto();
   }
   function next(){ go(i+1); }
-  function startAuto(){ clearInterval(timer); timer=setInterval(next,6000); }
+  function startAuto(){ clearInterval(timer); timer=setInterval(next,7000); }
   function stopAuto(){ clearInterval(timer); }
-  [].slice.call(c.querySelectorAll('[data-play]')).forEach(function(playBtn){
-    playBtn.addEventListener('click', function(e){
-      e.stopPropagation();
-      stopAuto();
-      var media=playBtn.closest('.media');
-      var v=media.querySelector('video');
-      media.classList.add('playing');
-      if(v){
-        v.muted=false; v.controls=true;
-        try{ v.play(); }catch(err){}
-        v.onended=function(){ media.classList.remove('playing'); v.controls=false; v.currentTime=0; startAuto(); };
+  slides.forEach(function(s){
+    var btn=s.querySelector('.reel-toggle');
+    var frame=s.querySelector('.reel-frame');
+    var v=s.querySelector('video');
+    if(!btn||!frame||!v) return;
+    btn.addEventListener('click',function(e){
+      e.preventDefault(); e.stopPropagation();
+      if(v.paused){
+        slides.forEach(function(o){ var ov=o.querySelector('video'); var of=o.querySelector('.reel-frame'); if(ov&&ov!==v){ try{ov.pause();}catch(_){} if(of) of.classList.remove('playing'); } });
+        stopAuto();
+        v.muted=false;
+        frame.classList.add('playing');
+        var pr=v.play(); if(pr&&pr.catch){ pr.catch(function(){ v.muted=true; v.play(); }); }
+      } else {
+        v.pause();
+        frame.classList.remove('playing');
+        startAuto();
       }
     });
+    v.addEventListener('ended',function(){ frame.classList.remove('playing'); v.currentTime=0; startAuto(); });
   });
   dots.forEach(function(d,k){ d.addEventListener('click',function(){ go(k); }); });
   var sx=null;
