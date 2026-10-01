@@ -471,20 +471,21 @@
 <!-- LOGOS DOS CLIENTES (carrossel infinito) -->
 <section class="logos-sec" aria-label="Clientes da Wiz Mídia">
   <style>
-    .logos-sec{ padding:40px 0 48px; overflow:hidden; background:#FFFFFF; }
-    .logos-sec .logos-fade{ overflow:hidden;
+    .logos-sec{ padding:34px 0 40px; overflow:hidden; background:#FFFFFF; }
+    .logos-sec .logos-fade{ overflow:hidden; padding:4px 0;
       -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
       mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%); }
     .logos-sec .logo-marquee{ display:flex; width:max-content; gap:30px; align-items:center;
-      animation:wizLogoScroll 46s linear infinite; will-change:transform; }
+      padding:14px 0 32px; animation:wizLogoScroll 46s linear infinite; will-change:transform; }
     .logos-sec .logo-marquee:hover{ animation-play-state:paused; }
     @keyframes wizLogoScroll{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
     .logos-sec .logo-av{ flex:0 0 auto; width:104px; height:104px; border-radius:50%;
       overflow:hidden; background:#FFFFFF; border:1px solid rgba(15,23,19,.08);
-      box-shadow:0 6px 18px rgba(15,23,19,.06); display:flex; align-items:center; justify-content:center; }
+      box-shadow:0 10px 22px rgba(15,23,19,.10); display:flex; align-items:center; justify-content:center; }
     .logos-sec .logo-av img{ width:100%; height:100%; object-fit:contain; padding:11px; box-sizing:border-box; display:block; }
+    .logos-sec .logo-av--fill img{ object-fit:cover; padding:0; transform:scale(1.62); }
     @media (prefers-reduced-motion:reduce){ .logos-sec .logo-marquee{ animation:none; } }
-    @media (max-width:560px){ .logos-sec{padding:30px 0 36px} .logos-sec .logo-av{width:82px;height:82px} .logos-sec .logo-av img{padding:9px} .logos-sec .logo-marquee{gap:20px} }
+    @media (max-width:560px){ .logos-sec{padding:26px 0 30px} .logos-sec .logo-av{width:82px;height:82px} .logos-sec .logo-av img{padding:9px} .logos-sec .logo-marquee{gap:20px; padding:12px 0 28px} }
   </style>
   <div class="logos-fade">
     <div class="wrap" style="max-width:none;padding:0">
@@ -495,7 +496,7 @@
           <span class="logo-av"><img src="https://lh3.googleusercontent.com/d/1j2RPc9SZIUJxlnIUaPFbkRVCZBAU51FP=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
           <span class="logo-av"><img src="https://lh3.googleusercontent.com/d/1gG93DpmM3nssqxUfhXZQR8IVv3Rgzm_S=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
           <span class="logo-av"><img src="https://lh3.googleusercontent.com/d/1imSd_C10xmrpWlqNJO608NYTntCJsbQS=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
-          <span class="logo-av"><img src="https://lh3.googleusercontent.com/d/1sp1sJJwqjQuTcrGFMmK-YwfHQnxaxpBD=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
+          <span class="logo-av logo-av--fill"><img src="https://lh3.googleusercontent.com/d/1sp1sJJwqjQuTcrGFMmK-YwfHQnxaxpBD=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
           <span class="logo-av"><img src="https://lh3.googleusercontent.com/d/1KLe0FF7nEsAnJ23nRkz2Mzjb5yjrIiP0=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
           <span class="logo-av"><img src="https://lh3.googleusercontent.com/d/1C-KXkAHpFn0-Cz2ALILs5Np6ZQB1GxWo=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
           <span class="logo-av"><img src="https://lh3.googleusercontent.com/d/1UpLtqy2n5RKwSVOh1xT5BD-ORnvg_B1K=w240" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="104" height="104"></span>
