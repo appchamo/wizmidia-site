@@ -1,7 +1,7 @@
 window.SEIKO={
 "SB":"https://gwvabuxqufpqxdtqhmmy.supabase.co/storage/v1/object/public/cardapio/seiko/",
 "nav":[["entradas-frias","Entradas Frias"],["entradas-quentes","Entradas Quentes"],["especiais","Especiais"],["sashimis","Sashimis"],["joys-temakis","Joys & Temakis"],["uramakis-hossomakis","Uramakis"],["hotrolls-combos","Hot Rolls"],["gunkan-sobremesas","Gunkan"],["bebidas","Bebidas"],["drinks","Drinks"]],
-"fotos":[1,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,25,27,29,32,33,34,35,36,37,38,39,41,42,50,51,52,54,55,57,58,59,60,61,62,63,64,65,67,68,70,72,73,75,76,77,78,79,80,81,82,84,85,86,87,88,89,90,91,93,94,95,96,100,101,102,103,104,106,107],
+"fotos":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,67,68,70,72,73,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,93,94,95,96,100,101,102,103,104,105,106,107],
 "items":{
 "1":{"nm":"Sunomono Tradicional","pr":"15","mt":"150g","ds":"Tradicional salada japonesa de pepino fatiado finamente, marinada em molho sú e finalizada com gergelim torrado."},
 "2":{"nm":"Sunomono Especial","pr":"22","mt":"150g","ds":"Uma releitura do clássico: pepino marinado em molho sú, com macarrão bifun e finalizado com lichia."},
@@ -154,7 +154,7 @@ window.SEIKO={
 "152":{"nm":"Koimainu","pr":"25","ds":"Chá mate torrado com suco de laranja, limão-taiti e purê de yuzu criam um coquetel refrescante, cítrico e levemente amargo, com sutis notas tostadas."},
 "153":{"nm":"Hatsuhinode","pr":"33","ds":"Chá de hibisco com cravo, lichia, laranja e flor de sabugueiro resultam em um coquetel floral e frutado, de doçura equilibrada, acidez suave e leve picância."},
 "154":{"nm":"Soda Italiana","pr":"18","ds":"Bebida refrescante preparada com água com gás, gelo e xarope saborizado. Sabores: amora, cranberry, flor de sabugueiro, gengibre, lichia, maçã verde, maracujá e morango."},
-"155":{"nm":"Negroni Umeboshi","pr":"39","ds":"Gin, campari infusionado com ameixa umeboshi e vermute Cinzano criam um coquetel amargo e complexo, com dulçor sutil e um toque fermentado — um clássico com personalidade japonesa."},
+"155":{"nm":"Negroni Umeboshi","pr":"39","ds":"Gin, campari infusionado com ameixa umeboshi e vermute Cinzano criam um coquetel amargo e complexo, com dulçor sutil e um toque fermentado, um clássico com personalidade japonesa."},
 "156":{"nm":"Akai Kadan (Bloody Mery)","pr":"42","ds":"Suco de tomate, limão-siciliano, soju e especiarias japonesas revelam um coquetel de umami elevado, condimentado e refrescante. Ousado, com clarificação que surpreende."},
 "157":{"nm":"Benzaiten","pr":"35","ds":"Suco de lichia, hibisco e nossa vodka Citron artesanal. Acompanha bolha de aromas. Coquetel leve, aveludado e floral."},
 "158":{"nm":"Kekkon Shoya","pr":"38","ds":"Redução de catuaba, gin e espumante, acompanhado de bolha de aroma. Sabores sofisticados, frisante, cítrico levemente adocicado."},
@@ -162,7 +162,7 @@ window.SEIKO={
 "160":{"nm":"Caipi's","pr":"31","ds":"A clássica e refrescante combinação brasileira: limões frescos macerados com açúcar, equilibrando acidez e doçura, finalizada com cachaça ou vodka. Opções: cachaça ou vodka. Sabores: abacaxi, amora, frutas tropicais, frutas vermelhas, kiwi, maracujá ou morango."},
 "161":{"nm":"Sakerinha","pr":"31","ds":"A versão oriental da clássica caipirinha: limões frescos macerados, combinados com saquê suave e gelo, resultando em uma bebida leve, cítrica e extremamente refrescante. Sabores: abacaxi, amora, frutas tropicais, frutas vermelhas, kiwi, maracujá ou morango."},
 "162":{"nm":"Aperol Spritz","pr":"34","ds":"Aperol, espumante brut e água com gás formam um coquetel amargo e frisante, com um final cítrico e doce."},
-"163":{"nm":"Basil Smash","pr":"31","ds":"Gin, manjericão, limão-siciliano e xarope de açúcar resultam em um coquetel refrescante, herbal e equilibrado — ideal para dias quentes."},
+"163":{"nm":"Basil Smash","pr":"31","ds":"Gin, manjericão, limão-siciliano e xarope de açúcar resultam em um coquetel refrescante, herbal e equilibrado, ideal para dias quentes."},
 "164":{"nm":"Cosmopolitan","pr":"31","ds":"Vodka infusionada com limão-siciliano, limão-taiti, licor artesanal de laranja e xarope de cranberry criam um coquetel levemente ácido, frutado e sofisticado."},
 "165":{"nm":"Fitzgerald","pr":"31","ds":"Clássico contemporâneo, leve e sofisticado. Gin, suco de limão-siciliano fresco, xarope de açúcar e gotas de bitter de angostura resultam em um drink cítrico, refrescante e equilibrado, com delicado toque aromático."},
 "166":{"nm":"G&T","pr":"31","ds":"Gin e água tônica compõem um coquetel seco, aromático e levemente amargo, clássico e atemporal."},
