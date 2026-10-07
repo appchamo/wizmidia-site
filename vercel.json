@@ -6,7 +6,7 @@
     { "source": "/", "destination": "/admin.html" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/central", "destination": "/index.html" },
-    { "source": "/cardapio-seiko", "destination": "/cardapio-seiko_3.html" },
+    { "source": "/cardapio-seiko", "destination": "/cardapio-seiko.html" },
     { "source": "/cardapio", "destination": "/cardapio.html" },
     { "source": "/cardapio/:slug", "destination": "/cardapio.html" },
     { "source": "/comece-aqui", "destination": "/leads/index.html" },
