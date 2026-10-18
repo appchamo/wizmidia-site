@@ -29,16 +29,18 @@ window.renderWhatsApp=async function(box,ctx){
  css();
  ctx=ctx||{};var CLI=ctx.cliente||window.CLIENT;var isAdmin=!!ctx.admin;
  box.innerHTML='<div class="card"><div class="rep-empty">Carregando WhatsApp…</div></div>';
- var camps=[],envios=[],pedidos=[];
+ var camps=[],envios=[],pedidos=[],rastreios=[];
  try{
   var r1=await sb.from('wa_campanhas').select('*').eq('client_id',CLI.id).order('inicio',{ascending:false});
   camps=r1.data||[];
   if(camps.length){
    var minIni=camps.reduce(function(m,c){return c.inicio<m?c.inicio:m;},camps[0].inicio);
-   var r2=await sb.from('wa_envios').select('campanha_id,wa,nome,status,erro,clique,clique_em,optout,enviado_em,entregue_em,lido_em').eq('client_id',CLI.id).neq('status','teste').limit(20000);
+   var r2=await sb.from('wa_envios').select('campanha_id,wa,nome,msgid,status,erro,clique,clique_em,optout,enviado_em,entregue_em,lido_em').eq('client_id',CLI.id).neq('status','teste').limit(20000);
    envios=r2.data||[];
    var r3=await sb.from('ns_pedidos').select('order_id,numero,nome,wa,total,cupom,feito_em').eq('client_id',CLI.id).eq('pago',true).gte('feito_em',minIni).order('feito_em',{ascending:false}).limit(5000);
    pedidos=r3.data||[];
+   var r4=await sb.from('ns_pedidos').select('order_id,numero,nome,rastreio_cod,rastreio_url,enviado_em,wa_rastreio_em,wa_rastreio_msgid,wa_rastreio_erro').eq('client_id',CLI.id).not('rastreio_cod','is',null).order('enviado_em',{ascending:false}).limit(60);
+   rastreios=r4.data||[];
   }
  }catch(e){box.innerHTML='<div class="card"><div class="rep-empty">Erro ao carregar: '+esc(e.message||e)+'</div></div>';return;}
 
@@ -51,6 +53,29 @@ window.renderWhatsApp=async function(box,ctx){
  var tot={env:0,ent:0,lid:0,cli:0,opt:0,fal:0,vn:0,vr:0,custo:0,vcn:0,vcr:0};
  var cards=camps.map(function(c){
   var ev=envios.filter(function(e){return e.campanha_id===c.id;});
+  if(c.tipo==='rastreio'){
+   var byMsg={};ev.forEach(function(e){if(e.msgid)byMsg[e.msgid]=e;});
+   var avisados=rastreios.filter(function(p){return p.wa_rastreio_em;});
+   var entR=avisados.filter(function(p){var e=byMsg[p.wa_rastreio_msgid];return e&&(e.entregue_em||e.lido_em);}).length;
+   var lidR=avisados.filter(function(p){var e=byMsg[p.wa_rastreio_msgid];return e&&e.lido_em;}).length;
+   var semFone=rastreios.filter(function(p){return !p.wa_rastreio_em&&p.wa_rastreio_erro==='sem_telefone';}).length;
+   var falhR=rastreios.filter(function(p){return !p.wa_rastreio_em&&p.wa_rastreio_erro&&p.wa_rastreio_erro!=='sem_telefone';}).length;
+   tot.env+=avisados.length;tot.ent+=entR;tot.lid+=lidR;
+   var h2='<div class="wa-camp"><div class="wa-camp-h"><b>'+esc(c.nome)+'</b><span class="wa-tag tpl">'+esc(c.template||'')+'</span><span class="wa-dt">dispara sozinho quando o pedido é marcado como enviado na loja</span></div>';
+   h2+='<div class="wa-kpis">'+
+    '<div class="wa-kpi"><div class="l">Avisos enviados</div><div class="v">'+avisados.length+'</div></div>'+
+    '<div class="wa-kpi"><div class="l">Entregues</div><div class="v">'+entR+'</div><div class="s">'+pct(entR,avisados.length)+'</div></div>'+
+    '<div class="wa-kpi"><div class="l">Lidos</div><div class="v">'+lidR+'</div><div class="s">'+pct(lidR,avisados.length)+'</div></div>'+
+    '<div class="wa-kpi"><div class="l">Não enviados</div><div class="v">'+(semFone+falhR)+'</div><div class="s">'+semFone+' sem telefone · '+falhR+' com erro</div></div>'+
+   '</div>';
+   if(rastreios.length){
+    h2+='<table class="wa-tbl"><thead><tr><th>Pedido</th><th>Cliente</th><th>Código</th><th>Enviado</th><th>Aviso</th></tr></thead><tbody>'+rastreios.slice(0,20).map(function(p){
+     var e=byMsg[p.wa_rastreio_msgid];var st=p.wa_rastreio_em?(e&&e.lido_em?'✓ lido':(e&&e.entregue_em?'✓ entregue':'enviado '+fdt(p.wa_rastreio_em))):(p.wa_rastreio_erro==='sem_telefone'?'sem telefone':(p.wa_rastreio_erro?'erro':'—'));
+     return '<tr><td>#'+esc(p.numero)+'</td><td>'+esc(p.nome||'')+'</td><td>'+(p.rastreio_url?'<a href="'+esc(p.rastreio_url)+'" target="_blank">'+esc(p.rastreio_cod)+'</a>':esc(p.rastreio_cod||''))+'</td><td>'+fdt(p.enviado_em)+'</td><td>'+st+'</td></tr>';}).join('')+'</tbody></table>';
+    h2+='<div class="wa-hint">"—" = pedido enviado antes da ativação do aviso automático (não recebe mensagem).</div>';
+   } else { h2+='<div class="wa-hint">Nenhum pedido enviado ainda desde a ativação.</div>'; }
+   return h2+'</div>';
+  }
   var env=ev.filter(function(e){return e.status!=='falhou';});
   var ent=env.filter(function(e){return e.entregue_em||e.lido_em;});
   var lid=env.filter(function(e){return e.lido_em;});
