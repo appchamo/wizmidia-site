@@ -209,6 +209,7 @@ function renderHome(){
 }
 
 async function openBoard(board,skipHash){
+  if(board&&board.link){location.href=board.link;return;}
   CUR=board;
   document.getElementById('vTitle').textContent=board.title||'';
   document.getElementById('vSub').textContent=board.subtitle||CLIENT.name||'';
