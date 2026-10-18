@@ -101,3 +101,17 @@ window.renderWhatsApp=async function(box,ctx){
  if(isAdmin){box.querySelectorAll('.wa-cu').forEach(function(inp){inp.onchange=async function(){var v=Number(inp.value)||0;try{await sb.from('wa_campanhas').update({custo_unit:v}).eq('id',inp.dataset.camp);window.renderWhatsApp(box,ctx);}catch(e){alert('Não salvou: '+(e.message||e));}};});}
 };
 })();
+
+// Integra na aba "WhatsApp API" do portal mesmo sem alteração no index.html: substitui o placeholder "Em breve".
+(function(){
+ var orig=window.cliSoon;
+ if(typeof orig!=='function'||orig.__wa)return;
+ var f=function(k){
+  if(k==='whatsapp'&&window.renderWhatsApp&&typeof CLIENT!=='undefined'&&CLIENT){
+   setTimeout(function(){var b=document.getElementById('repContent');if(b)window.renderWhatsApp(b,{cliente:CLIENT,admin:(typeof IS_ADMIN!=='undefined')&&IS_ADMIN});},0);
+   return '<div class="card"><div class="rep-empty">Carregando WhatsApp…</div></div>';
+  }
+  return orig.apply(this,arguments);
+ };
+ f.__wa=true;window.cliSoon=f;
+})();

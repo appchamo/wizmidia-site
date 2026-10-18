@@ -272,3 +272,6 @@ window.renderAutomacoes=async function(box,ctx){
     }
   }catch(e){}
 })();
+
+// carrega o módulo da aba WhatsApp API (whatsapp.js)
+(function(){try{if(document.querySelector('script[src="/whatsapp.js"]'))return;var s=document.createElement('script');s.src='/whatsapp.js';document.head.appendChild(s);}catch(e){}})();
