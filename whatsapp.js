@@ -86,9 +86,11 @@ window.renderWhatsApp=async function(box,ctx){
   var ini=new Date(c.inicio).getTime(),fim=c.fim?new Date(c.fim).getTime():ini+(c.janela_dias||7)*864e5;
   var cup=(c.cupom||'').toUpperCase();
   var ped=pedidos.filter(function(p){var t=new Date(p.feito_em).getTime();return t>=ini&&t<=fim;});
-  var vend=ped.filter(function(p){return (p.wa&&keys[waKey(p.wa)])||(cup&&p.cupom===cup);});
-  var vendRec=vend.filter(function(p){return p.wa&&keys[waKey(p.wa)];});
-  var vendCup=vend.filter(function(p){return cup&&p.cupom===cup;});
+  var excl=!!c.cupom_exclusivo;
+  var vendRec=ped.filter(function(p){return p.wa&&keys[waKey(p.wa)];});
+  var vendCup=ped.filter(function(p){return cup&&p.cupom===cup;});
+  var cupSem=vendCup.filter(function(p){return !(p.wa&&keys[waKey(p.wa)]);});
+  var vend=excl?ped.filter(function(p){return (p.wa&&keys[waKey(p.wa)])||(cup&&p.cupom===cup);}):vendRec;
   var rec=vend.reduce(function(s,p){return s+(Number(p.total)||0);},0);
   var custo=env.length*(Number(c.custo_unit)||0);
   var roas=custo?rec/custo:0;
@@ -99,13 +101,14 @@ window.renderWhatsApp=async function(box,ctx){
    '<div class="wa-kpi"><div class="l">Entregues</div><div class="v">'+ent.length+'</div><div class="s">'+pct(ent.length,env.length)+'</div></div>'+
    '<div class="wa-kpi"><div class="l">Lidos</div><div class="v">'+lid.length+'</div><div class="s">'+pct(lid.length,env.length)+'</div></div>'+
    '<div class="wa-kpi"><div class="l">Respostas</div><div class="v">'+cli.length+'</div><div class="s">'+opt.length+' pediram sair</div></div>'+
-   '<div class="wa-kpi win"><div class="l">Vendas</div><div class="v">'+vend.length+'</div><div class="s">'+vendRec.length+' de quem recebeu · '+vendCup.length+' c/ cupom</div></div>'+
+   '<div class="wa-kpi win"><div class="l">Vendas</div><div class="v">'+vend.length+'</div><div class="s">'+(excl?vendRec.length+' de quem recebeu · '+vendCup.length+' c/ cupom':'de quem recebeu a mensagem')+'</div></div>'+
    '<div class="wa-kpi win"><div class="l">Receita</div><div class="v">'+money(rec)+'</div></div>'+
    '<div class="wa-kpi"><div class="l">Custo</div><div class="v">'+money(custo)+'</div><div class="s">'+money(c.custo_unit||0)+'/msg</div></div>'+
    '<div class="wa-kpi win"><div class="l">ROAS</div><div class="v">'+(custo?roas.toFixed(1)+'x':'—')+'</div></div>'+
   '</div>';
   if(cli.length){h+='<table class="wa-tbl"><thead><tr><th>Quem respondeu</th><th>Botão</th><th>Quando</th></tr></thead><tbody>'+cli.slice(0,20).map(function(e){return '<tr><td>'+esc(e.nome||e.wa)+'</td><td>'+esc(e.clique)+'</td><td>'+fdt(e.clique_em)+'</td></tr>';}).join('')+'</tbody></table>';}
   if(vend.length){h+='<div class="wa-list">'+vend.slice(0,15).map(function(p){return '<div class="wa-li"><span class="n">'+esc(p.nome||p.wa||'')+' <span class="m">#'+esc(p.numero)+(p.cupom?' · cupom '+esc(p.cupom):'')+'</span></span><span class="m">'+fdt(p.feito_em)+'</span><span class="v">'+money(p.total)+'</span></div>';}).join('')+'</div>';}
+  if(cup&&!excl&&cupSem.length){h+='<div class="wa-hint">Outras '+cupSem.length+' venda(s) usaram o cupom '+esc(cup)+' sem ter recebido esta mensagem (vieram por outro canal) — não entram na conta do WhatsApp.</div>';}
   if(isAdmin){h+='<div class="wa-hint"><span class="wa-cost">Custo por mensagem: R$ <input type="number" step="0.01" value="'+esc(c.custo_unit||0)+'" data-camp="'+c.id+'" class="wa-cu"> <span>(estimativa — ajuste pelo valor real da fatura da Meta)</span></span></div>';}
   return h+'</div>';
  }).join('');
@@ -121,7 +124,7 @@ window.renderWhatsApp=async function(box,ctx){
   '<div class="rep-kpi rep-kpi-loja"><div class="l">ROAS</div><div class="v">'+roasT+'</div></div>'+
  '</div>';
  html+='<div class="card csec"><h2>'+ICO_WA+'Campanhas de WhatsApp</h2>'+cards+
-  '<div class="wa-hint">Como contamos: <b>venda atribuída</b> = pedido pago na loja dentro da janela da campanha feito por um número que recebeu a mensagem <i>ou</i> usando o cupom da campanha. <b>Respostas</b> são toques nos botões de resposta rápida; a Meta não informa cliques no botão de link ("Ver os cafés"). Entregas e leituras atualizam em tempo real pelo webhook; pedidos da loja sincronizam a cada 30 min.</div></div>';
+  '<div class="wa-hint">Como contamos: <b>venda atribuída</b> = pedido pago na loja dentro da janela da campanha feito por um número que recebeu a mensagem (quando o cupom é exclusivo do WhatsApp, vendas com o cupom também contam). <b>Respostas</b> são toques nos botões de resposta rápida; a Meta não informa cliques no botão de link ("Ver os cafés"). Entregas e leituras atualizam em tempo real pelo webhook; pedidos da loja sincronizam a cada 30 min.</div></div>';
  box.innerHTML=html;
  if(isAdmin){box.querySelectorAll('.wa-cu').forEach(function(inp){inp.onchange=async function(){var v=Number(inp.value)||0;try{await sb.from('wa_campanhas').update({custo_unit:v}).eq('id',inp.dataset.camp);window.renderWhatsApp(box,ctx);}catch(e){alert('Não salvou: '+(e.message||e));}};});}
 };
