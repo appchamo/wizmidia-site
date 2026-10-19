@@ -7,7 +7,7 @@
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/central", "destination": "/index.html" },
     { "source": "/cardapio-seiko", "destination": "/cardapio-seiko.html" },
-    { "source": "/cardapio-almoco", "destination": "https://gwvabuxqufpqxdtqhmmy.supabase.co/storage/v1/object/public/cardapio/seiko/cardapio-almoco.html" },
+    { "source": "/cardapio-almoco", "destination": "/cardapio-almoco.html" },
     { "source": "/cardapio", "destination": "/cardapio.html" },
     { "source": "/cardapio/:slug", "destination": "/cardapio.html" },
     { "source": "/comece-aqui", "destination": "/leads/index.html" },
