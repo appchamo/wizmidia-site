@@ -28,6 +28,10 @@ body{margin:0;background:var(--bg);background:radial-gradient(120% 60% at 50% 0%
 .head h1{font-size:clamp(22px,6vw,28px);font-weight:800;letter-spacing:-.02em;margin:0 0 8px}
 .head p{color:var(--muted);font-size:14.5px;margin:0;max-width:420px;margin:0 auto}
 .card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;margin:0 0 14px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.card.hi{border-color:rgba(59,167,53,.5);box-shadow:0 0 0 1px rgba(59,167,53,.3),0 12px 34px rgba(59,167,53,.14);background:linear-gradient(180deg,#1b2b22,#152019)}
+.hitag{display:inline-block;font-size:11px;font-weight:700;color:#06240f;background:var(--green);border-radius:999px;padding:3px 11px;margin-bottom:11px;letter-spacing:.03em;text-transform:uppercase}
+.card.hi .q{font-size:17.5px}
+.card.hi textarea{min-height:110px;border-color:rgba(59,167,53,.35)}
 .q{font-weight:600;font-size:15.5px;margin:0 0 4px}
 .q .num{color:var(--green);font-weight:800;margin-right:7px}
 .hint{color:var(--faint);font-size:12.5px;margin:0 0 14px}
@@ -37,16 +41,19 @@ input[type=text]:focus,textarea:focus{border-color:var(--green)}
 textarea{min-height:84px;resize:vertical}
 .field+.field{margin-top:12px}
 .lbl{display:block;font-size:12.5px;color:var(--muted);margin:0 0 6px}
+/* NPS */
 .nps{display:grid;grid-template-columns:repeat(11,1fr);gap:6px}
 .nps button{appearance:none;border:1px solid var(--line);background:#0e1420;color:var(--ink);font:inherit;font-weight:700;font-size:15px;height:44px;border-radius:10px;cursor:pointer;transition:.12s;padding:0}
 .nps button:hover{border-color:var(--muted)}
 .nps button.on{background:var(--green);border-color:var(--green);color:#06240f;transform:translateY(-1px)}
 .nps-sc{display:flex;justify-content:space-between;color:var(--faint);font-size:11px;margin-top:7px}
 @media(max-width:420px){.nps{grid-template-columns:repeat(6,1fr)}}
+/* chips */
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{border:1px solid var(--line);background:#0e1420;color:var(--ink);border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer;user-select:none;transition:.12s}
 .chip:hover{border-color:var(--muted)}
 .chip.on{background:rgba(59,167,53,.16);border-color:var(--green);color:#bdf0b5}
+/* stars */
 .starrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
 .starrow:last-child{border-bottom:none}
 .starrow .nm{font-size:14.5px;color:var(--ink)}
@@ -55,15 +62,18 @@ textarea{min-height:84px;resize:vertical}
 .stars span{font-size:26px;line-height:1;color:#39445a;cursor:pointer;transition:.1s;width:28px;text-align:center}
 .stars span.on{color:var(--amber)}
 .stars span:hover{transform:scale(1.12)}
+/* yes/no */
 .yn{display:flex;gap:10px}
 .yn button{flex:1;border:1px solid var(--line);background:#0e1420;color:var(--ink);font:inherit;font-weight:600;font-size:14.5px;padding:12px;border-radius:12px;cursor:pointer;transition:.12s}
 .yn button.on{background:var(--green);border-color:var(--green);color:#06240f}
 .yn button.on.no{background:#2a3242;border-color:var(--muted);color:var(--ink)}
+/* submit */
 .send{width:100%;border:none;background:linear-gradient(180deg,var(--green),var(--green-d));color:#fff;font:inherit;font-weight:800;font-size:16px;padding:16px;border-radius:14px;cursor:pointer;margin-top:6px;box-shadow:0 10px 26px rgba(59,167,53,.28);transition:.15s}
 .send:hover{filter:brightness(1.05)}
 .send:disabled{opacity:.6;cursor:default;filter:grayscale(.3)}
 .err{color:var(--red);font-size:13px;text-align:center;margin-top:10px;min-height:16px}
 .foot{text-align:center;color:var(--faint);font-size:11.5px;margin-top:18px}
+/* thank you */
 .done{display:none;text-align:center;padding:40px 10px}
 .done.show{display:block;animation:fade .4s ease}
 .done .ico{width:76px;height:76px;border-radius:50%;background:rgba(59,167,53,.15);border:1px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
@@ -85,13 +95,15 @@ textarea{min-height:84px;resize:vertical}
     </div>
 
     <form id="f" novalidate>
+      <!-- 1 -->
       <div class="card">
         <div class="q"><span class="num">1</span>Quem é você? <span style="color:var(--faint);font-weight:400">(opcional)</span></div>
         <p class="hint">Se quiser deixar, a gente sabe de quem veio o feedback pra agir melhor.</p>
-        <div class="field"><label class="lbl">Empresa / seu nome</label><input type="text" id="empresa" maxlength="160" placeholder="Ex: Padaria do João"></div>
+        <div class="field"><label class="lbl">Empresa / seu nome</label><input type="text" id="empresa" maxlength="160" placeholder="Empresa / Seu nome"></div>
         <div class="field"><label class="lbl">WhatsApp ou e-mail de contato</label><input type="text" id="contato" maxlength="120" placeholder="(opcional)"></div>
       </div>
 
+      <!-- 2 -->
       <div class="card">
         <div class="q"><span class="num">2</span>De 0 a 10, o quanto você recomendaria a Wiz pra um amigo dono de negócio?</div>
         <p class="hint">0 = de jeito nenhum · 10 = com certeza</p>
@@ -99,29 +111,35 @@ textarea{min-height:84px;resize:vertical}
         <div class="nps-sc"><span>Não recomendaria</span><span>Recomendaria muito</span></div>
       </div>
 
+      <!-- 3 -->
       <div class="card">
         <div class="q"><span class="num">3</span>Quais serviços a Wiz faz pra você hoje?</div>
         <p class="hint">Pode marcar mais de um.</p>
         <div class="chips" id="servicos"></div>
       </div>
 
+      <!-- 4 -->
       <div class="card">
         <div class="q"><span class="num">4</span>Dá uma nota de 1 a 5 pra cada ponto</div>
         <p class="hint">Toca nas estrelas.</p>
         <div id="stars"></div>
       </div>
 
+      <!-- 5 -->
       <div class="card">
         <div class="q"><span class="num">5</span>O que a Wiz faz que mais te ajuda ou faz diferença?</div>
         <textarea id="gosta" maxlength="1500" placeholder="Pode escrever do seu jeito..."></textarea>
       </div>
 
-      <div class="card">
+      <!-- 6 -->
+      <div class="card hi">
+        <span class="hitag">⭐ a mais importante</span>
         <div class="q"><span class="num">6</span>E o que a gente podia melhorar?</div>
-        <p class="hint">Sincerão aqui — é o que mais ajuda.</p>
+        <p class="hint">Sincerão aqui — é o que mais ajuda a Wiz a evoluir. 🙏</p>
         <textarea id="melhorar" maxlength="1500" placeholder="O que faria sua experiência ser melhor?"></textarea>
       </div>
 
+      <!-- 7 -->
       <div class="card">
         <div class="q"><span class="num">7</span>Se seu feedback for positivo, a gente pode usar como depoimento nas redes da Wiz?</div>
         <div class="yn" id="dep">
@@ -149,13 +167,25 @@ textarea{min-height:84px;resize:vertical}
   var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3dmFidXhxdWZwcXhkdHFobW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NjA1NzMsImV4cCI6MjA5NjQzNjU3M30.iLOTlJz4CcW0m-dMLQ2dY-RKZy32kxa5WhmOgxZ5Kas";
   var state={nps:null,servicos:[],notas:{nota_conteudo:0,nota_resultados:0,nota_atendimento:0,nota_custo:0},depoimento_ok:null};
 
+  // NPS
   var npsEl=document.getElementById('nps');
   for(var i=0;i<=10;i++){(function(n){var b=document.createElement('button');b.type='button';b.textContent=n;b.onclick=function(){state.nps=n;[].forEach.call(npsEl.children,function(c){c.classList.remove('on');});b.classList.add('on');};npsEl.appendChild(b);})(i);}
 
-  var SERV=['Social media / conteúdo','Tráfego pago','Vídeo','Design','Site / Loja','Outro'];
+  // serviços
+  var SERV=['Tráfego pago','Vídeo','Design','Social media','Gestão de Ecommerce','Assessoria'];
   var servEl=document.getElementById('servicos');
-  SERV.forEach(function(s){var c=document.createElement('div');c.className='chip';c.textContent=s;c.onclick=function(){c.classList.toggle('on');var idx=state.servicos.indexOf(s);if(idx>=0)state.servicos.splice(idx,1);else state.servicos.push(s);};servEl.appendChild(c);});
+  var chipMap={};
+  function setChip(s,on){var c=chipMap[s];c.classList.toggle('on',on);var idx=state.servicos.indexOf(s);if(on&&idx<0)state.servicos.push(s);if(!on&&idx>=0)state.servicos.splice(idx,1);}
+  SERV.forEach(function(s){
+    var c=document.createElement('div');c.className='chip';c.textContent=s;chipMap[s]=c;
+    c.onclick=function(){
+      if(s==='Assessoria'){var all=!c.classList.contains('on');SERV.forEach(function(x){setChip(x,all);});return;}
+      setChip(s,!c.classList.contains('on'));
+    };
+    servEl.appendChild(c);
+  });
 
+  // estrelas
   var DIMS=[['nota_conteudo','Qualidade do conteúdo / criativos','posts, reels, artes'],['nota_resultados','Resultados que você percebe','retorno, crescimento'],['nota_atendimento','Atendimento e comunicação','resposta, prazo, clareza'],['nota_custo','Custo-benefício','o quanto vale o que paga']];
   var starsEl=document.getElementById('stars');
   DIMS.forEach(function(d){
@@ -166,6 +196,7 @@ textarea{min-height:84px;resize:vertical}
     row.appendChild(left);row.appendChild(st);starsEl.appendChild(row);
   });
 
+  // depoimento
   var depEl=document.getElementById('dep');
   [].forEach.call(depEl.children,function(b){b.onclick=function(){state.depoimento_ok=b.getAttribute('data-v')==='1';[].forEach.call(depEl.children,function(c){c.classList.remove('on');});b.classList.add('on');};});
 
