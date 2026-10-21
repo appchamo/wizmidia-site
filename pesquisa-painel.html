@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel · Pesquisa de Satisfação · Wiz</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1420;--card:#1b2231;--card2:#151b28;--line:rgba(255,255,255,.09);
+  --ink:#eaf0f7;--muted:#95a3ba;--faint:#6b7891;
+  --green:#3ba735;--blue:#3b82f6;--red:#e05b5b;--amber:#e8a33d;
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#131a28,#0f1420 60%);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:26px 16px 70px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:19px}.brand b{color:var(--green)}
+.brand small{display:block;color:var(--muted);font-size:12px;font-weight:500}
+.btn{border:1px solid var(--line);background:#0e1420;color:var(--ink);font:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:10px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.gate{max-width:380px;margin:60px auto;text-align:center;background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:16px;padding:30px 24px}
+.gate h1{font-size:20px;margin:0 0 6px}
+.gate p{color:var(--muted);font-size:13.5px;margin:0 0 18px}
+.gate input{width:100%;background:#0e1420;border:1px solid var(--line);border-radius:11px;color:var(--ink);font:inherit;font-size:15px;padding:12px;text-align:center;letter-spacing:1px}
+.gate button{width:100%;border:none;background:linear-gradient(180deg,var(--green),#2f8a2a);color:#fff;font:inherit;font-weight:700;font-size:15px;padding:13px;border-radius:12px;cursor:pointer;margin-top:12px}
+.gate .ge{color:var(--red);font-size:12.5px;min-height:15px;margin-top:10px}
+.grid{display:grid;gap:12px}
+.kpis{grid-template-columns:repeat(4,1fr)}
+@media(max-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi .lbl{color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.kpi .big{font-size:30px;font-weight:800;margin-top:4px;letter-spacing:-.02em}
+.kpi .sub{color:var(--faint);font-size:12px;margin-top:2px}
+.nps-bar{display:flex;height:8px;border-radius:999px;overflow:hidden;margin-top:10px;background:#0e1420}
+.nps-bar i{display:block;height:100%}
+.sec-t{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:26px 0 10px}
+.dims{grid-template-columns:repeat(4,1fr)}
+@media(max-width:640px){.dims{grid-template-columns:repeat(2,1fr)}}
+.dim .nm{font-size:12.5px;color:var(--muted)}
+.dim .v{font-size:22px;font-weight:800;margin-top:3px}
+.dim .v span{font-size:13px;color:var(--amber)}
+.servs{display:flex;flex-wrap:wrap;gap:8px}
+.servs .s{background:#0e1420;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13px}
+.servs .s b{color:var(--green);margin-left:5px}
+.resp{border-left:3px solid var(--line);padding:14px 16px;margin-bottom:10px}
+.resp.p{border-left-color:var(--green)}.resp.d{border-left-color:var(--red)}.resp.n{border-left-color:var(--amber)}
+.resp .rh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.resp .emp{font-weight:700;font-size:15px}
+.resp .when{color:var(--faint);font-size:12px}
+.resp .nps-tag{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(59,167,53,.15);color:#bdf0b5}
+.resp .nps-tag.d{background:rgba(224,91,91,.15);color:#f1b0b0}.resp .nps-tag.n{background:rgba(232,163,61,.15);color:#f0d19a}
+.resp .notas{color:var(--muted);font-size:12.5px;margin-top:7px}
+.resp .txt{font-size:14px;margin-top:8px;color:var(--ink)}
+.resp .txt b{color:var(--muted);font-weight:600}
+.resp .dep{display:inline-block;margin-top:8px;font-size:11.5px;color:var(--green);border:1px solid rgba(59,167,53,.4);border-radius:999px;padding:2px 9px}
+.resp .ct{color:var(--faint);font-size:12px;margin-top:6px}
+.empty{text-align:center;color:var(--muted);padding:40px}
+.loading{text-align:center;color:var(--muted);padding:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="gate" id="gate">
+    <h1>Painel da Pesquisa</h1>
+    <p>Acesso restrito — Wiz Mídia. Cola o token de acesso.</p>
+    <input type="password" id="tok" placeholder="token" autocomplete="off">
+    <button id="enter">Entrar</button>
+    <div class="ge" id="ge"></div>
+  </div>
+
+  <div id="dash" style="display:none">
+    <div class="top">
+      <div class="brand">Wiz<b> Mídia</b><small>Pesquisa de satisfação</small></div>
+      <div><button class="btn" id="reload">Atualizar</button> <button class="btn" id="out">Sair</button></div>
+    </div>
+
+    <div class="grid kpis">
+      <div class="card kpi"><div class="lbl">Respostas</div><div class="big" id="k-total">–</div><div class="sub" id="k-resp">&nbsp;</div></div>
+      <div class="card kpi"><div class="lbl">NPS</div><div class="big" id="k-nps">–</div><div class="sub">de -100 a +100</div></div>
+      <div class="card kpi"><div class="lbl">Promotores</div><div class="big" style="color:var(--green)" id="k-prom">–</div><div class="sub">nota 9-10</div></div>
+      <div class="card kpi"><div class="lbl">Detratores</div><div class="big" style="color:var(--red)" id="k-det">–</div><div class="sub">nota 0-6</div></div>
+    </div>
+    <div class="card" style="margin-top:12px"><div class="lbl" style="color:var(--muted);font-size:12px;font-weight:600">Distribuição NPS</div><div class="nps-bar" id="npsbar"></div><div class="sub" style="color:var(--faint);font-size:11.5px;margin-top:8px" id="npsleg"></div></div>
+
+    <div class="sec-t">Médias por área (1 a 5)</div>
+    <div class="grid dims" id="dims"></div>
+
+    <div class="sec-t">Serviços avaliados</div>
+    <div class="servs" id="servs"></div>
+
+    <div class="sec-t">Respostas</div>
+    <div id="list"><div class="loading">Carregando...</div></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var FN="https://gwvabuxqufpqxdtqhmmy.supabase.co/functions/v1/satisfacao";
+  var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3dmFidXhxdWZwcXhkdHFobW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NjA1NzMsImV4cCI6MjA5NjQzNjU3M30.iLOTlJz4CcW0m-dMLQ2dY-RKZy32kxa5WhmOgxZ5Kas";
+  var TKEY='wiz_satisf_token';
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  function stars(n){if(!n)return '<span style="color:var(--faint)">—</span>';return '<span style="color:var(--amber)">'+'★'.repeat(n)+'</span><span style="color:#39445a">'+'☆'.repeat(5-n)+'</span>';}
+  function when(iso){try{var d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}catch(e){return '';}}
+
+  async function load(token){
+    document.getElementById('list').innerHTML='<div class="loading">Carregando...</div>';
+    var r=await fetch(FN+'?t='+encodeURIComponent(token),{headers:{'apikey':ANON}});
+    if(r.status===401){throw new Error('token');}
+    var j=await r.json();
+    if(!j.ok)throw new Error(j.error||'erro');
+    render(j);
+  }
+  function render(d){
+    document.getElementById('k-total').textContent=d.total;
+    document.getElementById('k-resp').textContent=d.nps.respondentes+' responderam o NPS';
+    document.getElementById('k-nps').textContent=d.nps.score===null?'–':(d.nps.score>0?'+':'')+d.nps.score;
+    document.getElementById('k-prom').textContent=d.nps.promotores;
+    document.getElementById('k-det').textContent=d.nps.detratores;
+    var tot=Math.max(1,d.nps.promotores+d.nps.neutros+d.nps.detratores);
+    document.getElementById('npsbar').innerHTML=
+      '<i style="width:'+(d.nps.promotores/tot*100)+'%;background:var(--green)"></i>'+
+      '<i style="width:'+(d.nps.neutros/tot*100)+'%;background:var(--amber)"></i>'+
+      '<i style="width:'+(d.nps.detratores/tot*100)+'%;background:var(--red)"></i>';
+    document.getElementById('npsleg').textContent='Promotores '+d.nps.promotores+' · Neutros '+d.nps.neutros+' · Detratores '+d.nps.detratores;
+
+    var DIM=[['conteudo','Conteúdo'],['resultados','Resultados'],['atendimento','Atendimento'],['custo','Custo-benefício']];
+    document.getElementById('dims').innerHTML=DIM.map(function(x){var v=d.medias[x[0]];return '<div class="card dim"><div class="nm">'+x[1]+'</div><div class="v">'+(v==null?'–':v)+' <span>★</span></div></div>';}).join('');
+
+    var sv=d.servicos||{};var keys=Object.keys(sv).sort(function(a,b){return sv[b]-sv[a];});
+    document.getElementById('servs').innerHTML=keys.length?keys.map(function(k){return '<div class="s">'+esc(k)+'<b>'+sv[k]+'</b></div>';}).join(''):'<div style="color:var(--faint);font-size:13px">—</div>';
+
+    var rows=d.respostas||[];
+    if(!rows.length){document.getElementById('list').innerHTML='<div class="empty">Nenhuma resposta ainda. Compartilha o link no WhatsApp pra começar a receber. 🙂</div>';return;}
+    document.getElementById('list').innerHTML=rows.map(function(r){
+      var cls=r.nps==null?'':(r.nps>=9?'p':(r.nps<=6?'d':'n'));
+      var tag=r.nps==null?'':'<span class="nps-tag '+cls+'">NPS '+r.nps+'</span>';
+      var notas='Conteúdo '+stars(r.nota_conteudo)+' &nbsp; Resultados '+stars(r.nota_resultados)+' &nbsp; Atend. '+stars(r.nota_atendimento)+' &nbsp; Custo '+stars(r.nota_custo);
+      var txt='';
+      if(r.gosta)txt+='<div class="txt"><b>👍 Gosta:</b> '+esc(r.gosta)+'</div>';
+      if(r.melhorar)txt+='<div class="txt"><b>🔧 Melhorar:</b> '+esc(r.melhorar)+'</div>';
+      var serv=(Array.isArray(r.servicos)&&r.servicos.length)?('<div class="ct">Serviços: '+r.servicos.map(esc).join(', ')+'</div>'):'';
+      return '<div class="card resp '+cls+'"><div class="rh"><span class="emp">'+esc(r.empresa||'(anônimo)')+'</span><span class="when">'+when(r.created_at)+'</span></div>'+
+        (tag?'<div style="margin-top:6px">'+tag+'</div>':'')+
+        '<div class="notas">'+notas+'</div>'+txt+serv+
+        (r.contato?'<div class="ct">📞 '+esc(r.contato)+'</div>':'')+
+        (r.depoimento_ok?'<span class="dep">✓ autorizou depoimento</span>':'')+
+        '</div>';
+    }).join('');
+  }
+
+  var gate=document.getElementById('gate'),dash=document.getElementById('dash');
+  function show(token){gate.style.display='none';dash.style.display='block';load(token).catch(function(e){if(e.message==='token'){localStorage.removeItem(TKEY);gate.style.display='block';dash.style.display='none';document.getElementById('ge').textContent='Token inválido.';}else{document.getElementById('list').innerHTML='<div class="empty">Erro ao carregar: '+esc(e.message)+'</div>';}});}
+  document.getElementById('enter').onclick=function(){var t=(document.getElementById('tok').value||'').trim();if(!t)return;localStorage.setItem(TKEY,t);show(t);};
+  document.getElementById('tok').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('enter').click();});
+  document.getElementById('reload').onclick=function(){var t=localStorage.getItem(TKEY);if(t)show(t);};
+  document.getElementById('out').onclick=function(){localStorage.removeItem(TKEY);dash.style.display='none';gate.style.display='block';document.getElementById('tok').value='';};
+  var saved=localStorage.getItem(TKEY);if(saved)show(saved);
+})();
+</script>
+</body>
+</html>

@@ -11,6 +11,8 @@
     { "source": "/cardapio-vinhos", "destination": "/cardapio-vinhos.html" },
     { "source": "/cardapio", "destination": "/cardapio.html" },
     { "source": "/cardapio/:slug", "destination": "/cardapio.html" },
+    { "source": "/pesquisa/painel", "destination": "/pesquisa-painel.html" },
+    { "source": "/pesquisa", "destination": "/pesquisa.html" },
     { "source": "/comece-aqui", "destination": "/leads/index.html" },
     { "source": "/:slug", "destination": "/index.html" }
   ]
