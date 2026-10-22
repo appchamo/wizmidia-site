@@ -5,7 +5,7 @@
   "rewrites": [
     { "source": "/", "destination": "/admin.html" },
     { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/central", "destination": "/index.html" },
+    { "source": "/central", "destination": "/index_3.html" },
     { "source": "/cardapio-seiko", "destination": "/cardapio-seiko.html" },
     { "source": "/cardapio-almoco", "destination": "/cardapio-almoco.html" },
     { "source": "/cardapio-vinhos", "destination": "/cardapio-vinhos.html" },
@@ -14,6 +14,6 @@
     { "source": "/pesquisa/painel", "destination": "/pesquisa-painel.html" },
     { "source": "/pesquisa", "destination": "/pesquisa.html" },
     { "source": "/comece-aqui", "destination": "/leads/index.html" },
-    { "source": "/:slug", "destination": "/index.html" }
+    { "source": "/:slug", "destination": "/index_3.html" }
   ]
 }
