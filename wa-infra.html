@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automações WhatsApp — Wiz Mídia</title>
+<style>
+  :root{--bg:#10151f;--bg2:#151b28;--card:#1b2231;--line:#28324a;--tx:#e8edf7;--mut:#8b97ad;--grn:#3ba735;--grn2:#52c15f;--amb:#e0a51d;--red:#e2564d;--blu:#3b82f6}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(170deg,#0d1119,#10151f 40%,#141b29);color:var(--tx);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 16px 60px}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  h1{font-size:22px;margin:0;font-weight:800;letter-spacing:.2px}
+  h1 span{color:var(--grn2)}
+  .sub{color:var(--mut);font-size:13px;margin:2px 0 22px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;position:relative}
+  .card.off{opacity:.72}
+  .chead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .cname{font-size:17px;font-weight:700}
+  .tipo{font-size:11px;color:var(--mut);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+  .num{font-size:13px;color:var(--mut);margin:8px 0 12px;font-variant-numeric:tabular-nums}
+  .num b{color:var(--tx);font-weight:600}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .b{font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+  .b.green{background:rgba(59,167,53,.15);color:var(--grn2);border-color:rgba(59,167,53,.35)}
+  .b.amber{background:rgba(224,165,29,.13);color:var(--amb);border-color:rgba(224,165,29,.35)}
+  .b.red{background:rgba(226,86,77,.13);color:var(--red);border-color:rgba(226,86,77,.35)}
+  .b.gray{background:rgba(139,151,173,.12);color:var(--mut)}
+  .b.blue{background:rgba(59,130,246,.13);color:#7cb0ff;border-color:rgba(59,130,246,.35)}
+  .sechd{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin:14px 0 8px;font-weight:700}
+  .flux{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--grn);margin-top:6px;flex:0 0 auto;box-shadow:0 0 0 3px rgba(59,167,53,.15)}
+  .fname{font-size:13.5px;font-weight:600}
+  .fdesc{font-size:12px;color:var(--mut);line-height:1.35}
+  .none{font-size:12.5px;color:var(--mut);font-style:italic}
+  .mrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .mi{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:7px 11px;min-width:64px;text-align:center}
+  .mi .v{font-size:17px;font-weight:800;line-height:1}
+  .mi .k{font-size:10px;color:var(--mut);text-transform:uppercase;letter-spacing:.3px;margin-top:3px}
+  .mi.sim .v{color:var(--grn2)}
+  .rota{font-size:11.5px;color:var(--mut);margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}
+  .rota b{color:#aeb9cd;font-weight:600}
+  .legacy{margin-top:22px;background:rgba(224,165,29,.06);border:1px dashed rgba(224,165,29,.35);border-radius:14px;padding:14px 16px}
+  .legacy .cname{font-size:15px}
+  .foot{color:var(--mut);font-size:12px;margin-top:26px;text-align:center}
+  .gate{max-width:380px;margin:12vh auto 0;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px}
+  .gate h2{margin:0 0 4px;font-size:18px}
+  .gate p{color:var(--mut);font-size:13px;margin:0 0 16px}
+  input{width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--tx);border-radius:10px;padding:12px 13px;font-size:14px}
+  button{width:100%;margin-top:12px;background:var(--grn);color:#fff;border:0;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
+  button:hover{background:var(--grn2)}
+  .err{color:var(--red);font-size:13px;margin-top:10px;display:none}
+  .reload{background:none;border:1px solid var(--line);color:var(--mut);width:auto;padding:7px 14px;font-size:12px;font-weight:600;margin:0;border-radius:9px}
+  .reload:hover{background:var(--card);color:var(--tx)}
+</style>
+</head>
+<body>
+<div id="gate" class="gate" style="display:none">
+  <h2>Painel de Automações</h2>
+  <p>Acesso da equipe Wiz Mídia. Cole o token de acesso.</p>
+  <input id="tok" type="password" placeholder="Token" autocomplete="off">
+  <button onclick="entrar()">Entrar</button>
+  <div class="err" id="gerr">Token inválido.</div>
+</div>
+
+<div id="app" class="wrap" style="display:none">
+  <header class="top">
+    <div>
+      <h1>Automações <span>WhatsApp</span></h1>
+      <div class="sub" id="sub">Carregando…</div>
+    </div>
+    <button class="reload" onclick="carregar()">↻ Atualizar</button>
+  </header>
+  <div class="grid" id="grid"></div>
+  <div id="legacy"></div>
+  <div class="foot">Dados ao vivo do backend Wiz · uso interno da equipe</div>
+</div>
+
+<script>
+const FN="https://gwvabuxqufpqxdtqhmmy.supabase.co/functions/v1/wa-infra";
+let TOKEN="";
+try{TOKEN=localStorage.getItem("wa_infra_t")||""}catch(e){}
+
+function qClass(q){return q==="GREEN"?"green":q==="YELLOW"?"amber":q==="RED"?"red":"gray"}
+function qLabel(q){return q==="GREEN"?"Qualidade alta":q==="YELLOW"?"Qualidade média":q==="RED"?"Qualidade baixa":"Qualidade —"}
+function cClass(c){return c==="conectado"?"green":c==="reconciliado"?"amber":"gray"}
+function esc(s){return (s==null?"":String(s)).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]))}
+
+function metricHtml(m){
+  if(!m) return "";
+  if(m.tipo==="prospect"){
+    return `<div class="mrow">
+      <div class="mi"><div class="v">${m.total}</div><div class="k">Contatos</div></div>
+      <div class="mi"><div class="v">${m.enviado}</div><div class="k">Enviados</div></div>
+      <div class="mi sim"><div class="v">${m.respondeu_sim}</div><div class="k">Disseram sim</div></div>
+      <div class="mi"><div class="v">${m.pendente}</div><div class="k">Pendentes</div></div>
+    </div>`;
+  }
+  if(m.tipo==="inside"){
+    return `<div class="mrow">
+      <div class="mi"><div class="v">${m.alunos}</div><div class="k">Alunos</div></div>
+      <div class="mi sim"><div class="v">${m.leads}</div><div class="k">Leads</div></div>
+    </div>`;
+  }
+  return "";
+}
+
+function card(c){
+  const fluxos = c.fluxos.length
+    ? c.fluxos.map(f=>`<div class="flux"><div class="dot"></div><div><div class="fname">${esc(f.nome)}</div><div class="fdesc">${esc(f.desc)}</div></div></div>`).join("")
+    : `<div class="none">Número conectado, sem automação ativa ainda.</div>`;
+  return `<div class="card ${c.ativo?"":"off"}">
+    <div class="chead">
+      <div><div class="cname">${esc(c.nome)}</div><div class="tipo">${esc(c.tipo)}</div></div>
+    </div>
+    <div class="num">📱 <b>${esc(c.numero)}</b></div>
+    <div class="badges">
+      <span class="b ${cClass(c.conexao)}">${c.conexao==="conectado"?"Conectado":c.conexao==="reconciliado"?"Conectado (a validar)":esc(c.conexao)}</span>
+      <span class="b ${qClass(c.quality)}">${qLabel(c.quality)}</span>
+      ${c.account_mode==="LIVE"?'<span class="b blue">No ar</span>':""}
+    </div>
+    <div class="sechd">Automações ativas</div>
+    ${fluxos}
+    ${metricHtml(c.metrics)}
+    ${c.rota_label?`<div class="rota">Fluxo técnico: <b>${esc(c.rota_label)}</b></div>`:""}
+  </div>`;
+}
+
+async function carregar(){
+  document.getElementById("sub").textContent="Carregando…";
+  try{
+    const r=await fetch(FN+"?t="+encodeURIComponent(TOKEN));
+    if(r.status===401){ mostrarGate(true); return; }
+    const d=await r.json();
+    document.getElementById("grid").innerHTML=d.clients.map(card).join("");
+    const leg=(d.legacy||[]).map(l=>`<div class="legacy"><div class="cname">${esc(l.nome)}</div><div class="num">📱 <b>${esc(l.numero)}</b></div><div class="fdesc">${esc(l.nota)}</div></div>`).join("");
+    document.getElementById("legacy").innerHTML=leg;
+    const dt=new Date(d.generated_at);
+    document.getElementById("sub").textContent="Atualizado agora · "+dt.toLocaleString("pt-BR");
+    document.getElementById("app").style.display="block";
+    document.getElementById("gate").style.display="none";
+  }catch(e){
+    document.getElementById("sub").textContent="Erro ao carregar. Tente atualizar.";
+  }
+}
+function mostrarGate(err){
+  document.getElementById("app").style.display="none";
+  document.getElementById("gate").style.display="block";
+  document.getElementById("gerr").style.display=err?"block":"none";
+}
+function entrar(){
+  TOKEN=document.getElementById("tok").value.trim();
+  try{localStorage.setItem("wa_infra_t",TOKEN)}catch(e){}
+  carregar();
+}
+if(TOKEN){ carregar(); } else { mostrarGate(false); }
+</script>
+</body>
+</html>
