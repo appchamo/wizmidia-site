@@ -15,6 +15,7 @@
     { "source": "/pesquisa", "destination": "/pesquisa.html" },
     { "source": "/wa-infra", "destination": "/wa-infra.html" },
     { "source": "/comece-aqui", "destination": "/leads/index.html" },
+    { "source": "/kipizzaptc", "destination": "/kipizzaptc.html" },
     { "source": "/:slug", "destination": "/index_3.html" }
   ]
 }
