@@ -183,7 +183,7 @@ window.renderAutomacoes=async function(box,ctx){
           var lojaOk=!!(l&&l.ok&&l.connected);
           if(gaOk&&(gaCart>0||gaPur>0)){
             var alc=kv(/^alcance/i);
-            var comp=lojaOk?l.orders:gaPur;
+            var comp=gaPur;
             var st=[];
             if(alc)st.push({l:'Alcance',v:alc});
             st.push({l:'Visitas',v:gaSess});
@@ -192,7 +192,7 @@ window.renderAutomacoes=async function(box,ctx){
             renderFunnel(st);return;
           }
           var adic=kv(/^adi[cç][õo]es ao carrinho/i),compMeta=kv(/^compras$/i);
-          var compras=lojaOk?l.orders:compMeta;
+          var compras=compMeta;
           if(!(adic>0||compras>0))return;
           var alcance=kv(/^alcance/i),cliques=kv(/^cliques( no link)?$/i);
           var steps=[];
