@@ -275,3 +275,32 @@ window.renderAutomacoes=async function(box,ctx){
 
 // carrega o módulo da aba WhatsApp API (whatsapp.js)
 (function(){try{if(document.querySelector('script[src="/whatsapp.js"]'))return;var s=document.createElement('script');s.src='/whatsapp.js';document.head.appendChild(s);}catch(e){}})();
+
+/* === Wiz patch: funil do Monteiro = Visualizações → Alcance → Visitas → Seguidores (ganhados no período) === */
+(function(){
+  try{
+    if(typeof funnelFromKpis==='function' && !funnelFromKpis.__wizMonteiroFunil){
+      var _ffk=funnelFromKpis;
+      var _ffkM=function(S){
+        try{
+          if(typeof CLIENT!=='undefined' && CLIENT && CLIENT.slug==='monteiro' && S && S.kpis && S.kpis.length){
+            var g=function(re){var it=S.kpis.find(function(k){return re.test((k.l||'').trim());});return it?repNum(it.v):null;};
+            var views=g(/^visualiza[çc][õo]es$/i);
+            var alc=g(/^alcance/i);
+            var vis=g(/^cliques( no link)?$/i);
+            var seg=g(/^seguidores ganhados$/i);
+            var steps=[];
+            if(views!=null)steps.push({l:'Visualizações',v:views});
+            if(alc!=null)steps.push({l:'Alcance',v:alc});
+            if(vis!=null)steps.push({l:'Visitas',v:vis});
+            if(seg!=null)steps.push({l:'Seguidores',v:seg});
+            if(steps.length)return steps;
+          }
+        }catch(e){}
+        return _ffk(S);
+      };
+      _ffkM.__wizMonteiroFunil=true;
+      funnelFromKpis=_ffkM;
+    }
+  }catch(e){}
+})();
