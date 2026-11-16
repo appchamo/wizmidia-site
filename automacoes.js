@@ -304,3 +304,63 @@ window.renderAutomacoes=async function(box,ctx){
     }
   }catch(e){}
 })();
+
+/* === Wiz patch: Visão Geral SEMPRE ao vivo (bate 100% com o Ads Manager) ===
+   Liga a função report-range (que já puxa ao vivo da Meta) também nos períodos
+   numéricos (7/14/30/60/90) e na 1ª carga, não só em Hoje/Ontem/Personalizado. */
+(function(){
+  try{
+    var inLive=false, autoDone=false;
+
+    // marca quando um load AO VIVO está rodando, pra não re-disparar em loop
+    if(typeof loadRangeLive==='function' && !window.__wizLiveWrap){
+      var _lrl=loadRangeLive;
+      window.loadRangeLive=function(){
+        inLive=true;
+        var p;
+        try{ p=_lrl.apply(this,arguments); }catch(e){ inLive=false; throw e; }
+        if(p&&typeof p.then==='function'){ p.then(function(){inLive=false;},function(){inLive=false;}); }
+        else { inLive=false; }
+        return p;
+      };
+      window.__wizLiveWrap=true;
+    }
+
+    // troca de período numérico passa a puxar AO VIVO (em vez da foto salva)
+    if(typeof onRangeChange==='function' && !window.__wizLiveORC){
+      var _orc=onRangeChange;
+      window.onRangeChange=function(val){
+        val=String(val||'');
+        try{
+          if(/^\d+$/.test(val) && typeof loadRangeLive==='function'){
+            REP.range=parseInt(val,10)||30; REP._sel=String(REP.range);
+            if(typeof syncRangeSelects==='function') syncRangeSelects(REP._sel);
+            window.loadRangeLive({preset:val}, 'dos últimos '+val+' dias');
+            return;
+          }
+        }catch(e){}
+        return _orc(val);
+      };
+      window.__wizLiveORC=true;
+    }
+
+    // na 1ª renderização (foto salva), dispara 1x o load ao vivo do período atual
+    if(typeof renderReport==='function' && !window.__wizAutoLive){
+      var _rr=renderReport;
+      window.renderReport=function(){
+        var r=_rr.apply(this,arguments);
+        try{
+          if(!autoDone && !inLive && typeof loadRangeLive==='function'
+             && typeof CLIENT!=='undefined' && CLIENT && CLIENT.id
+             && typeof REP!=='undefined' && REP && /^\d+$/.test(String(REP._sel||REP.range||'30'))){
+            autoDone=true;
+            var n=parseInt(REP.range,10)||30;
+            setTimeout(function(){ try{ window.loadRangeLive({preset:String(n)}, 'dos últimos '+n+' dias'); }catch(e){} }, 40);
+          }
+        }catch(e){}
+        return r;
+      };
+      window.__wizAutoLive=true;
+    }
+  }catch(e){}
+})();
