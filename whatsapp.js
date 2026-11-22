@@ -218,22 +218,19 @@ window.renderWhatsApp=async function(box,ctx){
   '<div class="rep-kpi rep-kpi-loja"><div class="l">Receita</div><div class="v">'+money(tot.vr)+'</div></div>'+
   '<div class="rep-kpi rep-kpi-loja"><div class="l">ROAS</div><div class="v">'+roasT+'</div></div>'+
  '</div>';
- if(isAdmin){
-  html+='<div class="card csec"><h2>'+ICO_WA+'Nova campanha de WhatsApp</h2>'+
-   '<p class="wa-hint" style="margin-top:0">Escolha o público e dispare um template aprovado pra base de clientes da loja. Usa a mesma base e motor de segmentos da aba "Clientes da loja".</p>'+
-   '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:8px">'+
-    '<div style="flex:1;min-width:220px"><label class="wa-lb" style="margin-top:0">Público</label>'+
-     '<select class="wa-selff" id="waPub">'+PUBLICOS.map(function(p){return '<option value="'+p.k+'">'+esc(p.rot)+'</option>';}).join('')+'</select></div>'+
-    '<button class="wa-bt pri" type="button" id="waNova">Montar disparo →</button>'+
-   '</div></div>';
- }
+ html+='<div class="card csec"><h2>'+ICO_WA+'Nova campanha de WhatsApp</h2>'+
+  '<p class="wa-hint" style="margin-top:0">Escolha o público e dispare um template aprovado pra base de clientes da loja. Usa a mesma base e motor de segmentos da aba "Clientes da loja".</p>'+
+  '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:8px">'+
+   '<div style="flex:1;min-width:220px"><label class="wa-lb" style="margin-top:0">Público</label>'+
+    '<select class="wa-selff" id="waPub">'+PUBLICOS.map(function(p){return '<option value="'+p.k+'">'+esc(p.rot)+'</option>';}).join('')+'</select></div>'+
+   '<button class="wa-bt pri" type="button" id="waNova">Montar disparo →</button>'+
+  '</div></div>';
  html+='<div class="card csec"><h2>'+ICO_WA+'Campanhas de WhatsApp</h2>'+cards+
   '<div class="wa-hint">Como contamos: <b>venda atribuída</b> = pedido pago na loja dentro da janela da campanha feito por um número que recebeu a mensagem (quando o cupom é exclusivo do WhatsApp, vendas com o cupom também contam). <b>Respostas</b> são toques nos botões de resposta rápida; a Meta não informa cliques no botão de link ("Ver os cafés"). Entregas e leituras atualizam em tempo real pelo webhook; pedidos da loja sincronizam a cada 30 min.</div></div>';
  box.innerHTML=html;
- if(isAdmin){box.querySelectorAll('.wa-cu').forEach(function(inp){inp.onchange=async function(){var v=Number(inp.value)||0;try{await sb.from('wa_campanhas').update({custo_unit:v}).eq('id',inp.dataset.camp);window.renderWhatsApp(box,ctx);}catch(e){alert('Não salvou: '+(e.message||e));}};});
-  var nova=box.querySelector('#waNova');
-  if(nova)nova.onclick=function(){var k=(box.querySelector('#waPub')||{}).value;var p=PUBLICOS.filter(function(x){return x.k===k;})[0]||PUBLICOS[0];waAbreDisparo(p);};
- }
+ if(isAdmin){box.querySelectorAll('.wa-cu').forEach(function(inp){inp.onchange=async function(){var v=Number(inp.value)||0;try{await sb.from('wa_campanhas').update({custo_unit:v}).eq('id',inp.dataset.camp);window.renderWhatsApp(box,ctx);}catch(e){alert('Não salvou: '+(e.message||e));}};});}
+ var nova=box.querySelector('#waNova');
+ if(nova)nova.onclick=function(){var k=(box.querySelector('#waPub')||{}).value;var p=PUBLICOS.filter(function(x){return x.k===k;})[0]||PUBLICOS[0];waAbreDisparo(p);};
 };
 })();
 
