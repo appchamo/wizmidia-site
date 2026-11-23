@@ -22,8 +22,8 @@ function css(){
  '.wa-cost{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--c-mut,#8b98a5)}.wa-cost input{width:70px;border:1px solid var(--c-line,#e3e7ee);border-radius:8px;padding:4px 6px;font-size:12.5px;background:var(--c-bg2,#fff);color:inherit}'+
  '.wa-list{margin-top:8px}.wa-li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--c-line,#eee);font-size:13.5px}.wa-li:last-child{border-bottom:0}.wa-li .n{flex:1}.wa-li .m{color:var(--c-mut,#8b98a5);font-size:12px}.wa-li .v{font-weight:700}';
  s.textContent+='.wa-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}'+
- '.wa-modal{background:var(--c-bg2,#fff);color:inherit;border-radius:16px;max-width:460px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);color-scheme:light}'+
- '.wa-modal .mh{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--c-line,#eee)}.wa-modal .mh h3{margin:0;font-size:17px}.wa-modal .mx{background:none;border:0;font-size:22px;cursor:pointer;color:var(--c-mut,#8b98a5);line-height:1}'+
+ '.wa-modal{background:#fff;color:#111b21;border-radius:16px;max-width:460px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);color-scheme:light}'+
+ '.wa-modal .mh{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--c-line,#eee)}.wa-modal .mh h3{margin:0;font-size:17px;color:#111b21}.wa-modal .mx{background:none;border:0;font-size:22px;cursor:pointer;color:#667085;line-height:1}'+
  '.wa-modal .mb{padding:16px 18px}.wa-modal .mf{padding:14px 18px;border-top:1px solid var(--c-line,#eee);display:flex;gap:10px;justify-content:flex-end}'+
  '.wa-lb{display:block;font-size:12.5px;color:var(--c-mut,#8b98a5);font-weight:600;margin:12px 0 5px}'+
  '.wa-selff,.wa-inn{width:100%;border:1px solid var(--c-line,#e3e7ee);border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;background:#fff;color:#111b21;-webkit-text-fill-color:#111b21}'+
@@ -31,7 +31,10 @@ function css(){
  '.wa-dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;background:var(--c-bg,#f6f8fa);border:1px solid var(--c-line,#eee);border-radius:10px;padding:10px 12px;font-size:13.5px}.wa-dl b{text-align:right}'+
  '.wa-tplv{margin-top:8px;background:#e7f7f2;border:1px solid #bfe9dd;border-radius:10px;padding:10px 12px;font-size:13px;color:#0a5c47;white-space:pre-wrap;line-height:1.5}'+
  '.wa-alerta{background:#fff6e5;border:1px solid #ffe0a3;border-radius:10px;padding:10px 12px;font-size:13px;color:#8a5a00;margin-top:10px}'+
- '.wa-bar{height:10px;background:var(--c-line,#eee);border-radius:6px;overflow:hidden;margin-top:12px}.wa-bar i{display:block;height:100%;background:#00a884;width:0;transition:width .3s}';
+ '.wa-bar{height:10px;background:var(--c-line,#eee);border-radius:6px;overflow:hidden;margin-top:12px}.wa-bar i{display:block;height:100%;background:#00a884;width:0;transition:width .3s}'+
+ '.wa-modal .wa-bt{color:#111b21;background:#fff;border-color:#d5dbe5}.wa-modal .wa-bt.pri{color:#fff;background:#00a884;border-color:#00a884}'+
+ '.wa-modal .wa-dl{background:#f6f8fa;border-color:#e3e7ee;color:#111b21}.wa-modal .wa-lb{color:#667085}.wa-modal h3{color:#111b21}'+
+ '.wa-note{font-size:12px;color:#667085;margin-top:6px;line-height:1.45}.wa-row2{display:flex;gap:8px;align-items:center}.wa-row2 .wa-inn{flex:1;min-width:0}.wa-row2 .wa-bt{white-space:nowrap}';
  document.head.appendChild(s);
 }
 var ICO_WA='<svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.8-.9L3 21l2-5.2A8.4 8.4 0 1 1 21 11.5z"/></svg>';
@@ -64,11 +67,11 @@ window.renderWhatsApp=async function(box,ctx){
   }catch(e){return {error:String(e&&e.message||e)};}
  }
  async function waAbreDisparo(preset){
-  var regra=preset.regra,label=preset.rot;
+  var regra=preset.regra,label=preset.rot,enviando=false;
   var mask=document.createElement('div');mask.className='wa-mask';
-  mask.innerHTML='<div class="wa-modal"><div class="mh"><h3>Disparar campanha</h3><button class="mx" type="button">×</button></div><div class="mb" id="waMB"><p style="color:var(--c-mut,#8b98a5)">Carregando…</p></div><div class="mf" id="waMF"></div></div>';
+  mask.innerHTML='<div class="wa-modal"><div class="mh"><h3>Disparar campanha</h3><button class="mx" type="button">×</button></div><div class="mb" id="waMB"><p style="color:#667085">Carregando…</p></div><div class="mf" id="waMF"></div></div>';
   document.body.appendChild(mask);
-  var close=function(){mask.remove();};
+  var close=function(){if(enviando)return;mask.remove();};
   mask.querySelector('.mx').onclick=close;mask.onclick=function(e){if(e.target===mask)close();};
   var mb=mask.querySelector('#waMB'),mf=mask.querySelector('#waMF');
   var res=await Promise.all([
@@ -77,18 +80,23 @@ window.renderWhatsApp=async function(box,ctx){
    apiD({action:'previa',client_id:CLI.id,canal:'whatsapp',regra:regra})
   ]);
   var st=res[0]||{},tpl=res[1]||{},pv=res[2]||{};
-  var templates=(tpl.itens)||[];
+  // só template de marketing que o disparo consegue preencher (sem mídia no topo nem link dinâmico)
+  var templates=((tpl.itens)||[]).filter(function(t){return t.category==='MARKETING'&&t.simples!==false;});
   var precisaCoex=(!st.conectado)||(!!tpl.precisa_coex);
-  var erroMeta=tpl.erro_meta||'';
+  var erroMeta=tpl.erro_meta||st.error||tpl.error||'';
   var previa=pv.quantos||0;
+  var cu=Number(st.custo_unit)||0;
   var nf=function(n){return (Number(n)||0).toLocaleString('pt-BR');};
-  var h='<div class="wa-dl"><span>Público</span><b>'+esc(label)+'</b><span>Alcançáveis no WhatsApp</span><b>'+nf(previa)+'</b></div>';
+  var h='<div class="wa-dl"><span>Público</span><b>'+esc(label)+'</b><span>Vão receber</span><b>'+nf(previa)+'</b>'+(cu?'<span>Custo estimado</span><b>'+money(previa*cu)+' <span style="font-weight:400;color:#667085">('+money(cu)+' por mensagem)</span></b>':'')+'</div>';
+  h+='<div class="wa-note">Conta 1 mensagem por número de WhatsApp. Fica de fora quem não tem telefone no cadastro e quem pediu pra não receber.</div>';
   if(precisaCoex)h+='<div class="wa-alerta">⚠️ O WhatsApp da loja ainda não está conectado à API oficial (Coex). Enquanto não ligar, o disparo não sai.</div>';
   h+='<label class="wa-lb">Mensagem (template aprovado)</label>';
   if(!templates.length){
-   h+='<div class="wa-alerta" style="background:var(--c-bg,#f6f8fa);border-color:var(--c-line,#e3e7ee);color:var(--c-mut,#8b98a5)">'+(precisaCoex?'Os templates aparecem aqui quando o WhatsApp da loja conectar.':(erroMeta?'Não consegui ler os templates: '+esc(erroMeta):'Nenhum template de marketing aprovado ainda. Crie e aprove um na Meta.'))+'</div>';
+   h+='<div class="wa-alerta" style="background:#f6f8fa;border-color:#e3e7ee;color:#667085">'+(precisaCoex?'Os templates aparecem aqui quando o WhatsApp da loja conectar.':(erroMeta?'Não consegui ler os templates: '+esc(erroMeta):'Nenhum template de marketing aprovado ainda. Crie e aprove um na Meta.'))+'</div>';
   }else{
-   h+='<select class="wa-selff" id="waTpl"><option value="">— escolher —</option>'+templates.map(function(t){return '<option value="'+esc(t.name)+'">'+esc(t.name)+' ('+esc(t.category||'')+')</option>';}).join('')+'</select><div class="wa-tplv" id="waTplV" style="display:none"></div>';
+   h+='<select class="wa-selff" id="waTpl"><option value="">— escolher —</option>'+templates.map(function(t){return '<option value="'+esc(t.name)+'">'+esc(t.name)+'</option>';}).join('')+'</select><div id="waVars"></div><div class="wa-tplv" id="waTplV" style="display:none"></div>';
+   h+='<label class="wa-lb">Enviar um teste antes (opcional)</label><div class="wa-row2"><input class="wa-inn" id="waTesteNum" inputmode="numeric" placeholder="DDD + número, ex: 34999990000"><button class="wa-bt" type="button" id="waTesteBt">Enviar teste</button></div><div class="wa-note" id="waTesteMsg">Manda só pra esse número, pra você ver como a mensagem chega.</div>';
+   h+='<label class="wa-lb">Cupom divulgado (opcional)</label><input class="wa-inn" id="waCupom" placeholder="ex: BLACK">';
   }
   h+='<label class="wa-lb">Nome do disparo</label><input class="wa-inn" id="waNome" value="'+esc(('Disparo '+label).slice(0,60))+'">';
   mb.innerHTML=h;
@@ -96,30 +104,61 @@ window.renderWhatsApp=async function(box,ctx){
   mf.innerHTML='<button class="wa-bt" type="button" id="waCanc">Cancelar</button><button class="wa-bt pri" type="button" id="waVai"'+(pode?'':' disabled')+'>Disparar pra '+nf(previa)+'</button>';
   mf.querySelector('#waCanc').onclick=close;
   var tplSel=mb.querySelector('#waTpl');
-  if(tplSel)tplSel.onchange=function(){var t=templates.filter(function(x){return x.name===tplSel.value;})[0];var v=mb.querySelector('#waTplV');if(t){v.style.display='';v.textContent=(t.corpo||'').replace(/\{\{1\}\}/g,'{nome}');}else{v.style.display='none';}};
+  function curTpl(){return tplSel?templates.filter(function(x){return x.name===tplSel.value;})[0]:null;}
+  function lerParams(){var t=curTpl(),out=[];if(!t)return out;for(var i=1;i<=t.vars;i++){var el=mb.querySelector('#waVar'+i);out.push(el?String(el.value||'').trim():'');}return out;}
+  function faltam(){return lerParams().some(function(p){return !p||p==='-';});}
+  function pintaPrev(){var t=curTpl(),v=mb.querySelector('#waTplV');if(!v)return;if(!t){v.style.display='none';return;}var ps=lerParams();v.style.display='';v.textContent=(t.corpo||'').replace(/\{\{(\d+)\}\}/g,function(m,n){var p=ps[Number(n)-1];return p?p.replace(/\{nome\}/gi,'Maria'):m;});}
+  if(tplSel)tplSel.onchange=function(){
+   var t=curTpl(),vb=mb.querySelector('#waVars'),hh='';
+   if(t&&t.vars>0){for(var i=1;i<=t.vars;i++){hh+='<label class="wa-lb">Variável {{'+i+'}}'+(i===1?' · deixe {nome} pra entrar o primeiro nome de cada cliente':'')+'</label><input class="wa-inn" id="waVar'+i+'" value="'+(i===1?'{nome}':'')+'"'+(i>1?' placeholder="o que entra no lugar de {{'+i+'}}"':'')+'>';}}
+   vb.innerHTML=hh;
+   Array.prototype.forEach.call(vb.querySelectorAll('input'),function(inp){inp.oninput=pintaPrev;});
+   pintaPrev();
+  };
+  var tb=mb.querySelector('#waTesteBt');
+  if(tb)tb.onclick=async function(){
+   var msg=mb.querySelector('#waTesteMsg'),t=curTpl();
+   if(!t){msg.textContent='Escolha o template primeiro.';return;}
+   if(faltam()){msg.textContent='Preencha as variáveis do template.';return;}
+   var num=String((mb.querySelector('#waTesteNum')||{}).value||'').replace(/\D/g,'');
+   if(num.length<10){msg.textContent='Número inválido. Use DDD + número.';return;}
+   tb.disabled=true;msg.textContent='Enviando teste…';
+   var r=await apiD({action:'teste',client_id:CLI.id,template:t.name,params:lerParams(),to:num,nome:'Teste'});
+   tb.disabled=false;
+   msg.textContent=(r&&r.ok)?'Teste enviado. Confere no WhatsApp desse número.':('Não enviou: '+((r&&r.error)||'erro'));
+  };
   var vai=mf.querySelector('#waVai');
   if(vai)vai.onclick=async function(){
-   var tplName=(tplSel&&tplSel.value)||'';if(!tplName){alert('Escolhe o template.');return;}
+   var t=curTpl();if(!t){alert('Escolha o template.');return;}
+   if(faltam()){alert('Preencha todas as variáveis do template.');return;}
+   var params=lerParams();
    var nome=(mb.querySelector('#waNome')||{}).value||('Disparo '+label);
-   var t=templates.filter(function(x){return x.name===tplName;})[0];
-   var params=[];if(t&&t.vars>=1){params.push('{nome}');for(var i=1;i<t.vars;i++)params.push('-');}
-   if(!confirm('Confirmar disparo de "'+tplName+'" pra '+previa+' pessoas no WhatsApp?'))return;
-   mb.innerHTML='<div id="waProgTxt" style="font-size:13px;color:var(--c-mut,#8b98a5)">Criando campanha…</div><div class="wa-bar"><i id="waBar"></i></div>';
+   var cupom=String((mb.querySelector('#waCupom')||{}).value||'').trim();
+   if(!confirm('Confirmar disparo de "'+t.name+'" pra '+nf(previa)+' pessoas no WhatsApp?'+(cu?'\n\nCusto estimado: '+money(previa*cu)+'.':'')+'\n\nDispara de verdade e não dá pra desfazer.'))return;
+   enviando=true;mask.querySelector('.mx').style.display='none';
+   mb.innerHTML='<div id="waProgTxt" style="font-size:13px;color:#667085">Criando campanha…</div><div class="wa-bar"><i id="waBar"></i></div><div class="wa-note">Não feche esta página até terminar.</div>';
    mf.innerHTML='';
-   var cr=await apiD({action:'criar',client_id:CLI.id,canal:'whatsapp',template:tplName,nome:nome,segment_id:null,regra:regra,params:params});
-   if(cr.error||!cr.campaign_id){mb.innerHTML='<div class="wa-alerta">'+esc(cr.error||'não deu pra criar a campanha')+'</div>';mf.innerHTML='<button class="wa-bt" type="button" id="waFe">Fechar</button>';mf.querySelector('#waFe').onclick=close;return;}
-   var cid=cr.campaign_id,alvos=cr.alvos||previa,guard=0;
-   while(guard++<300){
-    var rr=await apiD({action:'enviar_lote',campaign_id:cid,tam:60});
-    if(rr.error){mb.innerHTML='<div class="wa-alerta">Parou: '+esc(rr.error)+'</div>';break;}
-    var feito=(rr.enviados||0)+(rr.falhas||0),pc=alvos?Math.round(feito/alvos*100):100;
+   var fecha=function(){enviando=false;mask.remove();window.renderWhatsApp(box,ctx);};
+   var cr=await apiD({action:'criar',client_id:CLI.id,canal:'whatsapp',template:t.name,nome:nome,segment_id:null,regra:regra,params:params,cupom:cupom});
+   if(!cr||cr.error||!cr.campaign_id){enviando=false;mask.querySelector('.mx').style.display='';mb.innerHTML='<div class="wa-alerta">'+esc((cr&&cr.error)||'não deu pra criar a campanha')+'</div>';mf.innerHTML='<button class="wa-bt" type="button" id="waFe">Fechar</button>';mf.querySelector('#waFe').onclick=close;return;}
+   var cid=cr.campaign_id,alvos=cr.alvos||previa,guard=0,erroFim='',env=0,fal=0;
+   while(guard++<400){
+    var rr=await apiD({action:'enviar_lote',campaign_id:cid,tam:30});
+    if(!rr||rr.error){erroFim=(rr&&rr.error)||'sem resposta do servidor';if(rr){env=rr.enviados||env;fal=rr.falhas||fal;}break;}
+    env=rr.enviados||0;fal=rr.falhas||0;
+    var pc=alvos?Math.round((env+fal)/alvos*100):100;
     var bar=mb.querySelector('#waBar');if(bar)bar.style.width=Math.min(100,pc)+'%';
-    var tx=mb.querySelector('#waProgTxt');if(tx)tx.textContent='Enviados '+nf(rr.enviados||0)+' · falhas '+nf(rr.falhas||0)+' · faltam '+nf(rr.restantes||0);
+    var tx=mb.querySelector('#waProgTxt');if(tx)tx.textContent='Enviados '+nf(env)+' · falhas '+nf(fal)+' · faltam '+nf(rr.restantes||0)+(rr.pausa?' · a Meta pediu pra ir mais devagar, esperando 20s…':'');
     if(rr.done)break;
+    if(rr.pausa)await new Promise(function(ok){setTimeout(ok,20000);});
    }
-   mb.innerHTML='<div style="text-align:center;padding:10px 0"><div style="font-size:34px">📣</div><h3 style="margin:8px 0 2px;font-size:18px">Disparo concluído</h3></div>';
+   if(erroFim){
+    mb.innerHTML='<div class="wa-alerta">Parou antes do fim: '+esc(erroFim)+'</div><div class="wa-note">Enviados até aqui: '+nf(env)+' · falhas: '+nf(fal)+'.</div>';
+   }else{
+    mb.innerHTML='<div style="text-align:center;padding:10px 0"><div style="font-size:34px">📣</div><h3 style="margin:8px 0 2px;font-size:18px">Disparo concluído</h3><div class="wa-note">Enviados '+nf(env)+' · falhas '+nf(fal)+'</div></div>';
+   }
    mf.innerHTML='<button class="wa-bt pri" type="button" id="waFim">Ver resultados</button>';
-   mf.querySelector('#waFim').onclick=function(){close();window.renderWhatsApp(box,ctx);};
+   mf.querySelector('#waFim').onclick=fecha;
   };
  }
 
