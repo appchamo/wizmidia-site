@@ -83,7 +83,7 @@ window.renderEmail=async function(box,ctx){
  var simpleMode=(!nsConn)&&(SIMPLE_IDS.indexOf(String(CLI.id))>=0)&&!!mListId;
  var listInfo=null; if(simpleMode){try{listInfo=await simpleapi({action:'list_info',clientId:CLI.id});}catch(_e){}}
  var SEGS=(CLI.brevo_segments&&typeof CLI.brevo_segments==='object')?CLI.brevo_segments:null;
- var segDefs=SEGS?[['todos','Todos os contatos'],['compradores','Compradores'],['nao','Não compraram'],['d60','Última compra +60 dias']].filter(function(d){return SEGS[d[0]];}):[];
+ var segDefs=SEGS?[['todos','Todos os contatos'],['compradores','Compradores'],['nao','Não compraram'],['d60','Última compra +60 dias'],['d45','Última compra +45 dias']].filter(function(d){return SEGS[d[0]];}):[];
  if(segDefs.length){ if(!mListId||!SEGS[Object.keys(SEGS).find(function(k){return String(SEGS[k])===String(mListId);})||'']){mListId=SEGS.todos;mListName='Todos os contatos';} }
 
  var h='';
@@ -102,7 +102,7 @@ window.renderEmail=async function(box,ctx){
   else if(segDefs.length){listCell='<select id="emSeg">'+segDefs.map(function(d){var id=SEGS[d[0]];return '<option value="'+id+'" data-n="'+esc(d[1])+'"'+(String(id)===String(mListId)?' selected':'')+'>'+esc(d[1])+'</option>';}).join('')+'</select>';}
   else{listCell='<div class="em-lock">'+LOCKICO+'<span>'+esc(mListName||('Lista '+mListId)||'não configurada')+'</span></div>';}
   h+='<div class="em-grid"><div class="em-f"><label>Lista de destinatários</label>'+listCell+'</div><div class="em-f"><label>Remetente</label><div class="em-lock">'+LOCKICO+'<span>'+(mSE?esc(mSN)+' &lt;'+esc(mSE)+'&gt;':'não configurado')+'</span></div></div></div>';
-  if(segDefs.length&&!simpleMode)h+='<p class="em-hint">Escolha para quem enviar: todos, só quem já comprou, quem nunca comprou, ou quem não compra há +60 dias.</p>';
+  if(segDefs.length&&!simpleMode)h+='<p class="em-hint">Escolha para quem enviar: todos, só quem já comprou, quem nunca comprou, ou quem não compra há +60 ou +45 dias.</p>';
   if(!mListId&&nsConn)h+='<div class="em-row"><button class="em-btn" id="impCust" style="font-size:13px">Importar clientes da loja pro Brevo</button><span class="em-save" id="impState"></span></div><p class="em-hint">Cria a lista deste cliente puxando os clientes da loja Nuvemshop (sem CSV).</p>';
   else if(!mListId||!mSE)h+='<p class="em-hint" style="color:#c33">Configuração pendente — fale com a Wiz Mídia.</p>';
  }
