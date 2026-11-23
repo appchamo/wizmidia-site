@@ -220,6 +220,8 @@ window.renderEmail=async function(box,ctx){
  }
  var segSel=document.getElementById('emSeg');
  if(segSel)segSel.onchange=function(){mListId=this.value;mListName=(this.selectedOptions[0]&&this.selectedOptions[0].getAttribute('data-n'))||'';};
+ // mostra quantos contatos tem cada publico, entre parenteses (numero real da lista de envio)
+ if(segSel){post(SUPA_URL+'/functions/v1/brevo-seg-counts',{clientId:CLI.id}).then(function(r){var c=(r&&r.counts)||{};Array.prototype.forEach.call(segSel.options,function(o){var n=c[String(o.value)];if(n!=null)o.textContent=(o.getAttribute('data-n')||o.textContent)+' ('+Number(n).toLocaleString('pt-BR')+')';});}).catch(function(){});}
 
  var imp=document.getElementById('impCust');
  if(imp)imp.onclick=async function(){var s=document.getElementById('impState');if(!confirm('Puxar os clientes da loja Nuvemshop pro Brevo e usar como lista deste cliente?'))return;this.disabled=true;s.textContent='importando (pode levar ~1 min)…';try{var r=await api({action:'import_customers',clientId:CLI.id});s.textContent='pronto: '+r.count+' contatos na lista "'+r.listName+'"';setTimeout(function(){window.renderEmail(box,ctx);},1600);}catch(e){s.textContent='erro: '+e.message+(e.detail?(' ['+JSON.stringify(e.detail)+']'):'');this.disabled=false;}};
