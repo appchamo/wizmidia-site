@@ -231,6 +231,8 @@ window.renderWhatsApp=async function(box,ctx){
  if(isAdmin){box.querySelectorAll('.wa-cu').forEach(function(inp){inp.onchange=async function(){var v=Number(inp.value)||0;try{await sb.from('wa_campanhas').update({custo_unit:v}).eq('id',inp.dataset.camp);window.renderWhatsApp(box,ctx);}catch(e){alert('Não salvou: '+(e.message||e));}};});}
  var nova=box.querySelector('#waNova');
  if(nova)nova.onclick=function(){var k=(box.querySelector('#waPub')||{}).value;var p=PUBLICOS.filter(function(x){return x.k===k;})[0]||PUBLICOS[0];waAbreDisparo(p);};
+ // conta quantas pessoas (alcançáveis no WhatsApp) tem em cada público e mostra entre parênteses
+ (function(){var sel=box.querySelector('#waPub');if(!sel)return;PUBLICOS.forEach(function(p,i){apiD({action:'previa',client_id:CLI.id,canal:'whatsapp',regra:p.regra}).then(function(pv){var n=(pv&&pv.quantos!=null)?pv.quantos:null;var opt=sel.options[i];if(opt&&n!=null)opt.textContent=p.rot+' ('+Number(n).toLocaleString('pt-BR')+')';}).catch(function(){});});})();
 };
 })();
 
