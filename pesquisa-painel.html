@@ -86,6 +86,15 @@ body{margin:0;background:linear-gradient(180deg,#131a28,#0f1420 60%);color:var(-
     </div>
     <div class="card" style="margin-top:12px"><div class="lbl" style="color:var(--muted);font-size:12px;font-weight:600">Distribuição NPS</div><div class="nps-bar" id="npsbar"></div><div class="sub" style="color:var(--faint);font-size:11.5px;margin-top:8px" id="npsleg"></div></div>
 
+    <div class="sec-t">Botões do WhatsApp</div>
+    <div class="grid kpis">
+      <div class="card kpi"><div class="lbl">Enviadas</div><div class="big" id="w-env">–</div><div class="sub" id="w-resp">&nbsp;</div></div>
+      <div class="card kpi"><div class="lbl">Foi ótimo</div><div class="big" style="color:var(--green)" id="w-ot">–</div><div class="sub">&nbsp;</div></div>
+      <div class="card kpi"><div class="lbl">Foi bom</div><div class="big" style="color:var(--amber)" id="w-bom">–</div><div class="sub">&nbsp;</div></div>
+      <div class="card kpi"><div class="lbl">Pode melhorar</div><div class="big" style="color:var(--red)" id="w-mel">–</div><div class="sub">&nbsp;</div></div>
+    </div>
+    <div id="walist" style="margin-top:12px"></div>
+
     <div class="sec-t">Médias por área (1 a 5)</div>
     <div class="grid dims" id="dims"></div>
 
@@ -132,6 +141,26 @@ body{margin:0;background:linear-gradient(180deg,#131a28,#0f1420 60%);color:var(-
 
     var sv=d.servicos||{};var keys=Object.keys(sv).sort(function(a,b){return sv[b]-sv[a];});
     document.getElementById('servs').innerHTML=keys.length?keys.map(function(k){return '<div class="s">'+esc(k)+'<b>'+sv[k]+'</b></div>';}).join(''):'<div style="color:var(--faint);font-size:13px">—</div>';
+
+    var wa=d.wa||{enviados:0,respondidos:0,otimo:0,bom:0,melhorar:0,linhas:[]};
+    document.getElementById('w-env').textContent=wa.enviados;
+    document.getElementById('w-resp').textContent=wa.respondidos+' responderam';
+    document.getElementById('w-ot').textContent=wa.otimo;
+    document.getElementById('w-bom').textContent=wa.bom;
+    document.getElementById('w-mel').textContent=wa.melhorar;
+    var WL={otimo:['Foi ótimo','p'],bom:['Foi bom','n'],melhorar:['Pode melhorar','d']};
+    var wl=wa.linhas||[];
+    var wr=wl.filter(function(r){return r.resposta;});
+    var ws=wl.filter(function(r){return !r.resposta&&r.status_envio==='enviado';});
+    var wf=wl.filter(function(r){return r.status_envio==='falhou';});
+    var quem=function(r){return esc(r.empresa||r.nome||('+'+r.telefone))+((r.empresa&&r.nome)?' <span style="color:var(--faint);font-weight:500">· '+esc(r.nome)+'</span>':'');};
+    var wh=wr.map(function(r){var o=WL[r.resposta]||[r.resposta,''];
+      return '<div class="card resp '+o[1]+'"><div class="rh"><span class="emp">'+quem(r)+'</span><span class="when">'+when(r.respondeu_em)+'</span></div>'+
+        '<div style="margin-top:6px"><span class="nps-tag '+o[1]+'">'+esc(o[0])+'</span></div>'+
+        (r.comentario?'<div class="txt"><b>💬 Escreveu:</b> '+esc(r.comentario)+'</div>':'')+'</div>';}).join('');
+    if(ws.length)wh+='<div class="card" style="margin-top:10px"><div style="font-size:13px;color:var(--muted)"><b>Ainda não responderam ('+ws.length+'):</b> '+ws.map(function(r){return esc(r.empresa||r.nome||r.telefone)+(r.empresa&&r.nome?' ('+esc(r.nome)+')':'');}).join(', ')+'</div></div>';
+    if(wf.length)wh+='<div class="card" style="margin-top:10px"><div style="font-size:13px;color:var(--red)"><b>Envio falhou ('+wf.length+'):</b> '+wf.map(function(r){return esc(r.empresa||r.nome||r.telefone);}).join(', ')+'</div></div>';
+    document.getElementById('walist').innerHTML=wh||'<div class="empty" style="padding:18px">Nenhuma pesquisa por botão enviada ainda.</div>';
 
     var rows=d.respostas||[];
     if(!rows.length){document.getElementById('list').innerHTML='<div class="empty">Nenhuma resposta ainda. Compartilha o link no WhatsApp pra começar a receber. 🙂</div>';return;}
