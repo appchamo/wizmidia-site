@@ -23,9 +23,51 @@ var KINDS={
  remarketing:{label:'Remarketing (novidades)',subject:'Separamos novidades pra você ☕',headline:'Novidades esperando por você',sub:'Dá uma olhada no que chegou na loja',body:'',coupon:'',discount:0,cta:'VER NOVIDADES',products:true},
  carrinho:{label:'Recuperar carrinho',subject:'Você esqueceu algo no carrinho 👀',headline:'Seu café tá te esperando',sub:'Você deixou itens no carrinho',body:'Volte e finalize sua compra — seu café especial está quase indo embora.',coupon:'',discount:0,cta:'FINALIZAR COMPRA',products:true},
  antigo:{label:'Cliente antigo (reativação)',subject:'A gente sentiu sua falta ☕',headline:'Sentimos sua falta',sub:'Volte com um presente',body:'Faz um tempo que você não pega seu café com a gente. Preparamos um mimo pra te trazer de volta.',coupon:'',discount:30,cta:'QUERO VOLTAR',products:true},
+ primeira:{label:'Primeira compra (não compraram)',tpl:'primeira',seg:'nao',subject:'Sua primeira compra com desconto ☕',headline:'Falta só você provar',sub:'válido por tempo limitado',body:'Você já passou pela nossa loja, mas ainda não levou nenhum café pra casa. Aproveite essa primeira compra com desconto.\n\nSão cafés especiais, de produtores que a gente conhece pelo nome. Você escolhe em grãos ou moído.',coupon:'',discount:0,cta:'QUERO MEU PRIMEIRO CAFÉ',products:true},
  aniversario:{label:'Aniversariante',subject:'Feliz aniversário! 🎉 Tem presente',headline:'Feliz aniversário, {NOME}!',sub:'Um presente da casa pra você',body:'Hoje é seu dia! Comemore com um café especial e um desconto por nossa conta.',coupon:'',discount:30,cta:'RESGATAR PRESENTE',products:false},
  generico:{label:'Genérico',subject:'',headline:'',sub:'',body:'',coupon:'',discount:0,cta:'SAIBA MAIS',products:true}
 };
+
+// modelos prontos por cliente (sobrescrevem os campos do tipo de campanha)
+var PRESETS={
+ '4b36ce6d-d7e2-4e0b-8049-115e02145918':{ // Primitivo
+  primeira:{subject:'Sua primeira compra com 35% OFF ☕',preheader:'Cupom BLACK em todos os cafés, só até dia 30.',headline:'Falta só você provar',sub:'35% OFF · válido até dia 30',
+   body:'Você já passou pela nossa loja, mas ainda não levou nenhum café pra casa. Até o dia 30 dá pra fazer essa primeira compra com 35% de desconto em todos os cafés.\n\nSão cafés especiais do Cerrado Mineiro, de produtores que a gente conhece pelo nome. Você escolhe em grãos ou moído.',
+   coupon:'BLACK',discount:35,cta:'QUERO MEU PRIMEIRO CAFÉ',utm:'promo-2026-11',
+   bannerUrl:'https://gwvabuxqufpqxdtqhmmy.supabase.co/storage/v1/object/public/email-assets/tmp-jg/email-banner-35.jpg',
+   productIds:[342461205,370550227,367735317,353195843],
+   notes:{342461205:'Chocolate, caramelo, mel',370550227:'Floral, mamão, bergamota',367735317:'Rapadura, caramelo, avelã',353195843:'Floral, mel, mamão, laranja'},
+   names:{342461205:'Chocolate do Cerrado',353195843:'Jack Geisha'},
+   colors:{dark:'#1C1714',accent:'#E9A91A',bg:'#FFFCF5',card:'#F8F1E1',line:'#E4DAC4',text:'#5A4634',title:'#1C1714',tag:'#B74238',box:'#F3E9D2',outer:'#EFE7D8',header:'#000000'},
+   footer:'Primitivo Torrefação e Cafeteria · Patrocínio, MG'}
+ }
+};
+function presetFor(cli,k){var p=PRESETS[String(cli&&cli.id)];return (p&&p[k])||null;}
+// e-mail "Primeira compra": monta o HTML aqui mesmo (layout próprio, com cupom em destaque)
+function buildPrimeira(o){
+ var c=o.colors||{};var dark=c.dark||o.brandDark||'#1C1714',acc=c.accent||o.brandPrimary||'#E9A91A',bg=c.bg||'#FFFCF5',card=c.card||'#F8F1E1',line=c.line||'#E4DAC4',txt=c.text||'#5A4634',ttl=c.title||dark,tag=c.tag||'#B74238',box=c.box||'#F3E9D2',outer=c.outer||'#EFE7D8',hdr=c.header||o.headerBg||dark;
+ var fh="'Barlow Condensed',Barlow,Arial,sans-serif",fb='Barlow,Arial,Helvetica,sans-serif';
+ var U=function(u,ct){if(!u)return u;try{var x=new URL(u);if(o.utm){x.searchParams.set('utm_source','email');x.searchParams.set('utm_medium','email');x.searchParams.set('utm_campaign',o.utm);if(ct)x.searchParams.set('utm_content',ct);}return x.toString();}catch(e){return u;}};
+ var home=o.home||'#',cta=o.ctaUrl||home,disc=Number(o.discount||0),coupon=String(o.coupon||'').trim();
+ var paras=String(o.body||'').split(/\n\s*\n/).map(function(t){return t.trim();}).filter(Boolean).map(function(t){var h=esc(t).replace(/\n/g,'<br>');if(disc>0){var k=disc+'% de desconto';h=h.split(k).join('<b style="color:'+ttl+'">'+k+'</b>');}return '<p style="font-size:16px;line-height:24px;color:'+txt+';margin:12px 0 0">'+h+'</p>';}).join('');
+ var prods=(o.products||[]).slice(0,4);
+ var cardH=function(p){var url=U(p.url||home,'produto');var nm=esc(p.name);var price=p.price?('R$ '+Number(p.price).toFixed(2).replace('.',',')):'';
+  return '<td width="50%" valign="top" style="padding:8px"><table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid '+line+';border-radius:10px;overflow:hidden;background:'+card+'"><tr><td>'+(p.image?'<a href="'+esc(url)+'"><img src="'+esc(p.image)+'" width="250" alt="'+nm+'" style="display:block;width:100%;height:auto;border:0"></a>':'')+'</td></tr><tr><td style="padding:12px 12px 14px"><div style="font-size:16px;font-weight:700;color:'+ttl+'">'+nm+'</div>'+(p.note?'<div style="font-size:13px;color:#6B5947;margin-top:2px">'+esc(p.note)+'</div>':'')+(price?'<div style="margin-top:8px">'+(disc>0?'<span style="color:#8A8178;text-decoration:line-through;font-size:13px">'+price+'</span> <span style="background:'+tag+';color:#FFFCF5;font-size:11px;font-weight:800;padding:3px 6px;border-radius:4px">'+disc+'% OFF</span>':'<span style="font-size:15px;font-weight:700;color:'+ttl+'">'+price+'</span>')+'</div>':'')+'<a href="'+esc(url)+'" style="display:block;margin-top:10px;background:'+dark+';color:#F3E9D2;text-decoration:none;text-align:center;padding:10px 0;border-radius:6px;font-weight:700;font-size:14px">COMPRAR</a></td></tr></table></td>';};
+ var rows='';for(var i=0;i<prods.length;i+=2)rows+='<tr>'+cardH(prods[i])+(prods[i+1]?cardH(prods[i+1]):'<td width="50%"></td>')+'</tr>';
+ return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700;800&family=Barlow+Condensed:wght@800&display=swap" rel="stylesheet"></head>'+
+ '<body style="margin:0;background:'+outer+';font-family:'+fb+';color:#3F2A18">'+(o.preheader?'<div style="display:none;max-height:0;overflow:hidden">'+esc(o.preheader)+'</div>':'')+
+ '<table width="100%" cellpadding="0" cellspacing="0" style="background:'+outer+'"><tr><td align="center" style="padding:16px"><table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:'+bg+';border-radius:12px;overflow:hidden">'+
+ (o.logo?'<tr><td align="center" style="background:'+hdr+';padding:14px"><a href="'+esc(U(home,'logo'))+'"><img src="'+esc(o.logo)+'" height="40" alt="" style="height:40px;border:0"></a></td></tr>':'')+
+ (o.bannerUrl?'<tr><td><a href="'+esc(U(cta,'banner'))+'"><img src="'+esc(o.bannerUrl)+'" width="600" alt="" style="display:block;width:100%;height:auto;border:0"></a></td></tr>':'')+
+ '<tr><td style="padding:28px 28px 4px"><div style="font-family:'+fh+';font-size:30px;line-height:34px;font-weight:800;color:'+ttl+';text-transform:uppercase">Oi, {NOME}!'+(o.headline?' '+esc(o.headline):'')+'</div>'+paras+'</td></tr>'+
+ (coupon?'<tr><td align="center" style="padding:22px 28px 6px"><table cellpadding="0" cellspacing="0" style="border:2px dashed '+acc+';border-radius:10px;background:'+dark+'"><tr><td align="center" style="padding:14px 34px"><div style="font-size:12px;letter-spacing:2px;color:#D2C6AE;font-weight:700;text-transform:uppercase">Use o cupom</div><div style="font-family:'+fh+';font-size:38px;line-height:42px;font-weight:800;color:'+acc+';letter-spacing:3px">'+esc(coupon)+'</div>'+(o.sub?'<div style="font-size:13px;color:#F3E9D2;font-weight:500">'+esc(o.sub)+'</div>':'')+'</td></tr></table></td></tr>':'')+
+ '<tr><td align="center" style="padding:16px 28px 26px"><a href="'+esc(U(cta,'cta'))+'" style="background:'+acc+';color:'+dark+';text-decoration:none;padding:16px 38px;border-radius:8px;font-family:'+fb+';font-weight:800;font-size:17px;display:inline-block">'+esc(o.ctaText||'COMPRAR')+'</a></td></tr>'+
+ (rows?'<tr><td style="padding:0 28px 6px"><div style="font-size:12px;letter-spacing:2px;color:#8A5A12;font-weight:700;text-transform:uppercase">● Os mais vendidos</div></td></tr><tr><td style="padding:4px 18px 8px"><table width="100%" cellpadding="0" cellspacing="0">'+rows+'</table></td></tr>':'')+
+ (coupon?'<tr><td style="padding:16px 28px 8px"><table width="100%" cellpadding="0" cellspacing="0" style="background:'+box+';border-radius:10px"><tr><td style="padding:16px 18px;font-size:14px;line-height:22px;color:#3F2A18"><b>Como usar:</b> escolha seus produtos, vá pra sacola e digite <b>'+esc(coupon)+'</b> no campo de cupom.</td></tr></table></td></tr>':'')+
+ '<tr><td align="center" style="padding:18px 28px 28px"><a href="'+esc(U(home,'loja'))+'" style="color:#8A5A12;text-decoration:none;font-weight:700;font-size:15px">Ver a loja completa &rarr;</a></td></tr>'+
+ '<tr><td align="center" style="background:'+dark+';padding:18px;color:#B3A893;font-size:12px;line-height:18px">'+esc(o.footer||o.storeName||'')+'<br><a href="{{unsubscribe}}" style="color:#B3A893">descadastrar</a></td></tr>'+
+ '</table></td></tr></table></body></html>';
+}
 
 function css(){
  if(document.getElementById('emailcss'))return;
@@ -119,7 +161,7 @@ window.renderEmail=async function(box,ctx){
      '<div class="em-grid"><div class="em-f"><label>Título (topo, se não subir banner)</label><input id="cHead"></div><div class="em-f"><label>Subtítulo</label><input id="cSub"></div></div>'+
      '<div class="em-f"><label>Texto do corpo (opcional)</label><textarea id="cBody"></textarea></div>'+
      '<div class="em-grid"><div class="em-f"><label>Cupom (opcional)</label><input id="cCoupon"></div><div class="em-f"><label>Desconto % (opcional)</label><input id="cDisc" type="number"></div></div>'+
-     '<div class="em-grid"><div class="em-f"><label class="em-chk"><input type="checkbox" id="cProds"> Mostrar 4 produtos da loja</label></div><div class="em-f"><label>Banner do topo (opcional)</label><input id="cBanner" type="file" accept="image/*"><button type="button" class="em-btn" id="cBannerClear" style="margin-top:6px;font-size:12px;padding:6px 10px;display:none">✕ remover banner</button></div></div>'+
+     '<div class="em-grid"><div class="em-f"><label class="em-chk"><input type="checkbox" id="cProds"> Mostrar 4 produtos da loja</label></div><div class="em-f"><label>Banner do topo (opcional)</label><input id="cBanner" type="file" accept="image/*"><div class="em-hint" id="cBannerHint" style="display:none;margin:4px 0 0">Este modelo já tem um banner. Só escolha outro se quiser trocar.</div><button type="button" class="em-btn" id="cBannerClear" style="margin-top:6px;font-size:12px;padding:6px 10px;display:none">✕ remover banner</button></div></div>'+
      '<div class="em-row"><button class="em-btn pri" id="cGen">Gerar prévia</button><span class="em-save" id="cState"></span></div>'+
      '<div id="cPrev" style="margin-top:12px"></div>'+
      '<div class="em-row" style="border-top:1px solid var(--c-line,#eee);padding-top:14px;margin-top:16px"><input id="cTestTo" placeholder="e-mail p/ teste (opcional)" style="width:230px;background:var(--c-bg2,#fff);border:1px solid var(--c-line,#e3e7ee);border-radius:10px;padding:10px 12px;font-size:14px;color:inherit;font-family:inherit"><button class="em-btn" id="cTest">Enviar teste</button><button class="em-btn pri" id="cSend">Enviar campanha</button><button class="em-btn" id="cSched">Agendar em lotes (250/dia)</button></div>'+
@@ -303,7 +345,8 @@ window.renderEmail=async function(box,ctx){
 
  var genHtml=null;
  function fileB64(f){return new Promise(function(res){var rd=new FileReader();rd.onload=function(){res(String(rd.result).split(',')[1]||'');};rd.readAsDataURL(f);});}
- function applyKind(k){var d=KINDS[k]||KINDS.generico;document.getElementById('cSubj').value=d.subject;document.getElementById('cHead').value=d.headline;document.getElementById('cSub').value=d.sub;document.getElementById('cBody').value=d.body;document.getElementById('cCoupon').value=d.coupon;document.getElementById('cDisc').value=d.discount||'';document.getElementById('cCta').value=d.cta;document.getElementById('cProds').checked=!!d.products;var ut=document.getElementById('cUtm');if(ut)ut.value=(k+'-'+new Date().toISOString().slice(0,7)).toLowerCase();genHtml=null;document.getElementById('cPrev').innerHTML='';}
+ var curPreset=null;
+ function applyKind(k){var d=Object.assign({},KINDS[k]||KINDS.generico,presetFor(CLI,k)||{});curPreset=d;document.getElementById('cSubj').value=d.subject;document.getElementById('cHead').value=d.headline;document.getElementById('cSub').value=d.sub;document.getElementById('cBody').value=d.body;document.getElementById('cCoupon').value=d.coupon;document.getElementById('cDisc').value=d.discount||'';document.getElementById('cCta').value=d.cta;document.getElementById('cProds').checked=!!d.products;var ut=document.getElementById('cUtm');if(ut)ut.value=d.utm||(k+'-'+new Date().toISOString().slice(0,7)).toLowerCase();var bh=document.getElementById('cBannerHint');if(bh)bh.style.display=d.bannerUrl?'':'none';if(d.seg&&SEGS&&SEGS[d.seg]){var ss=document.getElementById('emSeg')||document.getElementById('emList');if(ss){var want=String(SEGS[d.seg]);var has=Array.prototype.some.call(ss.options,function(o){return o.value===want;});if(has){ss.value=want;if(ss.id==='emSeg'){if(ss.onchange)ss.onchange();}else{mListId=want;mListName=(ss.selectedOptions[0]&&ss.selectedOptions[0].getAttribute('data-n'))||'';}}}}genHtml=null;document.getElementById('cPrev').innerHTML='';}
  document.getElementById('cKind').onchange=function(){applyKind(this.value);};
  applyKind('promo');
  document.getElementById('cBtnTarget').onchange=function(){document.getElementById('cBtnUrlWrap').style.display=this.value==='custom'?'':'none';};
@@ -317,6 +360,24 @@ window.renderEmail=async function(box,ctx){
    var bannerUrl='';var fi=document.getElementById('cBanner');
    if(fi&&fi.files&&fi.files[0]){stt.textContent='subindo banner…';var f=fi.files[0];var b64=await fileB64(f);var up=await api({action:'upload_image',clientId:CLI.id,filename:f.name,contentType:f.type,contentBase64:b64});bannerUrl=up.url;}
    stt.textContent='montando…';
+   var kd=document.getElementById('cKind').value;var kdef=KINDS[kd]||{};
+   if(kdef.tpl==='primeira'){
+    var pr=curPreset||{};var prods=[];
+    if(document.getElementById('cProds').checked){var pl=await nsapi({action:'products',clientId:CLI.id,per:50});var all=pl.products||[];
+     if(pr.productIds&&pr.productIds.length){pr.productIds.forEach(function(id){var f=all.find(function(x){return String(x.id)===String(id);});if(f)prods.push(f);});}
+     if(prods.length<4){all.forEach(function(x){if(prods.length<4&&prods.indexOf(x)<0&&!/clube|assinatura/i.test(x.name))prods.push(x);});}
+     prods=prods.slice(0,4).map(function(x){return {name:(pr.names&&pr.names[x.id])||x.name,price:x.price,image:x.image,url:x.url,note:(pr.notes&&pr.notes[x.id])||''};});}
+    var home0=(prods[0]&&prods[0].url)?new URL(prods[0].url).origin:((pr.home)||'');
+    if(!home0){try{var p1=await nsapi({action:'products',clientId:CLI.id,per:1});if(p1.products&&p1.products[0]&&p1.products[0].url)home0=new URL(p1.products[0].url).origin;}catch(_e){}}
+    var bt=document.getElementById('cBtnTarget').value;var ctaU=home0;if(bt==='produtos')ctaU=home0.replace(/\/+$/,'')+'/produtos/';else if(bt==='custom')ctaU=(document.getElementById('cBtnUrl').value.trim()||home0);
+    genHtml=buildPrimeira({colors:pr.colors,brandDark:CLI.brand_dark,brandPrimary:CLI.brand_primary,headerBg:CLI.brand_header_bg,logo:CLI.brand_logo,bannerUrl:bannerUrl||pr.bannerUrl||'',
+     headline:document.getElementById('cHead').value.trim(),sub:document.getElementById('cSub').value.trim(),body:document.getElementById('cBody').value,
+     coupon:document.getElementById('cCoupon').value.trim(),discount:parseInt(document.getElementById('cDisc').value,10)||0,ctaText:document.getElementById('cCta').value.trim(),
+     ctaUrl:ctaU,home:home0,utm:document.getElementById('cUtm').value.trim(),products:prods,preheader:pr.preheader||'',footer:pr.footer||'',storeName:CLI.name});
+    document.getElementById('cPrev').innerHTML='<div class="em-hint" style="margin-bottom:6px">Prévia — o nome é só exemplo. Na campanha real, cada pessoa recebe o próprio nome (campo NOME da lista).</div><iframe style="width:100%;height:560px;border:1px solid var(--c-line,#e3e7ee);border-radius:10px;background:#fff"></iframe>';
+    document.getElementById('cPrev').querySelector('iframe').srcdoc=genHtml.replace(/\{NOME\}/g,'Ana');
+    stt.textContent='prévia pronta ✓';b.disabled=false;b.textContent='Gerar prévia';return;
+   }
    var r=await nsapi({action:'gen_template',clientId:CLI.id,bannerUrl:bannerUrl,
      headline:document.getElementById('cHead').value.trim(),sub:document.getElementById('cSub').value.trim(),
      bodyText:document.getElementById('cBody').value.trim(),coupon:document.getElementById('cCoupon').value.trim(),
