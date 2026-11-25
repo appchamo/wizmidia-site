@@ -183,7 +183,10 @@ window.renderAutomacoes=async function(box,ctx){
           var lojaOk=!!(l&&l.ok&&l.connected);
           if(gaOk&&(gaCart>0||gaPur>0)){
             var alc=kv(/^alcance/i);
-            var comp=gaPur;
+            // visitas/carrinho sao do site inteiro: quando o card "Vendas da loja" aparece, a base do funil e esse mesmo numero.
+            // (Sydra nao mostra o card da loja, entao segue com as compras medidas pelo GA4.)
+            var semCardLoja=(typeof CLIENT!=='undefined'&&CLIENT&&(CLIENT.slug==='sydra'||String(CLIENT.id)==='06b0c919-1d58-4a00-add5-17bc738a92a9'));
+            var comp=(lojaOk&&!semCardLoja)?(l.orders||0):gaPur;
             var st=[];
             if(alc)st.push({l:'Alcance',v:alc});
             st.push({l:'Visitas',v:gaSess});
@@ -199,7 +202,7 @@ window.renderAutomacoes=async function(box,ctx){
           if(alcance)steps.push({l:'Alcance',v:alcance});
           if(cliques)steps.push({l:'Cliques',v:cliques});
           if(adic)steps.push({l:'Adição ao carrinho',v:adic});
-          steps.push({l:'Compras',v:compras||0});
+          steps.push({l:'Compras (anúncios)',v:compras||0});
           renderFunnel(steps);
         }catch(e){}
       };
@@ -305,62 +308,173 @@ window.renderAutomacoes=async function(box,ctx){
   }catch(e){}
 })();
 
-/* === Wiz patch: Visão Geral SEMPRE ao vivo (bate 100% com o Ads Manager) ===
-   Liga a função report-range (que já puxa ao vivo da Meta) também nos períodos
-   numéricos (7/14/30/60/90) e na 1ª carga, não só em Hoje/Ontem/Personalizado. */
+/* === Wiz patch: Visão Geral AO VIVO, abrindo de UMA vez (sem trocar de dados na tela) ===
+   - Os números vêm ao vivo da Meta (report-range) em todos os períodos e na 1ª carga.
+   - Meta + loja + GA4 são buscados JUNTOS e a tela só é pintada quando os três chegaram:
+     nada de "foto salva" aparecendo antes, nem cards da loja / funil entrando depois.
+   - Se a busca ao vivo falhar num período numérico, mostra a foto salva em vez de erro. */
 (function(){
   try{
-    var inLive=false, autoDone=false;
+    if(window.__wizLiveV2)return;
+    if(typeof loadRangeLive!=='function'||typeof renderReport!=='function')return;
+    window.__wizLiveV2=true;
 
-    // marca quando um load AO VIVO está rodando, pra não re-disparar em loop
-    if(typeof loadRangeLive==='function' && !window.__wizLiveWrap){
-      var _lrl=loadRangeLive;
-      window.loadRangeLive=function(){
-        inLive=true;
-        var p;
-        try{ p=_lrl.apply(this,arguments); }catch(e){ inLive=false; throw e; }
-        if(p&&typeof p.then==='function'){ p.then(function(){inLive=false;},function(){inLive=false;}); }
-        else { inLive=false; }
-        return p;
-      };
-      window.__wizLiveWrap=true;
+    function box(){return document.getElementById('repContent');}
+    function curSel(){try{return String(REP._sel||REP.range||'30');}catch(e){return '30';}}
+    function numSel(){return /^\d+$/.test(curSel());}
+    // a tela atual usa os dados da loja/GA4? (Visão Geral)
+    function needsStats(){
+      try{
+        if(document.body.classList.contains('cli-ui'))return !REP.cliSec||REP.cliSec==='geral';
+        return !REP.source||REP.source==='TOTAL';
+      }catch(e){return true;}
     }
 
-    // troca de período numérico passa a puxar AO VIVO (em vez da foto salva)
-    if(typeof onRangeChange==='function' && !window.__wizLiveORC){
+    /* --- 1) cache curto de loja-stats / ga4-stats: a mesma chamada é feita uma vez só --- */
+    var CACHE={}, STAT=/\/functions\/v1\/(loja-stats|ga4-stats)(\?|$)/, _fetch=window.fetch;
+    window.fetch=function(input,init){
+      try{
+        var url=(typeof input==='string')?input:((input&&input.url)||'');
+        if(STAT.test(url)&&init&&String(init.method||'').toUpperCase()==='POST'&&typeof init.body==='string'){
+          var key=url+'|'+init.body, now=Date.now(), c=CACHE[key];
+          if(!c||now-c.t>600000){
+            c=CACHE[key]={t:now,p:_fetch.apply(window,arguments)};
+            (function(k,e){e.p.then(function(r){if((!r||!r.ok)&&CACHE[k]===e)delete CACHE[k];},function(){if(CACHE[k]===e)delete CACHE[k];});})(key,c);
+          }
+          return c.p.then(function(r){return r.clone();});
+        }
+      }catch(e){}
+      return _fetch.apply(window,arguments);
+    };
+    function prefetch(){
+      try{
+        if(typeof CLIENT==='undefined'||!CLIENT||!CLIENT.id)return null;
+        var days=REP.range||30, cid=CLIENT.id;
+        return sb.auth.getSession().then(function(x){
+          var s=x&&x.data&&x.data.session;if(!s)return;
+          var H={'Content-Type':'application/json',apikey:SUPA_KEY,Authorization:'Bearer '+s.access_token};
+          var body=JSON.stringify({clientId:cid,days:days});
+          return Promise.all(['loja-stats','ga4-stats'].map(function(fn){
+            return fetch(SUPA_URL+'/functions/v1/'+fn,{method:'POST',headers:H,body:body}).then(function(){},function(){});
+          }));
+        }).then(function(){},function(){});
+      }catch(e){return null;}
+    }
+
+    /* --- 2) pintura única: monta a tela escondida, espera cards da loja + funil, mostra tudo junto --- */
+    var tok=0, pend=[];
+    function reveal(t){if(t!==tok)return;var b=box();if(b)b.style.visibility='';}
+    ['injectLojaStats','injectFunnel'].forEach(function(n){
+      var f=window[n];if(typeof f!=='function')return;
+      window[n]=function(){
+        var r;try{r=f.apply(this,arguments);}catch(e){}
+        if(r&&typeof r.then==='function')pend.push(r.then(function(){},function(){}));
+        return r;
+      };
+    });
+    ['renderCli','renderSource'].forEach(function(n){
+      var f=window[n];if(typeof f!=='function')return;
+      window[n]=function(){
+        var b=box(), t=++tok, r;
+        pend=[];
+        if(b)b.style.visibility='hidden';
+        try{r=f.apply(this,arguments);}catch(e){reveal(t);throw e;}
+        var list=pend.slice();
+        if(!list.length){reveal(t);return r;}
+        var timer=setTimeout(function(){reveal(t);},1500);
+        Promise.all(list).then(function(){clearTimeout(timer);reveal(t);});
+        return r;
+      };
+    });
+
+    /* --- 3) busca ao vivo: Meta + loja + GA4 em paralelo --- */
+    var inLive=0, waiting=0, pre=null, lastLive=null, autoDone=false, bypass=false, snap=false, gotLive=false;
+    function cid(){try{return (typeof CLIENT!=='undefined'&&CLIENT&&CLIENT.id)||'';}catch(e){return '';}}
+    function haveLive(){return !!(lastLive&&lastLive.sel===curSel()&&lastLive.cid===cid());}
+    function busy(){return inLive>0||waiting>0;}
+    var _lrl=loadRangeLive;
+    window.loadRangeLive=function(payload){
+      var self=this, args=arguments, p;
+      inLive++; gotLive=false;
+      try{var now=Date.now();Object.keys(CACHE).forEach(function(k){if(now-CACHE[k].t>5000)delete CACHE[k];});}catch(e){}
+      try{++tok;var b=box();if(b)b.style.visibility='';}catch(e){}
+      pre=needsStats()?prefetch():null;
+      try{p=_lrl.apply(self,args);}catch(e){inLive--;throw e;}
+      var fin=function(){
+        inLive--;
+        // falhou num período numérico: mostra a foto salva em vez de mensagem de erro
+        try{
+          if(!gotLive&&inLive===0&&payload&&/^\d+$/.test(String(payload.preset||''))&&typeof REP_RAW!=='undefined'&&REP_RAW&&typeof applyRange==='function'){
+            bypass=true;try{applyRange();}finally{bypass=false;}
+          }
+        }catch(e){}
+      };
+      if(p&&typeof p.then==='function')p.then(fin,fin);else fin();
+      return p;
+    };
+
+    // marca quando o render vem da foto salva (applyRange) e não do ao vivo
+    if(typeof applyRange==='function'){
+      var _ar=applyRange;
+      window.applyRange=function(){snap=true;try{return _ar.apply(this,arguments);}finally{snap=false;}};
+    }
+
+    var _rr=renderReport;
+    window.renderReport=function(rows){
+      var self=this, args=arguments;
+      if(snap&&!bypass){
+        if(busy())return;                                    // foto salva chegando no meio de uma busca ao vivo: ignora
+        if(haveLive()){                                      // já existe o ao vivo deste período: mantém ele
+          try{REP.updated=null;}catch(e){}
+          return _rr.call(self,lastLive.rows);
+        }
+        if(!autoDone&&numSel()&&typeof CLIENT!=='undefined'&&CLIENT&&CLIENT.id){
+          autoDone=true;                                     // 1ª carga: monta menus com a foto (escondida) e já busca ao vivo
+          var r0=_rr.apply(self,args);
+          try{var n=parseInt(REP.range,10)||30;window.loadRangeLive({preset:String(n)},'dos últimos '+n+' dias');}catch(e){}
+          return r0;
+        }
+        return _rr.apply(self,args);
+      }
+      if(snap)return _rr.apply(self,args);                   // foto salva pedida de propósito (falha do ao vivo)
+      // render AO VIVO: espera loja/GA4 (no máx. 6s) para pintar tudo de uma vez
+      gotLive=true;
+      lastLive={sel:curSel(),cid:cid(),rows:rows};
+      var p=pre, done=false;
+      if(!p||typeof p.then!=='function'){_rr.apply(self,args);return;}
+      waiting++;
+      var go=function(){if(done)return;done=true;waiting--;_rr.apply(self,args);};
+      var t=setTimeout(go,6000);
+      p.then(function(){clearTimeout(t);go();});
+    };
+
+    // voltar pra tela de relatório (ou recarga dupla na abertura) não repinta a foto salva por cima do ao vivo
+    if(typeof loadReports==='function'){
+      var _lr=loadReports;
+      window.loadReports=function(){
+        try{
+          if(busy())return;
+          if(haveLive()){try{REP.updated=null;}catch(e){}return _rr.call(this,lastLive.rows);}
+        }catch(e){}
+        return _lr.apply(this,arguments);
+      };
+    }
+
+    // troca de período numérico também puxa AO VIVO (em vez da foto salva)
+    if(typeof onRangeChange==='function'){
       var _orc=onRangeChange;
       window.onRangeChange=function(val){
         val=String(val||'');
         try{
-          if(/^\d+$/.test(val) && typeof loadRangeLive==='function'){
-            REP.range=parseInt(val,10)||30; REP._sel=String(REP.range);
-            if(typeof syncRangeSelects==='function') syncRangeSelects(REP._sel);
-            window.loadRangeLive({preset:val}, 'dos últimos '+val+' dias');
+          if(/^\d+$/.test(val)){
+            REP.range=parseInt(val,10)||30;REP._sel=String(REP.range);
+            if(typeof syncRangeSelects==='function')syncRangeSelects(REP._sel);
+            window.loadRangeLive({preset:val},'dos últimos '+val+' dias');
             return;
           }
         }catch(e){}
         return _orc(val);
       };
-      window.__wizLiveORC=true;
-    }
-
-    // na 1ª renderização (foto salva), dispara 1x o load ao vivo do período atual
-    if(typeof renderReport==='function' && !window.__wizAutoLive){
-      var _rr=renderReport;
-      window.renderReport=function(){
-        var r=_rr.apply(this,arguments);
-        try{
-          if(!autoDone && !inLive && typeof loadRangeLive==='function'
-             && typeof CLIENT!=='undefined' && CLIENT && CLIENT.id
-             && typeof REP!=='undefined' && REP && /^\d+$/.test(String(REP._sel||REP.range||'30'))){
-            autoDone=true;
-            var n=parseInt(REP.range,10)||30;
-            setTimeout(function(){ try{ window.loadRangeLive({preset:String(n)}, 'dos últimos '+n+' dias'); }catch(e){} }, 40);
-          }
-        }catch(e){}
-        return r;
-      };
-      window.__wizAutoLive=true;
     }
   }catch(e){}
 })();
